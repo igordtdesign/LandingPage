@@ -1,4 +1,4 @@
-/* ----- FONTS v ----- */
+/* ----- FONTS ----- */
 
 .noto-serif-display {
   font-family: "Noto Serif Display", serif;
@@ -15,13 +15,13 @@
   font-style: normal;
 }
 
-/* ----- FONTS ^ ----- */
-
 body{
     background-color: #f5f4ec;
+    margin: 0px;
+    padding: 0px;
 }
 
-/* ----- HEADER v ----- */
+/* ----- HEADER  ----- */
 
 .header{
     background-color: #44684b;
@@ -47,6 +47,12 @@ body{
 a{
     text-decoration: none;
     color: #f5f4ec;
+    transition: 0.5s;
+}
+
+.headNav a:hover{
+    color: #E0B258;
+    transition: 0.5s;
 }
 
 ul{
@@ -59,9 +65,7 @@ ul{
     font-weight: 600;
 }
 
-/* ----- HEADER ^ ----- */
-
-/* ----- HERO v ----- */
+/* ----- HERO  ----- */
 
 .hero{
     display: flex;
@@ -102,18 +106,28 @@ ul{
     font-weight: 600;
     padding: 8px;
     border-radius: 8px;
+    transition: 0.5s;
 }
+
+.heroButton:hover{
+    background-color: #fefc7e;
+    border: 12px;
+    font-size: 16px;
+    padding: 12px;
+    transition: 0.5s;
+}
+
 .heroButton a{
     color:#44684b;
 }
 
-/* ----- HERO ^ ----- */
-
-/* ----- CAROUSEL v ----- */
+/* ----- CAROUSEL  ----- */
 
 .carousel{
     margin: 75px;
     display: flex;
+    justify-content: space-around;
+    align-items: center;
     flex-wrap: nowrap;
 }
 
@@ -149,34 +163,47 @@ ul{
     font-weight: 600;
     padding: 12px;
     border-radius: 8px;
+    transition: 0.5s;
 }
 
-/* ----- CAROUSEL ^ ----- */
+.carButton:hover{
+    border: 4px;
+    background-color: #df5c55;
+    font-size: 14px;
+    padding: 16px;
+    border-radius: 10px;
+    transition: 0.5s;
+}
 
-/* ----- QUOTE v ----- */
+/* ----- QUOTE  ----- */
 
 .quote{
     background-color: #a3342e;
     color: #f5f4ec;
-    padding: 54px 360px;
+    padding: 54px 520px;
     font-family: "Noto Serif Display", serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex: auto;
+    flex: 1 0 400px;
 }
 .qText{
+    display: flex;
     font-size: 20px;
     flex-shrink: 0;
+    align-self: center;
+    max-width: 800px;
+    min-width: 260px;
 }
 .qSignature{
+    display: flex;
+    flex-shrink: 0;
     font-weight: 700;
     align-self: flex-end;
+    min-width: 360px;
 }
 
-/* ----- QUOTE ^ ----- */
-
-/* ----- CTA v ----- */
+/* ----- CTA  ----- */
 
 .cta{
     margin: 3% 20%;
@@ -194,10 +221,19 @@ ul{
     background-color: #44684b;
     font-family: "Inter", sans-serif;
     color:#34343c;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     padding: 16px;
     border-radius: 8px;
+    transition: 0.5s;
+}
+.ctaButton:hover{
+    border: 12px;
+    background-color: #a3342e;
+    font-size: 14px;
+    padding: 18px;
+    border-radius: 12px;
+    transition: 0.5s;
 }
 
 .ctaInfo{
@@ -212,9 +248,7 @@ ul{
     margin: 0;
 }
 
-/* ----- CTA ^ ----- */
-
-/* ----- FOOTER v ----- */
+/* ----- FOOTER ----- */
 
 .footer{
     background-color: #44684b;
@@ -227,5 +261,3 @@ ul{
     font-family: "Noto Serif Display";
     font-weight: bold;
 }
-
-/* ----- FOOTER ^ ----- */
