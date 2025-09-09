@@ -15,19 +15,23 @@
   font-style: normal;
 }
 
+/* ----- BODY ----- */
+
 body{
     background-color: #f5f4ec;
     margin: 0px;
     padding: 0px;
 }
 
-/* ----- HEADER  ----- */
+/* ----- HEADER ----- */
 
 .header{
     background-color: #44684b;
-    padding: 16px 42px;
+    padding: 16px 420px;
     display: flex;
     justify-content: space-between;
+    flex-shrink: 0;
+    flex-basis: 120px;
 }
 
 .headLogo{
@@ -55,6 +59,10 @@ a{
     transition: 0.5s;
 }
 
+.headNav a:active{
+    color: #E0B258;
+}
+
 ul{
     display: flex;
     flex-direction: row;
@@ -65,7 +73,7 @@ ul{
     font-weight: 600;
 }
 
-/* ----- HERO  ----- */
+/* ----- HERO ----- */
 
 .hero{
     display: flex;
@@ -77,6 +85,11 @@ ul{
 .hero img{
     border-radius: 12px;
     max-width: 520px;
+    transition: 0.5s;
+}
+.hero img:hover{
+    scale: 102%;
+    transition: 0.5s;
 }
 
 .heroInfo{
@@ -121,10 +134,10 @@ ul{
     color:#44684b;
 }
 
-/* ----- CAROUSEL  ----- */
+/* ----- CAROUSEL ----- */
 
 .carousel{
-    margin: 75px;
+    margin: 100px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -143,14 +156,22 @@ ul{
 .carInfo img{
     border: 4px solid #44684b;
     border-radius: 12px;
-    width: 150px;
-    height: 150px;
+    width: 60%;
+    height: 60%;
     object-fit: cover;
+    transition: 0.5s;
+}
+
+.carInfo img:hover{
+    scale: 102%;
+    transition: 0.5s;
 }
 
 .carText{
+    margin-top: 10px;
     font-family: "Inter",sans-serif;
     text-align: center;
+    color: #2b4731;
 }
 
 .carButton{
@@ -175,7 +196,7 @@ ul{
     transition: 0.5s;
 }
 
-/* ----- QUOTE  ----- */
+/* ----- QUOTE ----- */
 
 .quote{
     background-color: #a3342e;
@@ -203,10 +224,10 @@ ul{
     min-width: 360px;
 }
 
-/* ----- CTA  ----- */
+/* ----- CTA ----- */
 
 .cta{
-    margin: 3% 20%;
+    margin: 3% 30%;
     border-radius: 12px;
     padding: 32px 72px;
     background-color: #E0B258;
@@ -260,4 +281,102 @@ ul{
     flex:auto;
     font-family: "Noto Serif Display";
     font-weight: bold;
+}
+
+/* ----- WORK / PAGE ----- */
+/* ----- TITLE ----- */
+.workTitleText{
+    margin-top: 22px;
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.workTitleText h1{
+    font-family: "Noto Serif Display", serif;
+    color: #44684b;
+    font-weight: 700;
+    margin:0;
+}
+.workTitleText p{
+    font-family: "Inter", sans-serif;
+    color: #44684b;
+    margin:0;
+}
+
+/* ----- MOSAIC ----- */
+.containerWorkMosaic{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 16px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+.tileWork img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+.tileWork img:hover{
+    width: 100.5%;
+    height: 100.5%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+/* ----- ABOUT PAGE ----- */
+
+.aboutTitle{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 5% 5% 2%;
+}
+
+.aboutInfo{
+    display: flex;
+    flex-direction: column;
+    margin: 0% 18%;
+    line-height:25px;
+}
+
+
+.aboutTitle h1{
+    font-family: "Noto Serif Display", serif;
+    color: #44684b;
+    font-weight: 700;
+    margin:0;
+}
+.aboutTitle p{
+    font-family: "Inter", sans-serif;
+    color: #44684b;
+    margin:0;
+}
+
+.aboutInfo h2{
+    font-family: "Noto Serif Display", serif;
+    color: #44684b;
+    font-weight: 700;
+    margin:0;
+}
+
+.aboutInfo p{
+    font-family: "Inter", sans-serif;
+    color: #44684b;
+    margin:0;
+}
+
+.aboutTitle img{
+    margin-top: 20px;
+    max-width: 150px;
+    border-radius: 24px;
+    align-self: center;
+    transition: 0.5s;
+}
+.aboutTitle img:hover{
+    scale: 102%;
+    transition: 0.5s;
 }
