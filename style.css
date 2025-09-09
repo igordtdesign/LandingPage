@@ -27,11 +27,11 @@ body{
 
 .header{
     background-color: #44684b;
-    padding: 16px 420px;
+    padding: 1% 15%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-shrink: 0;
-    flex-basis: 120px;
+    flex-basis: auto;
 }
 
 .headLogo{
@@ -69,7 +69,7 @@ ul{
     gap: 16px;
     list-style-type: none;
     font-family: "Inter";
-    font-size: 22px;
+    font-size: 1.5rem;
     font-weight: 600;
 }
 
@@ -79,8 +79,9 @@ ul{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    padding: 48px;
+    padding: 5% 15%;
     background-color: #2b4731;
+    gap: 16px
 }
 .hero img{
     border-radius: 12px;
@@ -89,6 +90,7 @@ ul{
 }
 .hero img:hover{
     scale: 102%;
+    rotate: -1deg;
     transition: 0.5s;
 }
 
@@ -115,7 +117,7 @@ ul{
     border-color: #f5f4ec;
     background-color: #E0B258;
     font-family: "Inter", sans-serif;
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 600;
     padding: 8px;
     border-radius: 8px;
@@ -125,7 +127,7 @@ ul{
 .heroButton:hover{
     background-color: #fefc7e;
     border: 12px;
-    font-size: 16px;
+    font-size: 1.1rem;
     padding: 12px;
     transition: 0.5s;
 }
@@ -135,6 +137,19 @@ ul{
 }
 
 /* ----- CAROUSEL ----- */
+.carTitle{
+    margin-top: 2%;
+    margin-bottom: -2%;
+}
+.carTitle h1{
+    font-family: "Inter", sans-serif;
+    color: #2b4731;
+    font-weight: 700;
+    font-style: italic;
+    word-spacing: 2%;
+    margin:0;
+    text-align: center;
+}
 
 .carousel{
     margin: 100px;
@@ -180,7 +195,7 @@ ul{
     background-color: #a3342e;
     font-family: "Inter", sans-serif;
     color:#34343c;
-    font-size: 12px;
+    font-size: 1rem;
     font-weight: 600;
     padding: 12px;
     border-radius: 8px;
@@ -190,7 +205,7 @@ ul{
 .carButton:hover{
     border: 4px;
     background-color: #df5c55;
-    font-size: 14px;
+    font-size: 1rem;
     padding: 16px;
     border-radius: 10px;
     transition: 0.5s;
@@ -205,23 +220,29 @@ ul{
     font-family: "Noto Serif Display", serif;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     flex: 1 0 400px;
+    text-align: center;
 }
 .qText{
     display: flex;
-    font-size: 20px;
+    font-size: 1.4rem;
     flex-shrink: 0;
     align-self: center;
     max-width: 800px;
     min-width: 260px;
+    text-align: center;
 }
 .qSignature{
     display: flex;
     flex-shrink: 0;
     font-weight: 700;
-    align-self: flex-end;
+    justify-content: center;
+    align-self: center;
+    text-align: center;
     min-width: 360px;
+    margin-top: 12px;
 }
 
 /* ----- CTA ----- */
@@ -234,6 +255,7 @@ ul{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
 }
 
 .ctaButton{
@@ -242,7 +264,7 @@ ul{
     background-color: #44684b;
     font-family: "Inter", sans-serif;
     color:#34343c;
-    font-size: 12px;
+    font-size: 1rem;
     font-weight: 600;
     padding: 16px;
     border-radius: 8px;
@@ -251,7 +273,7 @@ ul{
 .ctaButton:hover{
     border: 12px;
     background-color: #a3342e;
-    font-size: 14px;
+    font-size: 1.1rem;
     padding: 18px;
     border-radius: 12px;
     transition: 0.5s;
@@ -263,7 +285,7 @@ ul{
 }
 .ctaInfo h4{
     margin: 0;
-    font-size: 22px;
+    font-size: 1.5rem;
 }
 .ctaInfo p{
     margin: 0;
@@ -312,22 +334,24 @@ ul{
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 16px;
     max-width: 1080px;
-    margin: 0 auto;
+    margin: 0 auto 5% auto;
 }
+
 .tileWork img{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: 0.5s;
-}
-.tileWork img:hover{
-    width: 100.5%;
-    height: 100.5%;
-    object-fit: cover;
-    transition: 0.5s;
+    border-radius: 12px;
+    box-shadow: 0 0.3em 0.6em rgb(48 48 48 / 13%);
 }
 
-/* ----- ABOUT PAGE ----- */
+.tileWorkLogo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 0.3em 0.6em rgb(48 48 48 / 13%);
+}
 
 .aboutTitle{
     display: flex;
@@ -378,5 +402,155 @@ ul{
 }
 .aboutTitle img:hover{
     scale: 102%;
+    rotate: -1deg;
+    border-radius: 26px;
     transition: 0.5s;
+}
+
+/* ----- RESPONSIVE DESIGN ----- */
+@media (max-width: 900px) {
+    .hero, .carousel, .cta {
+        padding: 8px 5%;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px; /* Add spacing between stacked items */
+    }
+    .header {
+        padding: 16px 5%;
+        flex-direction: column;
+        align-items: center;
+    }
+    .headLogo {
+        flex: none;
+        max-width: 140px;
+        width: 100%;
+        margin-bottom: 4px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+    .headLogo img {
+        width: 100%;
+        max-width: 120px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+    }
+    .headNav ul{
+        padding: 0;
+        font-size: 1rem;
+        text-align: center;
+        gap: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .hero {
+        padding: 32px 5%;
+        gap: 32px;
+        text-align: center;
+    }
+    .heroInfo {
+        align-items: center;
+        flex: 1 0 auto;
+        gap: 16px;
+    }
+    .hero img, .carInfo img {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    .carousel {
+        margin: 48px 0;
+        gap: 32px;
+    }
+    .carInfo {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .quote {
+        padding: 32px 5%;
+        font-size: 1rem;
+        align-items: center;
+        text-align: center;
+    }
+    .qSignature {
+        align-self: center;
+        min-width: unset;
+    }
+    .containerWorkMosaic {
+        grid-template-columns: 2fr repeat(auto-fill, 100px); 
+        max-width: 75vw;
+    }
+    .cta {
+        margin: 8% 2%;
+        padding: 24px 8px;
+        gap: 16px;
+        text-align: center;
+    }
+    .ctaInfo h4 {
+        font-size: 1rem;
+    }
+
+    .workTitleText{
+        padding: 0px 5vw;
+        text-align: center;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 600px) {
+    .hero, .carousel, .cta {
+        padding: 12px 2vw;
+        gap: 16px;
+    }
+    .header{
+        padding: 8px 5%;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+    .headLogo{
+        display: flex;
+        max-width: 120px;
+        width: 100%;
+        margin-bottom: 2px;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+    }
+    .headLogo img{
+        width: 90%;
+        max-width: 100px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+    }
+    .headNav ul{
+        padding: 0;
+        font-size: 1rem;
+        text-align: center;
+        gap: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .hero {
+        padding: 16px 2vw;
+        gap: 20px;
+    }
+    .carousel {
+        margin: 24px 0;
+        gap: 16px;
+    }
+    .quote {
+        padding: 16px 2vw;
+        font-size: 1rem;
+    }
+    .containerWorkMosaic {
+        grid-gap: 8px;
+    }
+    .aboutInfo {
+        margin: 0 2vw;
+    }
 }
