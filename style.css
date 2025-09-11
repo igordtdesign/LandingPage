@@ -85,7 +85,9 @@ ul{
 }
 .hero img{
     border-radius: 12px;
+    min-width: 300px;
     max-width: 520px;
+    flex-shrink: 1;
     transition: 0.5s;
 }
 .hero img:hover{
@@ -259,8 +261,6 @@ ul{
 }
 
 .ctaButton{
-    border: 8px;
-    border-color: #f5f4ec;
     background-color: #44684b;
     font-family: "Inter", sans-serif;
     color:#f5f4ec;
@@ -271,7 +271,6 @@ ul{
     transition: 0.5s;
 }
 .ctaButton:hover{
-    border: 12px;
     background-color: #a3342e;
     font-size: 1.1rem;
     padding: 18px;
@@ -480,7 +479,7 @@ ul{
     }
     .containerWorkMosaic {
         grid-template-columns: 2fr repeat(auto-fill, 100px); 
-        max-width: 75vw;
+        max-width: 90vw;
     }
     .cta {
         margin: 8% 2%;
