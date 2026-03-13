@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SteamAI — User Experience & Conversational AI | Igor Dalmolin</title>
+  <meta name="description" content="PUCRS Postgraduate Thesis (Grade 10): A case study on how conversational AI can improve game discovery on the Steam platform. By Igor Dalmolin Tronco.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
+  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --bg:           #121212;
+      --surface-1:    #1a1a1a;
+      --surface-2:    #1f1f1f;
+      --border:       rgba(230, 230, 230, 0.05);
+      --border-hover: rgba(230, 230, 230, 0.12);
+      --blue:         #4081e2;
+      --blue-dim:     rgba(64, 129, 226, 0.15);
+      --blue-glow:    rgba(64, 129, 226, 0.08);
+      --text-1:       #e6e6e6;
+      --text-2:       #ccc;
+      --text-3:       #999;
+      --text-4:       #666;
+      --mono:         "JetBrains Mono", monospace;
+      --sans:         "Inter", sans-serif;
+      --radius-sm:    8px;
+      --radius-md:    12px;
+      --radius-lg:    16px;
+      --radius-pill:  99px;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -200%;
+      width: 400%;
+      height: 400%;
+      background: url('https://framerusercontent.com/images/rR6HYXBrMmX4cRpXfXUOvpvpB0.png');
+      background-size: 256px 256px;
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────────────── */
+    .page { position: relative; z-index: 1; }
+
+    .container {
+      max-width: 1072px;
+      margin: 0 auto;
+      padding: 0 64px;
+    }
+
+    @media (max-width: 900px) { .container { padding: 0 40px; } }
+    @media (max-width: 600px) { .container { padding: 0 24px; } }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 200px;
+      background: radial-gradient(50% 50% at 50% 50%, rgb(10, 94, 204) 0%, rgb(66, 130, 227) 100%);
+      border: 1px solid rgba(163, 167, 174, 0.1);
+      flex-shrink: 0;
+    }
+
+    .nav-name {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: -0.05em;
+      color: var(--text-1);
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-3);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: -0.03em;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text-1); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 24px; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero {
+      padding: 160px 0 96px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-eyebrow::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--blue);
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: var(--mono);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 1.1;
+      color: var(--text-1);
+      margin-bottom: 24px;
+    }
+
+    .hero-title span {
+      color: var(--blue);
+    }
+
+    .hero-desc {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 1.6;
+      color: var(--text-3);
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-3);
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 5px 12px;
+    }
+
+    .tag.blue {
+      color: var(--blue);
+      background: var(--blue-dim);
+      border-color: rgba(64, 129, 226, 0.2);
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-4);
+    }
+
+    .meta-value {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      color: var(--text-2);
+    }
+
+    /* ─── DIVIDER ────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      border-radius: 99px;
+      margin: 0 0 64px;
+    }
+
+    /* ─── IMAGE PLACEHOLDER ──────────────────────────────────── */
+    .hero-image {
+      margin-top: 64px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface-1);
+      aspect-ratio: 16/9;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-4);
+    }
+
+    .img-placeholder svg {
+      width: 40px;
+      height: 40px;
+      opacity: 0.4;
+    }
+
+    .img-placeholder p {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    /* ─── SECTIONS ───────────────────────────────────────────── */
+    section {
+      padding: 80px 0;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::before {
+      content: "";
+      display: block;
+      width: 16px;
+      height: 1px;
+      background: var(--blue);
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 1.25;
+      color: var(--text-1);
+      margin-bottom: 24px;
+    }
+
+    .section-body {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 1.65;
+      color: var(--text-3);
+    }
+
+    .section-body p + p {
+      margin-top: 20px;
+    }
+
+    /* ─── CARD ───────────────────────────────────────────────── */
+    .card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: var(--border-hover); }
+
+    .card-title {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text-1);
+      margin-bottom: 8px;
+    }
+
+    .card-body {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.6;
+      color: var(--text-3);
+    }
+
+    /* ─── GRID ───────────────────────────────────────────────── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── TWO-COL LAYOUT ─────────────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* ─── HIGHLIGHT BOX ──────────────────────────────────────── */
+    .highlight {
+      background: var(--blue-glow);
+      border: 1px solid rgba(64, 129, 226, 0.15);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+
+    .highlight p {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 1.65;
+      color: var(--text-2);
+    }
+
+    .highlight p strong {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* ─── STAT ROW ───────────────────────────────────────────── */
+    .stat-row {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .stat-item {
+      flex: 1;
+      padding: 24px 20px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: var(--mono);
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      color: var(--blue);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--text-4);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      .stat-row { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+    }
+
+    /* ─── PROCESS STEPS ──────────────────────────────────────── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 20px;
+      position: relative;
+    }
+
+    .step + .step {
+      margin-top: 0;
+      padding-top: 32px;
+    }
+
+    .step-number {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    .step-line {
+      width: 1px;
+      flex: 1;
+      background: var(--border);
+      margin-top: 8px;
+      min-height: 32px;
+    }
+
+    .step:last-child .step-line { display: none; }
+
+    .step-content {
+      padding-bottom: 32px;
+    }
+
+    .step:last-child .step-content { padding-bottom: 0; }
+
+    .step-title {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text-1);
+      margin-bottom: 8px;
+      margin-top: 6px;
+    }
+
+    .step-desc {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.65;
+      color: var(--text-3);
+    }
+
+    /* ─── IMAGE GRID ─────────────────────────────────────────── */
+    .img-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 48px;
+    }
+
+    .img-grid-2 { grid-template-columns: 1fr 1fr; }
+    .img-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .img-frame {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface-1);
+      aspect-ratio: 16/9;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .img-frame.tall { aspect-ratio: 4/5; }
+    .img-frame.square { aspect-ratio: 1/1; }
+
+    .img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-caption {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: -0.02em;
+      color: var(--text-4);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── QUOTE ──────────────────────────────────────────────── */
+    .quote {
+      border-left: 2px solid var(--blue);
+      padding: 16px 24px;
+      margin: 32px 0;
+      background: var(--blue-glow);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .quote p {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.65;
+      color: var(--text-2);
+      font-style: italic;
+    }
+
+    .quote cite {
+      display: block;
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-4);
+      font-style: normal;
+    }
+
+    /* ─── LIST ───────────────────────────────────────────────── */
+    .styled-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .styled-list li {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.55;
+      color: var(--text-3);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .styled-list li::before {
+      content: "→";
+      color: var(--blue);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ─── BADGE ──────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+    }
+
+    .badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: #4ade80;
+      border-radius: 50%;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+      margin-top: 64px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: -0.03em;
+      color: var(--text-4);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: -0.03em;
+      color: var(--text-3);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .footer-links a:hover { color: var(--text-1); }
+
+    /* ─── SCROLL FADE-IN ─────────────────────────────────────── */
+    .fade-up {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── BACK TO TOP ────────────────────────────────────────── */
+    .back-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: var(--text-3);
+      z-index: 50;
+    }
+
+    .back-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .back-top:hover {
+      border-color: var(--border-hover);
+      color: var(--text-1);
+    }
+
+    .back-top svg { width: 16px; height: 16px; }
+
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- ─── NAV ──────────────────────────────────────────────── -->
+  <nav>
+    <a href="https://igordtdesign.github.io/LandingPage/" class="nav-logo">
+      <div class="nav-avatar"></div>
+      <span class="nav-name">Igor Dalmolin</span>
+    </a>
+    <a href="https://igordtdesign.github.io/LandingPage/" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7-7m-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to portfolio
+    </a>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow fade-up">UX Case Study · PUCRS Postgraduate Thesis · 2025</div>
+
+      <h1 class="hero-title fade-up">
+        User Experience<br>
+        &amp; <span>Conversational AI</span>:<br>
+        SteamAI
+      </h1>
+
+      <p class="hero-desc fade-up">
+        A case study on game discovery on the Steam platform - proposing an ethical and transparent conversational AI chatbot that replaces confusing tag searches with natural dialogue and explainable recommendations.
+      </p>
+
+      <div class="hero-tags fade-up">
+        <span class="tag blue">Grade 10/10 · PUCRS</span>
+        <span class="tag">UX Research</span>
+        <span class="tag">Heuristic Analysis</span>
+        <span class="tag">Personas</span>
+        <span class="tag">Conversational AI</span>
+        <span class="tag">Explainable AI (XAI)</span>
+        <span class="tag">Algorithmic Ethics</span>
+        <span class="tag">LGPD</span>
+        <span class="tag">Figma</span>
+      </div>
+
+      <div class="hero-meta fade-up">
+        <div class="meta-item">
+          <span class="meta-label">Context</span>
+          <span class="meta-value">Postgraduate Thesis - UX Design and Beyond, PUCRS</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Advisor</span>
+          <span class="meta-value">Profª. Drª. Andrea Aparecida Konzen</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Approach</span>
+          <span class="meta-value">Exploratory qualitative case study</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Final Grade</span>
+          <span class="meta-value"><span class="badge">10 / 10</span></span>
+        </div>
+      </div>
+
+      <!-- ── HERO: Steam wireframe with SteamAI popup ── -->
+      <style>
+        .wf-wrap {
+          margin-top: 64px;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          border: 1px solid rgba(255,255,255,0.08);
+          background: #0f1318;
+          position: relative;
+        }
+        .wf-tag {
+          position: absolute;
+          top: 14px; left: 18px;
+          font-family: var(--mono);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.07em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.2);
+          z-index: 5;
+          pointer-events: none;
+        }
+        /* Wireframe chrome */
+        .wf-bar {
+          height: 36px;
+          background: rgba(255,255,255,0.03);
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          gap: 16px;
+        }
+        .wf-bar-logo {
+          width: 60px; height: 10px;
+          background: rgba(255,255,255,0.12);
+          border-radius: 2px;
+        }
+        .wf-bar-links {
+          display: flex; gap: 10px; flex: 1;
+        }
+        .wf-bar-link {
+          width: 40px; height: 8px;
+          background: rgba(255,255,255,0.07);
+          border-radius: 2px;
+        }
+        .wf-bar-btn {
+          width: 72px; height: 20px;
+          background: rgba(255,255,255,0.07);
+          border-radius: 2px;
+          margin-left: auto;
+        }
+        .wf-subnav {
+          height: 32px;
+          background: rgba(255,255,255,0.02);
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          gap: 6px;
+        }
+        .wf-subnav-item {
+          width: 52px; height: 8px;
+          background: rgba(255,255,255,0.06);
+          border-radius: 2px;
+        }
+        .wf-subnav-item.active {
+          background: rgba(255,255,255,0.15);
+        }
+        /* Body */
+        .wf-body {
+          padding: 20px;
+          display: grid;
+          grid-template-columns: 1fr 1fr 200px;
+          gap: 16px;
+          min-height: 280px;
+          position: relative;
+        }
+        /* Featured block */
+        .wf-featured {
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.06);
+          border-radius: 6px;
+          height: 200px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 16px;
+          gap: 8px;
+        }
+        .wf-featured-title {
+          width: 120px; height: 14px;
+          background: rgba(255,255,255,0.15);
+          border-radius: 2px;
+        }
+        .wf-featured-tags { display: flex; gap: 6px; }
+        .wf-featured-tag {
+          width: 48px; height: 8px;
+          background: rgba(255,255,255,0.08);
+          border-radius: 2px;
+        }
+        /* Sidebar */
+        .wf-sidebar { display: flex; flex-direction: column; gap: 8px; }
+        .wf-sidebar-title {
+          width: 100px; height: 8px;
+          background: rgba(255,255,255,0.1);
+          border-radius: 2px;
+          margin-bottom: 4px;
+        }
+        .wf-card {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.05);
+          border-radius: 4px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 0 10px;
+        }
+        .wf-card-thumb {
+          width: 32px; height: 26px;
+          background: rgba(255,255,255,0.07);
+          border-radius: 2px;
+          flex-shrink: 0;
+        }
+        .wf-card-lines { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+        .wf-card-line {
+          height: 7px;
+          background: rgba(255,255,255,0.08);
+          border-radius: 2px;
+        }
+        .wf-card-line.short { width: 50%; }
+        /* SteamAI FAB */
+        .wf-fab {
+          position: absolute;
+          bottom: 20px; right: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 10px;
+          z-index: 10;
+        }
+        .wf-fab-col {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: flex-end;
+          gap: 10px;
+          padding-bottom: 4px;
+        }
+        .wf-fab-bubble {
+          background: #0d1422;
+          border: 1px solid rgba(200,67,106,0.3);
+          border-radius: 12px;
+          padding: 10px 14px;
+          max-width: 180px;
+          position: relative;
+        }
+        .wf-fab-bubble::after {
+          content: '';
+          position: absolute;
+          bottom: -6px; right: 18px;
+          width: 10px; height: 10px;
+          background: #0d1422;
+          border-right: 1px solid rgba(200,67,106,0.3);
+          border-bottom: 1px solid rgba(200,67,106,0.3);
+          transform: rotate(45deg);
+        }
+        .wf-fab-label {
+          font-family: var(--mono);
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #c8436a;
+          margin-bottom: 5px;
+        }
+        .wf-fab-lines { display: flex; flex-direction: column; gap: 4px; }
+        .wf-fab-line {
+          height: 6px;
+          background: rgba(255,255,255,0.12);
+          border-radius: 2px;
+        }
+        .wf-fab-line.short { width: 70%; }
+        .wf-btn {
+          width: 44px; height: 44px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #c8436a, #7b2fa0);
+          display: flex; align-items: center; justify-content: center;
+          font-size: 20px;
+          box-shadow: 0 0 0 3px rgba(200,67,106,0.15), 0 0 20px rgba(200,67,106,0.35);
+          animation: wfPulse 2.5s ease-in-out infinite;
+          cursor: pointer;
+        }
+        @keyframes wfPulse {
+          0%,100% { box-shadow: 0 0 0 3px rgba(200,67,106,0.15), 0 0 20px rgba(200,67,106,0.35); }
+          50%      { box-shadow: 0 0 0 8px rgba(200,67,106,0.05), 0 0 32px rgba(200,67,106,0.5); }
+        }
+        @media (max-width: 700px) {
+          .wf-body { grid-template-columns: 1fr; }
+          .wf-sidebar { display: none; }
+        }
+      </style>
+
+      <div class="wf-wrap fade-up">
+        <div class="wf-tag">Context — SteamAI as a native overlay</div>
+        <div class="wf-bar">
+          <div class="wf-bar-logo"></div>
+          <div class="wf-bar-links">
+            <div class="wf-bar-link"></div>
+            <div class="wf-bar-link"></div>
+            <div class="wf-bar-link"></div>
+          </div>
+          <div class="wf-bar-btn"></div>
+        </div>
+        <div class="wf-subnav">
+          <div class="wf-subnav-item active"></div>
+          <div class="wf-subnav-item"></div>
+          <div class="wf-subnav-item"></div>
+          <div class="wf-subnav-item"></div>
+          <div class="wf-subnav-item"></div>
+        </div>
+        <div class="wf-body">
+          <!-- Col 1: featured -->
+          <div>
+            <div class="wf-featured">
+              <div class="wf-featured-title"></div>
+              <div class="wf-featured-tags">
+                <div class="wf-featured-tag"></div>
+                <div class="wf-featured-tag"></div>
+                <div class="wf-featured-tag"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Col 2: sidebar cards -->
+          <div class="wf-sidebar">
+            <div class="wf-sidebar-title"></div>
+            <div class="wf-card"><div class="wf-card-thumb"></div><div class="wf-card-lines"><div class="wf-card-line"></div><div class="wf-card-line short"></div></div></div>
+            <div class="wf-card"><div class="wf-card-thumb"></div><div class="wf-card-lines"><div class="wf-card-line"></div><div class="wf-card-line short"></div></div></div>
+            <div class="wf-card"><div class="wf-card-thumb"></div><div class="wf-card-lines"><div class="wf-card-line"></div><div class="wf-card-line short"></div></div></div>
+            <div class="wf-card"><div class="wf-card-thumb"></div><div class="wf-card-lines"><div class="wf-card-line"></div><div class="wf-card-line short"></div></div></div>
+          </div>
+          <!-- Col 3: SteamAI FAB anchored -->
+          <div class="wf-fab-col">
+            <div class="wf-fab-bubble">
+              <div class="wf-fab-label">SteamAI</div>
+              <div class="wf-fab-lines">
+                <div class="wf-fab-line"></div>
+                <div class="wf-fab-line"></div>
+                <div class="wf-fab-line short"></div>
+              </div>
+            </div>
+            <div class="wf-btn" style="align-self:flex-end;">✦</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── OVERVIEW ──────────────────────────────────────────── -->
+  <section>
+    <div class="container">
+      <div class="divider"></div>
+      <div class="two-col">
+        <div class="fade-up">
+          <div class="section-label">Overview</div>
+          <h2 class="section-title">The paradox of choice across 220,000 games</h2>
+          <div class="section-body">
+            <p>Since 2003, Steam evolved from a distribution channel into the world's largest game marketplace, now hosting over 220,000 products (SteamDB, 2025). This expansion brought a classic UX problem: the paradox of choice.</p>
+            <p>Abundance doesn't lead to satisfaction - it leads to indecision and frustration. The current recommendation system prioritizes popularity and recent history, ignoring intent and context. The result: users can't describe what they want in natural language, and the system can't listen.</p>
+          </div>
+        </div>
+        <div class="fade-up">
+          <div class="stat-row">
+            <div class="stat-item">
+              <div class="stat-number">220K+</div>
+              <div class="stat-label">Products on Steam (SteamDB, 2025)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">~30</div>
+              <div class="stat-label">Observational sessions conducted</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">3</div>
+              <div class="stat-label">Personas with distinct journeys</div>
+            </div>
+          </div>
+
+          <div class="highlight" style="margin-top: 16px;">
+            <p><strong>Central question:</strong> How can conversational artificial intelligence enhance the game discovery experience in digital marketplaces like Steam?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROBLEM ───────────────────────────────────────────── -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="fade-up">
+        <div class="section-label">Identified Failures</div>
+        <h2 class="section-title">What the heuristic analysis revealed</h2>
+        <p class="section-body">Around 30 anonymous browsing sessions (no login, no history) were conducted between July and August 2025 to avoid algorithmic bias. The failures concentrate around three of Nielsen's heuristics (1994).</p>
+      </div>
+
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="card fade-up">
+          <div class="card-title" style="color: var(--blue);">↗ High frequency</div>
+          <div class="card-title" style="margin-top: 8px;">Error prevention</div>
+          <div class="card-body">The "realistic" tag indicates graphics, not gameplay mechanics. A user looking for realistic fishing simulation finds completely unrelated games. The system leads users astray without any warning.</div>
+        </div>
+        <div class="card fade-up">
+          <div class="card-title" style="color: var(--blue);">↗ High frequency</div>
+          <div class="card-title" style="margin-top: 8px;">Consistency and standards</div>
+          <div class="card-body">The "immersive simulator" filter returns titles unrelated to the immersive sim genre. The "similar games" section for Deus Ex lists Spider-Man and Avatar - sharing only visual aspects, not structural ones.</div>
+        </div>
+        <div class="card fade-up">
+          <div class="card-title" style="color: var(--text-3);">→ Medium frequency</div>
+          <div class="card-title" style="margin-top: 8px;">Flexibility and efficiency</div>
+          <div class="card-body">Only a fraction of tags appear on the main screen. To find the "pirates" tag, a user had to access the Sea of Thieves page and discover it indirectly. The Curse of Monkey Island doesn't even have this tag.</div>
+        </div>
+      </div>
+
+      <div class="highlight fade-up" style="margin-top: 32px;">
+        <p><strong>Comparative analysis finding:</strong> The Epic Games Store, despite having fewer tags, offers an even more difficult journey - no category search field, and a genre menu buried in a long vertical list. Steam, despite its flaws, still delivers a superior UX compared to its main competitor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RESEARCH ──────────────────────────────────────────── -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="two-col">
+        <div class="fade-up">
+          <div class="section-label">Research Method</div>
+          <h2 class="section-title">Exploratory qualitative research with personas</h2>
+          <div class="section-body">
+            <p>The research combined direct empirical observation (anonymous Steam browsing), heuristic analysis based on Nielsen (1994), and persona construction grounded in Cooper (2007) and Revella (2015).</p>
+            <p>Three personas were developed from real behaviors observed during the sessions, each exposing a distinct failure pattern in the recommendation system.</p>
+          </div>
+        </div>
+        <div class="fade-up">
+          <div class="section-label">Methodological Path</div>
+          <ul class="styled-list" style="margin-top: 16px;">
+            <li>Empirical observation — anonymous browsing, ~30 sessions (Jul–Aug 2025)</li>
+            <li>Systematic recording — screenshots and descriptive notes per journey</li>
+            <li>Heuristic analysis — mapping by violated Nielsen heuristic</li>
+            <li>Persona construction — integration of observation and literature</li>
+            <li>Comparative analysis — Steam vs. Epic Games Store vs. Xbox Game Pass</li>
+            <li>Critical synthesis — foundation for the SteamAI proposal</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top: 48px;" class="fade-up">
+        <div class="section-label">The 3 Personas</div>
+        <h2 class="section-title">Three journeys, three distinct failures</h2>
+      </div>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="card fade-up">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;">C</div>
+            <div>
+              <div class="card-title" style="margin:0;">Carlos Henrique, 42</div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:-0.02em;">Agricultural engineer · casual gamer</div>
+            </div>
+          </div>
+          <div class="card-body">Searches for fishing games with realistic mechanics - not graphical realism. Steam's "realistic" tag refers to visuals. Of the first 8 results, only 2 matched the intended search. <strong style="color:var(--text-2);">Violated heuristic: Error prevention.</strong></div>
+        </div>
+        <div class="card fade-up">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;">M</div>
+            <div>
+              <div class="card-title" style="margin:0;">Mariana, 31</div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:-0.02em;">Philosophy teacher · experienced gamer</div>
+            </div>
+          </div>
+          <div class="card-body">A fan of Deus Ex and Disco Elysium, she searches for "immersive simulator." The tag doesn't appear on the main interface. After finding it in secondary menus, results included titles with no relation to the genre. <strong style="color:var(--text-2);">Violated heuristic: Consistency and standards.</strong></div>
+        </div>
+        <div class="card fade-up">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;">L</div>
+            <div>
+              <div class="card-title" style="margin:0;">Lucas, 23</div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:-0.02em;">Graphic design student · RPG enthusiast</div>
+            </div>
+          </div>
+          <div class="card-body">Wants a pirate-themed RPG. The "pirates" tag doesn't appear in main categories - he had to access the Sea of Thieves page to find it. The Curse of Monkey Island doesn't even have this tag. <strong style="color:var(--text-2);">Violated heuristic: Flexibility and efficiency.</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROCESS ───────────────────────────────────────────── -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="fade-up" style="margin-bottom: 48px;">
+        <div class="section-label">The Proposal — SteamAI</div>
+        <h2 class="section-title">A chatbot as the intermediary layer between algorithm and user</h2>
+        <p class="section-body" style="max-width: 720px;">SteamAI is conceived as a chatbot integrated into the Steam interface, acting as a mediator between the traditional recommendation system and the user - translating subjective preferences into humanized search parameters.</p>
+      </div>
+
+      <div class="two-col" style="margin-bottom: 48px;">
+        <div class="fade-up">
+          <div class="section-label">Interaction Flow</div>
+          <div class="steps" style="margin-top: 16px;">
+            <div class="step">
+              <div class="step-number">
+                <div class="step-num">01</div>
+                <div class="step-line"></div>
+              </div>
+              <div class="step-content">
+                <div class="step-title">Natural language input</div>
+                <div class="step-desc">"I want a light-looking adventure game I can play for 30 minutes a day" or "recommend something like Disco Elysium, but shorter and focused on moral choices."</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">
+                <div class="step-num">02</div>
+                <div class="step-line"></div>
+              </div>
+              <div class="step-content">
+                <div class="step-title">Contextual AI processing</div>
+                <div class="step-desc">Semantic analysis of the request cross-referenced with the game database - descriptions, tags, reviews, and history - recognizing preferences, mood, and time constraints.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">
+                <div class="step-num">03</div>
+                <div class="step-line"></div>
+              </div>
+              <div class="step-content">
+                <div class="step-title">Recommendations with reasoning</div>
+                <div class="step-desc">Each result comes with an explanation: "I recommended this game because you showed interest in short narratives and moral choices." - the core principle of XAI (Explainable AI).</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">
+                <div class="step-num">04</div>
+                <div class="step-line"></div>
+              </div>
+              <div class="step-content">
+                <div class="step-title">Iterative refinement</div>
+                <div class="step-desc">The user can adjust the request, dismiss suggestions with one click, or deepen the dialogue. With each interaction, the system learns and refines the player's profile.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up">
+          <div class="section-label">3 UX Pillars</div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px;">
+            <div class="card">
+              <div class="card-title">Clarity and empathy</div>
+              <div class="card-body">The system explains how recommendations are generated. The user understands the "why" behind each suggestion - reducing the sense of arbitrariness that dominates the current model.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Flexibility and control</div>
+              <div class="card-body">Unlike automatic lists, SteamAI offers active interactivity. The dialogue creates a refinement cycle that makes the experience participatory.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Responsible personalization</div>
+              <div class="card-body">The system operates within ethical and transparent limits, in compliance with the LGPD (Brazilian Data Protection Law). It doesn't manipulate decisions - it expands the capacity to choose.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SCREENS ───────────────────────────────────────────── -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="fade-up">
+        <div class="section-label">Interface</div>
+        <h2 class="section-title">Key screens</h2>
+        <p class="section-body">Three core states of the SteamAI interface — entry point, empty state with suggestions, and results with XAI reasoning.</p>
+      </div>
+
+      <!-- ── EMBEDDED SCREENS ── -->
+      <style>
+        .screens-stage {
+          display: flex;
+          gap: 24px;
+          justify-content: center;
+          align-items: flex-start;
+          flex-wrap: wrap;
+          margin-top: 48px;
+          padding: 48px 32px;
+          background: #070e1d;
+          border-radius: 20px;
+          border: 1px solid rgba(255,255,255,0.06);
+        }
+        .screen-col { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+        .screen-col-label {
+          font-family: var(--mono);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.25);
+        }
+        .sframe {
+          width: 240px;
+          min-height: 480px;
+          border-radius: 32px;
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgba(255,255,255,0.1);
+          flex-shrink: 0;
+        }
+        .sfbg {
+          position: absolute; inset: 0;
+          background:
+            radial-gradient(ellipse 80% 50% at 50% -10%, #1a3a6e 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 80% 80%, #0d2a52 0%, transparent 50%),
+            linear-gradient(180deg, #0d1b35 0%, #070e1d 100%);
+        }
+        .sfnoise {
+          position: absolute; inset: 0; opacity: 0.04; pointer-events: none;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size: 200px 200px;
+        }
+        .sfcontent {
+          position: relative; z-index: 2;
+          padding: 16px 16px 20px;
+          display: flex; flex-direction: column;
+          min-height: 480px;
+          font-family: -apple-system, 'SF Pro Display', sans-serif;
+        }
+        .sf-statusbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .sf-time { font-size: 12px; font-weight: 600; color: white; }
+        .sf-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+        .sf-logo { display: flex; align-items: center; gap: 7px; }
+        .sf-icon {
+          width: 28px; height: 28px; border-radius: 50%;
+          background: linear-gradient(135deg, #c8436a, #7b2fa0);
+          display: flex; align-items: center; justify-content: center;
+          font-size: 12px;
+          box-shadow: 0 0 12px rgba(200,67,106,0.4);
+        }
+        .sf-appname { font-size: 14px; font-weight: 700; color: white; letter-spacing: -0.03em; }
+        .sf-appname span { color: rgba(255,255,255,0.35); font-weight: 400; }
+        .sf-spacer { flex: 1; }
+        .sf-input {
+          background: rgba(255,255,255,0.07);
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 99px; padding: 9px 13px;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .sf-input.active { border-color: rgba(78,161,255,0.5); background: rgba(78,161,255,0.07); }
+        .sf-input-text { font-size: 11px; color: rgba(255,255,255,0.3); flex: 1; }
+        .sf-input-text.on { color: rgba(255,255,255,0.7); }
+        .sf-cursor { width: 1.5px; height: 11px; background: #4ea1ff; border-radius: 1px; animation: sfblink 1s step-end infinite; }
+        @keyframes sfblink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .sf-send { width: 22px; height: 22px; border-radius: 50%; background: rgba(78,161,255,0.18); border: 1px solid rgba(78,161,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        /* State 01 */
+        .sf-icon-hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding-bottom: 20px; }
+        .sf-icon-lg {
+          width: 72px; height: 72px; border-radius: 50%;
+          background: linear-gradient(135deg, #c8436a, #7b2fa0);
+          display: flex; align-items: center; justify-content: center; font-size: 28px;
+          box-shadow: 0 0 0 10px rgba(200,67,106,0.08), 0 0 0 20px rgba(200,67,106,0.04), 0 0 32px rgba(200,67,106,0.35);
+        }
+        .sf-tooltip {
+          background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.13);
+          border-radius: 99px; padding: 5px 13px; font-size: 11px; color: rgba(255,255,255,0.65);
+        }
+        .sf-icon-hint { font-size: 10px; color: rgba(255,255,255,0.3); text-align: center; line-height: 1.5; }
+        /* State 02 */
+        .sf-greeting { font-size: 18px; font-weight: 700; color: white; letter-spacing: -0.04em; line-height: 1.2; margin-bottom: 5px; }
+        .sf-greeting-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 18px; line-height: 1.5; }
+        .sf-chips-label { font-size: 9px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 8px; }
+        .sf-chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 7px 10px; font-size: 10.5px; color: rgba(255,255,255,0.55); margin-bottom: 6px; line-height: 1.4; }
+        /* State 03 */
+        .sf-bubble-user {
+          align-self: flex-end;
+          background: linear-gradient(135deg, #1d4faa, #2563c4);
+          border-radius: 13px 13px 3px 13px;
+          padding: 7px 11px; font-size: 11px; color: white;
+          max-width: 85%; margin-bottom: 10px; line-height: 1.4;
+        }
+        .sf-xai { background: rgba(78,161,255,0.08); border: 1px solid rgba(78,161,255,0.18); border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; }
+        .sf-xai-label { font-size: 8.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: #4ea1ff; margin-bottom: 4px; }
+        .sf-xai-text { font-size: 10.5px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+        .sf-games { display: flex; gap: 6px; margin-bottom: 10px; }
+        .sf-game { flex: 1; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); overflow: hidden; }
+        .sf-game-thumb { height: 48px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .sf-game-info { padding: 5px 6px; }
+        .sf-game-title { font-size: 8.5px; font-weight: 600; color: rgba(255,255,255,0.8); line-height: 1.3; margin-bottom: 3px; }
+        .sf-game-match { font-size: 8px; color: #4ea1ff; background: rgba(78,161,255,0.1); border-radius: 3px; padding: 1px 4px; display: inline-block; }
+        .sf-refine-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+        .sf-refine { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 99px; padding: 3px 8px; font-size: 9px; color: rgba(255,255,255,0.4); }
+        @media (max-width: 800px) { .screens-stage { gap: 16px; padding: 32px 16px; } .sframe { width: 200px; } }
+        @media (max-width: 600px) { .screens-stage { flex-direction: column; align-items: center; } }
+      </style>
+
+      <!-- Interactive navigation -->
+      <style>
+        /* ── Interactive screen carousel ── */
+        .screens-wrap {
+          margin-top: 40px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 24px;
+        }
+
+        /* Three phones always side by side, center one highlighted */
+        .phones-row {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          width: 100%;
+        }
+
+        .phone-slot {
+          flex-shrink: 0;
+          transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+          cursor: pointer;
+        }
+        .phone-slot.side {
+          opacity: 0.35;
+          transform: scale(0.88);
+        }
+        .phone-slot.center {
+          opacity: 1;
+          transform: scale(1);
+          cursor: default;
+        }
+        .phone-slot.side:hover { opacity: 0.55; }
+
+        /* Dots */
+        .screen-dots {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+        .screen-dot {
+          width: 6px; height: 6px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.15);
+          cursor: pointer;
+          transition: all 0.25s;
+        }
+        .screen-dot.active {
+          width: 20px;
+          border-radius: 3px;
+          background: #c8436a;
+        }
+
+        /* Caption */
+        .screen-caption {
+          font-family: var(--mono);
+          font-size: 12px;
+          color: var(--text-3);
+          letter-spacing: -0.02em;
+          text-align: center;
+          min-height: 18px;
+          transition: opacity 0.2s;
+        }
+        .screen-caption strong { color: var(--text-1); }
+      </style>
+
+      <div class="screens-wrap fade-up">
+        <div class="phones-row" id="phonesRow">
+
+          <!-- Phone -1: Mobile Steam wireframe with SteamAI opening -->
+          <div class="phone-slot side" id="slot-wf" onclick="goToScreen(-1)">
+            <div class="sframe" style="background:#0f1318;">
+              <!-- Mobile wireframe Steam -->
+              <div style="position:relative;z-index:2;padding:12px 14px 16px;display:flex;flex-direction:column;min-height:480px;font-family:-apple-system,sans-serif;">
+                <!-- Status bar -->
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);">9:41</span>
+                  <svg width="40" height="9" viewBox="0 0 40 9" fill="rgba(255,255,255,0.4)"><rect x="0" y="3" width="2" height="6" rx="1"/><rect x="4" y="2" width="2" height="7" rx="1"/><rect x="8" y="0" width="2" height="9" rx="1"/><rect x="15" y="1" width="6" height="7" rx="1.5" stroke="rgba(255,255,255,0.4)" stroke-width=".8" fill="none"/><rect x="16" y="2" width="4" height="5" rx="1"/><rect x="24" y="0" width="2" height="9" rx="1" opacity=".4"/><rect x="27" y="0" width="2" height="9" rx="1" opacity=".6"/><rect x="30" y="0" width="2" height="9" rx="1"/></svg>
+                </div>
+                <!-- Wf nav bar -->
+                <div style="background:rgba(255,255,255,0.04);border-radius:4px;padding:6px 10px;display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                  <div style="width:18px;height:6px;background:rgba(255,255,255,0.2);border-radius:2px;flex-shrink:0;"></div>
+                  <div style="flex:1;height:6px;background:rgba(255,255,255,0.07);border-radius:2px;"></div>
+                </div>
+                <!-- Wf featured block -->
+                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:6px;height:110px;margin-bottom:10px;display:flex;flex-direction:column;justify-content:flex-end;padding:10px;">
+                  <div style="width:70px;height:8px;background:rgba(255,255,255,0.14);border-radius:2px;margin-bottom:5px;"></div>
+                  <div style="display:flex;gap:5px;"><div style="width:30px;height:6px;background:rgba(255,255,255,0.07);border-radius:2px;"></div><div style="width:30px;height:6px;background:rgba(255,255,255,0.07);border-radius:2px;"></div></div>
+                </div>
+                <!-- Wf cards -->
+                <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+                  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:4px;height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;"><div style="width:26px;height:20px;background:rgba(255,255,255,0.08);border-radius:2px;flex-shrink:0;"></div><div style="flex:1;display:flex;flex-direction:column;gap:4px;"><div style="height:5px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:50%;height:5px;background:rgba(255,255,255,0.06);border-radius:2px;"></div></div></div>
+                  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:4px;height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;"><div style="width:26px;height:20px;background:rgba(255,255,255,0.08);border-radius:2px;flex-shrink:0;"></div><div style="flex:1;display:flex;flex-direction:column;gap:4px;"><div style="height:5px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:50%;height:5px;background:rgba(255,255,255,0.06);border-radius:2px;"></div></div></div>
+                  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:4px;height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;"><div style="width:26px;height:20px;background:rgba(255,255,255,0.08);border-radius:2px;flex-shrink:0;"></div><div style="flex:1;display:flex;flex-direction:column;gap:4px;"><div style="height:5px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:50%;height:5px;background:rgba(255,255,255,0.06);border-radius:2px;"></div></div></div>
+                </div>
+                <div style="flex:1;"></div>
+                <!-- SteamAI popup overlay — animated -->
+                <div id="steamai-popup" style="position:absolute;bottom:60px;left:14px;right:14px;background:#0d1422;border:1px solid rgba(200,67,106,0.35);border-radius:16px;padding:14px;z-index:10;opacity:0;transform:translateY(16px) scale(0.95);transition:opacity 0.4s ease,transform 0.4s ease;">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                    <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#c8436a,#7b2fa0);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">✦</div>
+                    <div style="font-size:12px;font-weight:700;color:white;letter-spacing:-0.03em;">SteamAI</div>
+                    <div style="margin-left:auto;width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;">
+                      <svg width="7" height="7" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                  </div>
+                  <div style="font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5;margin-bottom:12px;">Not sure what to play? Just describe your mood and I'll find your next game.</div>
+                  <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(78,161,255,0.3);border-radius:99px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:10px;color:rgba(255,255,255,0.4);flex:1;">Ask SteamAI...</span>
+                    <div style="width:18px;height:18px;border-radius:50%;background:rgba(78,161,255,0.2);display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#4ea1ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  </div>
+                </div>
+                <!-- FAB button -->
+                <div style="position:absolute;bottom:16px;right:14px;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c8436a,#7b2fa0);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 0 3px rgba(200,67,106,0.15),0 0 16px rgba(200,67,106,0.4);z-index:11;animation:wfPulse 2.5s ease-in-out infinite;">✦</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone 0: Entry point -->
+          <div class="phone-slot center" id="slot-0" onclick="goToScreen(0)">
+            <div class="sframe">
+              <div class="sfbg"></div><div class="sfnoise"></div>
+              <div class="sfcontent">
+                <div class="sf-statusbar"><span class="sf-time">9:41</span><svg width="50" height="11" viewBox="0 0 50 11" fill="white" opacity=".8"><rect x="0" y="4" width="3" height="7" rx="1" opacity=".4"/><rect x="5" y="3" width="3" height="8" rx="1" opacity=".6"/><rect x="10" y="1" width="3" height="10" rx="1"/><rect x="18" y="2" width="8" height="7" rx="2" stroke="white" stroke-width=".8" fill="none" opacity=".5"/><rect x="19" y="3" width="5" height="5" rx="1"/><rect x="28" y="0" width="2" height="11" rx="1" opacity=".4"/><rect x="31" y="0" width="2" height="11" rx="1" opacity=".6"/><rect x="34" y="0" width="2" height="11" rx="1"/></svg></div>
+                <div class="sf-header"><div class="sf-logo"><div class="sf-icon">✦</div><div class="sf-appname">Steam<span>AI</span></div></div></div>
+                <div class="sf-icon-hero">
+                  <div class="sf-icon-lg">✦</div>
+                  <div class="sf-tooltip">Tap to find your next game</div>
+                  <div class="sf-icon-hint">Conversational game discovery<br>powered by AI</div>
+                </div>
+                <div class="sf-input"><span class="sf-input-text">Ask SteamAI anything...</span><div class="sf-send"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#4ea1ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone 1: Empty state -->
+          <div class="phone-slot side" id="slot-1" onclick="goToScreen(1)">
+            <div class="sframe">
+              <div class="sfbg"></div><div class="sfnoise"></div>
+              <div class="sfcontent">
+                <div class="sf-statusbar"><span class="sf-time">9:41</span><svg width="50" height="11" viewBox="0 0 50 11" fill="white" opacity=".8"><rect x="0" y="4" width="3" height="7" rx="1" opacity=".4"/><rect x="5" y="3" width="3" height="8" rx="1" opacity=".6"/><rect x="10" y="1" width="3" height="10" rx="1"/><rect x="18" y="2" width="8" height="7" rx="2" stroke="white" stroke-width=".8" fill="none" opacity=".5"/><rect x="19" y="3" width="5" height="5" rx="1"/><rect x="28" y="0" width="2" height="11" rx="1" opacity=".4"/><rect x="31" y="0" width="2" height="11" rx="1" opacity=".6"/><rect x="34" y="0" width="2" height="11" rx="1"/></svg></div>
+                <div class="sf-header"><div class="sf-logo"><div class="sf-icon">✦</div><div class="sf-appname">Steam<span>AI</span></div></div></div>
+                <div class="sf-greeting">How can I<br>help today?</div>
+                <div class="sf-greeting-sub">Describe what you're in the mood<br>for and I'll find the perfect game.</div>
+                <div class="sf-chips-label">Try asking</div>
+                <div class="sf-chip">"Games like Disco Elysium but shorter"</div>
+                <div class="sf-chip">"Co-op RPG I can play for 30 min"</div>
+                <div class="sf-chip">"Something relaxing, no combat"</div>
+                <div class="sf-spacer"></div>
+                <div class="sf-input active"><span class="sf-input-text on">Describe what you're looking for</span><div class="sf-cursor"></div><div class="sf-send"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#4ea1ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone 2: Results + XAI -->
+          <div class="phone-slot side" id="slot-2" onclick="goToScreen(2)">
+            <div class="sframe">
+              <div class="sfbg"></div><div class="sfnoise"></div>
+              <div class="sfcontent">
+                <div class="sf-statusbar"><span class="sf-time">9:41</span><svg width="50" height="11" viewBox="0 0 50 11" fill="white" opacity=".8"><rect x="0" y="4" width="3" height="7" rx="1" opacity=".4"/><rect x="5" y="3" width="3" height="8" rx="1" opacity=".6"/><rect x="10" y="1" width="3" height="10" rx="1"/><rect x="18" y="2" width="8" height="7" rx="2" stroke="white" stroke-width=".8" fill="none" opacity=".5"/><rect x="19" y="3" width="5" height="5" rx="1"/><rect x="28" y="0" width="2" height="11" rx="1" opacity=".4"/><rect x="31" y="0" width="2" height="11" rx="1" opacity=".6"/><rect x="34" y="0" width="2" height="11" rx="1"/></svg></div>
+                <div class="sf-header"><div class="sf-logo"><div class="sf-icon">✦</div><div class="sf-appname">Steam<span>AI</span></div></div></div>
+                <div style="display:flex;flex-direction:column;">
+                  <div class="sf-bubble-user">Looking for something like Monkey Island — pirates, humor, puzzles</div>
+                  <div class="sf-xai"><div class="sf-xai-label">Why these games</div><div class="sf-xai-text">Pirate-themed adventures with humor and puzzle-solving — the core of Monkey Island.</div></div>
+                  <div class="sf-games">
+                    <div class="sf-game"><div class="sf-game-thumb">🎮</div><div class="sf-game-info"><div class="sf-game-title">Voodoo Detective</div><div class="sf-game-match">92%</div></div></div>
+                    <div class="sf-game"><div class="sf-game-thumb">🎮</div><div class="sf-game-info"><div class="sf-game-title">Lucy Dreaming</div><div class="sf-game-match">88%</div></div></div>
+                    <div class="sf-game"><div class="sf-game-thumb">🎮</div><div class="sf-game-info"><div class="sf-game-title">Willy Morgan</div><div class="sf-game-match">81%</div></div></div>
+                  </div>
+                  <div class="sf-refine-row"><div class="sf-refine">More humor</div><div class="sf-refine">Longer story</div><div class="sf-refine">Pixel art</div></div>
+                </div>
+                <div class="sf-spacer"></div>
+                <div class="sf-input active"><span class="sf-input-text on">Refine your search...</span><div class="sf-cursor"></div><div class="sf-send"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#4ea1ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dots -->
+        <div class="screen-dots">
+          <div class="screen-dot active" id="dot-0" onclick="goToScreen(-1)"></div>
+          <div class="screen-dot" id="dot-1" onclick="goToScreen(0)"></div>
+          <div class="screen-dot" id="dot-2" onclick="goToScreen(1)"></div>
+          <div class="screen-dot" id="dot-3" onclick="goToScreen(2)"></div>
+        </div>
+
+        <!-- Caption -->
+        <div class="screen-caption" id="screenCaption"><strong>State 01</strong> — Entry point</div>
+      </div>
+
+      <script>
+        var currentScreen = 0;
+        var captions = [
+          '<strong>State 00</strong> — SteamAI opening as a popup on Steam mobile',
+          '<strong>State 01</strong> — Entry point',
+          '<strong>State 02</strong> — Empty state with suggestion chips',
+          '<strong>State 03</strong> — Results with XAI reasoning'
+        ];
+        var slotIds = ['slot-wf','slot-0','slot-1','slot-2'];
+        var screenIndexes = [-1, 0, 1, 2];
+
+        function goToScreen(i) {
+          slotIds.forEach(function(id, pos) {
+            var slot = document.getElementById(id);
+            var n = screenIndexes[pos];
+            if (n === i) {
+              slot.className = 'phone-slot center';
+              slot.onclick = null;
+            } else {
+              slot.className = 'phone-slot side';
+              (function(idx){ slot.onclick = function(){ goToScreen(idx); }; })(n);
+            }
+          });
+          // Update dots (4 now)
+          [-1,0,1,2].forEach(function(n, pos) {
+            var dot = document.getElementById('dot-'+pos);
+            if (dot) dot.className = 'screen-dot' + (n === i ? ' active' : '');
+          });
+          document.getElementById('screenCaption').innerHTML = captions[screenIndexes.indexOf(i)];
+          // Popup animation for state -1
+          var popup = document.getElementById('steamai-popup');
+          if (popup) {
+            if (i === -1) {
+              setTimeout(function(){
+                popup.style.opacity = '1';
+                popup.style.transform = 'translateY(0) scale(1)';
+              }, 400);
+            } else {
+              popup.style.opacity = '0';
+              popup.style.transform = 'translateY(16px) scale(0.95)';
+            }
+          }
+          currentScreen = i;
+        }
+        goToScreen(-1);
+      </script>
+    </div>
+  </section>
+
+  <!-- ─── DESIGN DECISIONS ──────────────────────────────────── -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="fade-up">
+        <div class="section-label">Design Decisions</div>
+        <h2 class="section-title">Why each decision was made</h2>
+      </div>
+
+      <div class="grid-2" style="margin-top: 32px;">
+        <div class="card fade-up">
+          <div class="card-title">Explainable AI (XAI) as a functional principle</div>
+          <div class="card-body">Good recommendations aren't enough - the user needs to understand why. Each suggestion comes with a natural language justification. This isn't polish: it's what transforms an arbitrary recommendation into a trust relationship. Grounded in the EU Ethics Guidelines (2019) and Brazil's LGPD.</div>
+        </div>
+        <div class="card fade-up">
+          <div class="card-title">Native integration with the Steam interface</div>
+          <div class="card-body">SteamAI doesn't replace the existing system - it complements it. The chatbot appears as a floating icon in the store, opening a familiar pop-up that matches the platform's dark visual language. Steam's UI is deeply embedded in user expectations.</div>
+        </div>
+        <div class="card fade-up">
+          <div class="card-title">Emotional design (Norman, 2004)</div>
+          <div class="card-body">The system operates at three levels: visceral (the comfortable chat aesthetic), behavioral (the fluency of dialogue), and reflective (the sense of being understood). The user doesn't just search for a game - they feel heard.</div>
+        </div>
+        <div class="card fade-up">
+          <div class="card-title">Iterative refinement as the core loop</div>
+          <div class="card-body">With each interaction, the system learns and adjusts. The user can dismiss suggestions, redirect the search, or deepen the dialogue. Discovery becomes a collaborative process between human and machine - not a query to an oracle.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OUTCOMES ──────────────────────────────────────────── -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="two-col">
+        <div class="fade-up">
+          <div class="section-label">Expected Benefits</div>
+          <h2 class="section-title">What SteamAI changes — for the user and for the platform</h2>
+          <div class="section-body">
+            <p>For the user, the experience becomes humanized and comprehensible, reducing cognitive effort and time spent searching. The sense of control and genuine personalization increase satisfaction and trust.</p>
+            <p>For Valve, the gains come on two fronts: increased conversion rates - users who find what they want buy more - and prolonged retention, as the discovery journey becomes a positive part of the consumption experience.</p>
+          </div>
+
+          <div class="highlight" style="margin-top: 24px;">
+            <p><strong>Replicability:</strong> SteamAI represents a conceptual model applicable to other contexts - streaming, e-commerce, educational platforms - where personalized and ethical curation are competitive differentiators.</p>
+          </div>
+        </div>
+        <div class="fade-up">
+          <div class="section-label">Acknowledged Limitations</div>
+          <ul class="styled-list" style="margin-top: 16px;">
+            <li><strong style="color:var(--text-2);">Technical:</strong> incomplete and inconsistent metadata in Steam's catalog would compromise initial recommendation accuracy</li>
+            <li><strong style="color:var(--text-2);">Ethical:</strong> use of behavioral data requires explicit LGPD compliance and transparency about what is collected</li>
+            <li><strong style="color:var(--text-2);">Operational:</strong> continuous AI model maintenance requires specialized teams and constant human curation</li>
+            <li><strong style="color:var(--text-2);">Methodological:</strong> no interviews with real users — personas were built through observation and literature, without in-person validation</li>
+            <li><strong style="color:var(--text-2);">Tone of voice:</strong> an overly technical chatbot alienates casual users; too generic creates frustration — the balance needs empirical testing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LEARNINGS ─────────────────────────────────────────── -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="fade-up">
+        <div class="section-label">Study Conclusions</div>
+        <h2 class="section-title">What the study demonstrated</h2>
+      </div>
+
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="card fade-up">
+          <div class="card-title">Discovery is an ethical challenge, not just a technical one</div>
+          <div class="card-body">Improving Steam's recommendations isn't a matter of more sophisticated algorithms. It's an ethical and emotional design challenge - where understanding the user is as important as processing their data.</div>
+        </div>
+        <div class="card fade-up">
+          <div class="card-title">Transparency is a feature, not cosmetic</div>
+          <div class="card-body">XAI (Explainable AI) isn't a detail - it's what transforms automated recommendation into meaningful interaction. Without explaining the why, the system remains a black box and generates distrust.</div>
+        </div>
+        <div class="card fade-up">
+          <div class="card-title">Conversational design is UX design</div>
+          <div class="card-body">The tone of voice, message length, and chatbot timing require the same care as any visual component. Digital empathy isn't an abstraction - it's a design decision in every interaction.</div>
+        </div>
+      </div>
+
+      <div class="quote fade-up" style="margin-top: 48px;">
+        <p>The advancement of artificial intelligence in digital environments must be guided by three interdependent dimensions: technical efficiency, explanatory clarity, and human meaning. SteamAI represents not just a conceptual solution, but a proposal for dialogue between data and people.</p>
+        <cite>— Igor Dalmolin Tronco, PUCRS Postgraduate Thesis 2025</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ───────────────────────────────────────────────── -->
+  <section style="padding-top: 0; padding-bottom: 96px;">
+    <div class="container">
+      <div class="divider"></div>
+      <div style="text-align: center;" class="fade-up">
+        <div class="section-label" style="justify-content: center; margin-bottom: 20px;">What's next</div>
+        <h2 class="section-title" style="max-width: 480px; margin: 0 auto 16px;">Available for part-time, full-time, or freelance work.</h2>
+        <p class="section-body" style="max-width: 400px; margin: 0 auto 40px;">If you'd like to talk about a collaboration or discuss this project, get in touch.</p>
+        <a href="mailto:igordt@outlook.com" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-family: var(--mono);
+          font-size: 16px;
+          font-weight: 700;
+          letter-spacing: -0.04em;
+          color: var(--text-1);
+          background: rgba(173,173,173,0.05);
+          border: 1px solid rgba(255,255,255,0.05);
+          border-radius: var(--radius-pill);
+          padding: 14px 28px;
+          text-decoration: none;
+          transition: background 0.2s, border-color 0.2s;
+        " onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
+          <span class="__cf_email__" data-cfemail="fa939d95889e8eba958f8e96959591d4999597">igordt@outlook.com</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Igor Dalmolin.</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener">
+            LinkedIn
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://www.behance.net/igordalmolin" target="_blank" rel="noopener">
+            Behance
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://igordtdesign.github.io/LandingPage/" target="_blank" rel="noopener">
+            Portfolio
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
+<!-- Back to top -->
+<a href="#" class="back-top" id="backTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Show all content immediately
+  document.querySelectorAll('.fade-up').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 4) * 60}ms`;
+    el.classList.add('visible');
+  });
