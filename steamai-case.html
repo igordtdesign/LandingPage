@@ -1485,6 +1485,27 @@
           transition: opacity 0.2s;
         }
         .screen-caption strong { color: var(--text-1); }
+
+        /* Mobile: turn the phones row into a scroll-snap carousel (no page horizontal scroll) */
+        @media (max-width: 600px) {
+          .screens-wrap { width: 100%; }
+          .phones-row {
+            justify-content: flex-start;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            overscroll-behavior-x: contain;
+            padding: 0 8px 8px;
+          }
+          .phones-row::-webkit-scrollbar { height: 6px; }
+          .phones-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+
+          .phone-slot { scroll-snap-align: center; }
+          .phone-slot.side { opacity: 1; transform: none; }
+        }
       </style>
 
       <div class="screens-wrap fade-up">
@@ -1612,7 +1633,7 @@
       </div>
 
       <script>
-        var currentScreen = 0;
+        var currentScreen = -1;
         var captions = [
           '<strong>State 00</strong> — SteamAI opening as a popup on Steam mobile',
           '<strong>State 01</strong> — Entry point',
@@ -1622,7 +1643,34 @@
         var slotIds = ['slot-wf','slot-0','slot-1','slot-2'];
         var screenIndexes = [-1, 0, 1, 2];
 
-        function goToScreen(i) {
+        var phonesRow = document.getElementById('phonesRow');
+        var isProgrammaticScroll = false;
+
+        function isMobileCarousel() {
+          return window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+        }
+
+        function centerScreen(i, behavior) {
+          if (!phonesRow || !isMobileCarousel()) return;
+          var pos = screenIndexes.indexOf(i);
+          if (pos < 0) return;
+          var slot = document.getElementById(slotIds[pos]);
+          if (!slot || !slot.scrollIntoView) return;
+
+          isProgrammaticScroll = true;
+          try {
+            slot.scrollIntoView({
+              behavior: behavior || 'smooth',
+              block: 'nearest',
+              inline: 'center'
+            });
+          } finally {
+            window.setTimeout(function(){ isProgrammaticScroll = false; }, 250);
+          }
+        }
+
+        function goToScreen(i, opts) {
+          opts = opts || {};
           slotIds.forEach(function(id, pos) {
             var slot = document.getElementById(id);
             var n = screenIndexes[pos];
@@ -1654,8 +1702,42 @@
             }
           }
           currentScreen = i;
+
+          // Mobile: keep the selected frame centered
+          if (!opts.fromScroll) {
+            centerScreen(i, opts.behavior || 'smooth');
+          }
         }
-        goToScreen(-1);
+
+        // Auto-select nearest frame while scrolling (mobile)
+        if (phonesRow) {
+          var scrollTimer = null;
+          phonesRow.addEventListener('scroll', function() {
+            if (!isMobileCarousel() || isProgrammaticScroll) return;
+            if (scrollTimer) window.clearTimeout(scrollTimer);
+            scrollTimer = window.setTimeout(function() {
+              var centerX = window.innerWidth / 2;
+              var best = { i: currentScreen, d: Infinity };
+
+              slotIds.forEach(function(id, pos) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                var r = el.getBoundingClientRect();
+                var mid = r.left + (r.width / 2);
+                var d = Math.abs(mid - centerX);
+                if (d < best.d) best = { i: screenIndexes[pos], d: d };
+              });
+
+              if (best.i !== currentScreen) {
+                goToScreen(best.i, { fromScroll: true });
+              }
+            }, 80);
+          }, { passive: true });
+        }
+
+        // Default: first frame selected & centered
+        goToScreen(-1, { behavior: 'auto' });
+        window.requestAnimationFrame(function() { centerScreen(-1, 'auto'); });
       </script>
     </div>
   </section>
@@ -1840,3 +1922,7 @@
 
     document.querySelectorAll('[data-obf-email]').forEach(decode);
   })();
+</script>
+
+</body>
+</html>
