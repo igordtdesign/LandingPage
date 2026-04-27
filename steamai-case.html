@@ -1760,7 +1760,7 @@
         <div class="section-label" style="justify-content: center; margin-bottom: 20px;">What's next</div>
         <h2 class="section-title" style="max-width: 480px; margin: 0 auto 16px;">Available for part-time, full-time, or freelance work.</h2>
         <p class="section-body" style="max-width: 400px; margin: 0 auto 40px;">If you'd like to talk about a collaboration or discuss this project, get in touch.</p>
-        <a href="mailto:igordt@outlook.com" style="
+        <a href="#" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com" style="
           display: inline-flex;
           align-items: center;
           gap: 10px;
@@ -1776,7 +1776,7 @@
           text-decoration: none;
           transition: background 0.2s, border-color 0.2s;
         " onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
-          <span class="__cf_email__" data-cfemail="fa939d95889e8eba958f8e96959591d4999597">igordt@outlook.com</span>
+          <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
@@ -1813,9 +1813,30 @@
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // Show all content immediately
   document.querySelectorAll('.fade-up').forEach((el, i) => {
     el.style.transitionDelay = `${(i % 4) * 60}ms`;
     el.classList.add('visible');
   });
+
+  (() => {
+    const decode = (el) => {
+      const user = el.getAttribute('data-user');
+      const domain = el.getAttribute('data-domain');
+      const tld = el.getAttribute('data-tld');
+      if (!user || !domain || !tld) return;
+
+      const email = `${user}@${domain}.${tld}`;
+
+      if (el.tagName && el.tagName.toLowerCase() === 'a') {
+        el.href = `mailto:${email}`;
+      }
+
+      if (el.childElementCount === 0) {
+        el.textContent = email;
+      }
+    };
+
+    document.querySelectorAll('[data-obf-email]').forEach(decode);
+  })();

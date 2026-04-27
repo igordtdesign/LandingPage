@@ -795,7 +795,7 @@
         6+ years from art direction to product thinking. I design experiences - and I know how to build them.
       </p>
       <div class="hero-ctas">
-        <a href="mailto:igordt@outlook.com" class="btn">
+        <a href="#" class="btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
           Get in touch
           <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -1034,12 +1034,35 @@
     <div class="container">
       <h2 class="contact-title">Available for full-time, part-time or freelance.</h2>
       <p class="contact-desc">If you'd like to chat about a potential collaboration, get in touch.</p>
-      <a href="mailto:igordt@outlook.com" class="btn">
-        <span class="__cf_email__" data-cfemail="1079777f627464507f65647c7f7f7b3e737f7d"><span class="__cf_email__" data-cfemail="7b121c14091f0f3b140e0f1714141055181416">igordt@outlook.com</span></span>
+      <a href="#" class="btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
+        <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
   </section>
+
+  <script>
+    (() => {
+      const decode = (el) => {
+        const user = el.getAttribute('data-user');
+        const domain = el.getAttribute('data-domain');
+        const tld = el.getAttribute('data-tld');
+        if (!user || !domain || !tld) return;
+
+        const email = `${user}@${domain}.${tld}`;
+
+        if (el.tagName && el.tagName.toLowerCase() === 'a') {
+          el.href = `mailto:${email}`;
+        }
+
+        if (el.childElementCount === 0) {
+          el.textContent = email;
+        }
+      };
+
+      document.querySelectorAll('[data-obf-email]').forEach(decode);
+    })();
+  </script>
 
   <!-- FOOTER -->
   <footer>
