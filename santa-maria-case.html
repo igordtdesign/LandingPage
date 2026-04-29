@@ -12,6 +12,21 @@
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
 
+  <!-- i18n: detect language synchronously to avoid flash (priority: saved > browser > 'en') -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('site-lang');
+        var lang = (saved === 'en' || saved === 'pt') ? saved
+                  : ((navigator.language || navigator.userLanguage || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en');
+        document.documentElement.setAttribute('data-lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
+      } catch (e) {
+        document.documentElement.setAttribute('data-lang', 'en');
+      }
+    })();
+  </script>
+
   <style>
     /* ─── TOKENS ─────────────────────────────────────────────── */
     :root {
@@ -127,7 +142,47 @@
     .nav-back:hover { color: var(--text-1); }
     .nav-back svg { width: 14px; height: 14px; }
 
-    @media (max-width: 600px) { nav { padding: 16px 24px; } }
+    /* ── i18n: hide inactive language ── */
+    html[data-lang="en"] [lang="pt"] { display: none !important; }
+    html[data-lang="pt"] [lang="en"] { display: none !important; }
+
+    /* ── Lang toggle ── */
+    .nav-end {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lang-toggle {
+      display: flex;
+      gap: 0;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 2px;
+    }
+    .lang-toggle button {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-3);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      transition: color 0.2s, background 0.2s;
+    }
+    .lang-toggle button:hover { color: var(--text-1); }
+    .lang-toggle button[aria-pressed="true"] {
+      color: var(--text-1);
+      background: var(--surface-2);
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 24px; }
+      .nav-back span:not([lang]) { display: none; } /* hide "Back to portfolio" text on tiny screens, keep arrow */
+    }
 
     /* ─── HERO ───────────────────────────────────────────────── */
     .hero {
@@ -799,60 +854,101 @@
 
   <!-- ─── NAVBAR ────────────────────────────────────────────── -->
   <nav>
-    <a href="https://igordtdesign.github.io/LandingPage/" class="nav-logo">
+    <a href="index.html" class="nav-logo">
       <div class="nav-avatar"></div>
       <span class="nav-name">Igor Dalmolin</span>
     </a>
-    <a href="https://igordtdesign.github.io/LandingPage/" class="nav-back">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back to portfolio
-    </a>
+    <div class="nav-end">
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span lang="en">Back to portfolio</span>
+        <span lang="pt">Voltar ao portfólio</span>
+      </a>
+      <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+        <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang-btn="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
   </nav>
 
   <!-- ─── HERO ──────────────────────────────────────────────── -->
   <section class="hero">
     <div class="container">
 
-      <p class="hero-eyebrow fade-up">Social Media · Art Direction</p>
+      <p class="hero-eyebrow fade-up">
+        <span lang="en">Social Media · Art Direction</span>
+        <span lang="pt">Social Media · Direção de Arte</span>
+      </p>
 
       <h1 class="hero-title fade-up">
-        When Government<br>
-        <span>Learned to Meme</span>
+        <span lang="en">When Government<br><span>Learned to Meme</span></span>
+        <span lang="pt">Quando o governo<br><span>aprendeu a fazer meme</span></span>
       </h1>
 
       <p class="hero-desc fade-up">
-        Reimagining public communication for Santa Maria City Hall - turning a stiff, ignored government account into a social media presence people from across Brazil actually wanted to follow.
+        <span lang="en">Reimagining public communication for Santa Maria City Hall - turning a stiff, ignored government account into a social media presence people from across Brazil actually wanted to follow.</span>
+        <span lang="pt">Reinventando a comunicação pública da Prefeitura de Santa Maria — transformando uma conta institucional engessada e ignorada em uma presença nas redes sociais que pessoas de todo o Brasil realmente queriam seguir.</span>
       </p>
 
       <div class="hero-tags fade-up">
-        <span class="tag highlight">Art Direction</span>
+        <span class="tag highlight">
+          <span lang="en">Art Direction</span>
+          <span lang="pt">Direção de Arte</span>
+        </span>
         <span class="tag highlight">Social Media</span>
         <span class="tag">Agência CENTRO</span>
         <span class="tag">Prefeitura de Santa Maria</span>
-        <span class="tag">3 Awards</span>
-        <span class="tag">2020 — Present</span>
+        <span class="tag">
+          <span lang="en">3 Awards</span>
+          <span lang="pt">3 Prêmios</span>
+        </span>
+        <span class="tag">
+          <span lang="en">2020 — Present</span>
+          <span lang="pt">2020 — Hoje</span>
+        </span>
       </div>
 
       <div class="hero-meta fade-up">
         <div class="meta-item">
-          <div class="meta-label">Role</div>
-          <div class="meta-value">Art Director</div>
+          <div class="meta-label">
+            <span lang="en">Role</span>
+            <span lang="pt">Função</span>
+          </div>
+          <div class="meta-value">
+            <span lang="en">Art Director</span>
+            <span lang="pt">Diretor de Arte</span>
+          </div>
         </div>
         <div class="meta-item">
-          <div class="meta-label">Client</div>
+          <div class="meta-label">
+            <span lang="en">Client</span>
+            <span lang="pt">Cliente</span>
+          </div>
           <div class="meta-value">Prefeitura de Santa Maria</div>
         </div>
         <div class="meta-item">
-          <div class="meta-label">Agency</div>
+          <div class="meta-label">
+            <span lang="en">Agency</span>
+            <span lang="pt">Agência</span>
+          </div>
           <div class="meta-value">Agência CENTRO</div>
         </div>
         <div class="meta-item">
-          <div class="meta-label">Format</div>
+          <div class="meta-label">
+            <span lang="en">Format</span>
+            <span lang="pt">Formato</span>
+          </div>
           <div class="meta-value">Instagram · Facebook</div>
         </div>
         <div class="meta-item">
-          <div class="meta-label">Awards</div>
-          <div class="meta-value">3 industry recognitions</div>
+          <div class="meta-label">
+            <span lang="en">Awards</span>
+            <span lang="pt">Prêmios</span>
+          </div>
+          <div class="meta-value">
+            <span lang="en">3 industry recognitions</span>
+            <span lang="pt">3 reconhecimentos do setor</span>
+          </div>
         </div>
       </div>
 
@@ -876,13 +972,22 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">The Challenge</p>
-          <h2 class="section-title fade-up">A government that nobody listened to</h2>
+          <p class="section-label fade-up">
+            <span lang="en">The Challenge</span>
+            <span lang="pt">O Desafio</span>
+          </p>
+          <h2 class="section-title fade-up">
+            <span lang="en">A government that nobody listened to</span>
+            <span lang="pt">Um governo que ninguém escutava</span>
+          </h2>
         </div>
         <div class="section-body fade-up">
-          <p>Before Agência CENTRO took over, Santa Maria's official social media presence was exactly what you'd expect from a city government: formal, stiff, and completely ignored. The content followed a rigid institutional template - announcements announced, services listed, dates commemorated - but the city's residents had long stopped paying attention.</p>
-          <p>The profiles had little to no engagement. People didn't follow. They didn't share. They didn't feel like the city was talking <strong>with</strong> them - it was broadcasting <strong>at</strong> them.</p>
-          <p>Then COVID-19 hit. And everything had to change.</p>
+          <p lang="en">Before Agência CENTRO took over, Santa Maria's official social media presence was exactly what you'd expect from a city government: formal, stiff, and completely ignored. The content followed a rigid institutional template - announcements announced, services listed, dates commemorated - but the city's residents had long stopped paying attention.</p>
+          <p lang="pt">Antes da Agência CENTRO assumir, a presença oficial de Santa Maria nas redes sociais era exatamente o que você esperaria de um governo municipal: formal, engessada e completamente ignorada. O conteúdo seguia um modelo institucional rígido — anúncios anunciados, serviços listados, datas comemoradas — mas os moradores da cidade havia muito tempo tinham parado de prestar atenção.</p>
+          <p lang="en">The profiles had little to no engagement. People didn't follow. They didn't share. They didn't feel like the city was talking <strong>with</strong> them - it was broadcasting <strong>at</strong> them.</p>
+          <p lang="pt">Os perfis tinham pouco ou nenhum engajamento. As pessoas não seguiam. Não compartilhavam. Não sentiam que a cidade estava falando <strong>com</strong> elas — estava transmitindo <strong>para</strong> elas.</p>
+          <p lang="en">Then COVID-19 hit. And everything had to change.</p>
+          <p lang="pt">Aí veio a COVID-19. E tudo precisou mudar.</p>
         </div>
       </div>
     </div>
@@ -891,21 +996,34 @@
   <!-- ─── APPROACH ──────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">The Approach</p>
-      <h2 class="section-title fade-up">Using the internet's language to reach people</h2>
+      <p class="section-label fade-up">
+        <span lang="en">The Approach</span>
+        <span lang="pt">A Abordagem</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">Using the internet's language to reach people</span>
+        <span lang="pt">Usando a linguagem da internet para alcançar as pessoas</span>
+      </h2>
 
       <div class="quote fade-up">
-        <p class="quote-text">The meme used to follow the brief. Now it leads.</p>
+        <p class="quote-text">
+          <span lang="en">The meme used to follow the brief. Now it leads.</span>
+          <span lang="pt">O meme costumava seguir o briefing. Agora ele guia.</span>
+        </p>
       </div>
 
       <div class="section-cols fade-up">
         <div class="section-body">
-          <p>During the pandemic, with the population's morale low and trust in institutions fragile, the conventional institutional tone wasn't just ineffective - it was actively counterproductive. We needed a different approach.</p>
-          <p>We started experimenting with memes and internet culture to communicate COVID-19 guidelines. The goal wasn't to be funny for the sake of it - it was to meet people where they already were, speak in their register, and make them <strong>stop scrolling</strong>.</p>
+          <p lang="en">During the pandemic, with the population's morale low and trust in institutions fragile, the conventional institutional tone wasn't just ineffective - it was actively counterproductive. We needed a different approach.</p>
+          <p lang="pt">Durante a pandemia, com o ânimo da população baixo e a confiança nas instituições fragilizada, o tom institucional convencional não era apenas ineficaz — era ativamente contraproducente. Precisávamos de uma abordagem diferente.</p>
+          <p lang="en">We started experimenting with memes and internet culture to communicate COVID-19 guidelines. The goal wasn't to be funny for the sake of it - it was to meet people where they already were, speak in their register, and make them <strong>stop scrolling</strong>.</p>
+          <p lang="pt">Começamos a experimentar com memes e cultura da internet para comunicar diretrizes da COVID-19. O objetivo não era ser engraçado pelo simples prazer — era encontrar as pessoas onde elas já estavam, falar no registro delas, e fazê-las <strong>parar de rolar o feed</strong>.</p>
         </div>
         <div class="section-body">
-          <p>It worked. Not just locally: people from outside Santa Maria, from other states, started engaging with and sharing the posts. The account that nobody followed became one people actually sought out.</p>
-          <p>What started as a pandemic-era experiment evolved into a complete creative philosophy. We expanded from COVID-19 content to public works announcements, service notices, and seasonal campaigns - always looking for the trend, the cultural moment, the format that would make the content feel <strong>native to the feed</strong>, not foreign to it.</p>
+          <p lang="en">It worked. Not just locally: people from outside Santa Maria, from other states, started engaging with and sharing the posts. The account that nobody followed became one people actually sought out.</p>
+          <p lang="pt">Funcionou. Não só localmente: pessoas de fora de Santa Maria, de outros estados, começaram a engajar e compartilhar os posts. A conta que ninguém seguia virou uma que as pessoas realmente procuravam.</p>
+          <p lang="en">What started as a pandemic-era experiment evolved into a complete creative philosophy. We expanded from COVID-19 content to public works announcements, service notices, and seasonal campaigns - always looking for the trend, the cultural moment, the format that would make the content feel <strong>native to the feed</strong>, not foreign to it.</p>
+          <p lang="pt">O que começou como um experimento da pandemia evoluiu para uma filosofia criativa completa. Expandimos do conteúdo de COVID-19 para anúncios de obras públicas, avisos de serviço e campanhas sazonais — sempre buscando a tendência, o momento cultural, o formato que faria o conteúdo parecer <strong>nativo ao feed</strong>, não estrangeiro a ele.</p>
         </div>
       </div>
     </div>
@@ -914,10 +1032,17 @@
   <!-- ─── GALLERY 1: Early COVID era ───────────────────────── -->
   <section class="gallery-section">
     <div class="container">
-      <p class="section-label fade-up">Phase 01 — Pandemic Communication</p>
-      <h2 class="section-title fade-up">Meeting people during the hardest moments</h2>
+      <p class="section-label fade-up">
+        <span lang="en">Phase 01 — Pandemic Communication</span>
+        <span lang="pt">Fase 01 — Comunicação na Pandemia</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">Meeting people during the hardest moments</span>
+        <span lang="pt">Encontrar as pessoas nos momentos mais difíceis</span>
+      </h2>
       <p class="section-body fade-up" style="max-width:600px; margin-bottom: 0;">
-        The first posts to break the mold came during the COVID-19 lockdowns. Humor and empathy replaced bureaucratic language - and people responded.
+        <span lang="en">The first posts to break the mold came during the COVID-19 lockdowns. Humor and empathy replaced bureaucratic language - and people responded.</span>
+        <span lang="pt">Os primeiros posts a quebrar o molde surgiram durante os lockdowns da COVID-19. Humor e empatia substituíram a linguagem burocrática — e as pessoas responderam.</span>
       </p>
       <div class="photo-grid grid-4 fade-up">
         <div class="gitem"><img src="SantaMaria-Case-img/phase01-01.png" alt="Phase 01 post 1"></div>
@@ -931,36 +1056,69 @@
   <!-- ─── EVOLUTION TIMELINE ───────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">Evolution</p>
-      <h2 class="section-title fade-up">From exception to creative philosophy</h2>
+      <p class="section-label fade-up">
+        <span lang="en">Evolution</span>
+        <span lang="pt">Evolução</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">From exception to creative philosophy</span>
+        <span lang="pt">Da exceção à filosofia criativa</span>
+      </h2>
 
       <div class="timeline fade-up">
         <div class="timeline-item">
           <div class="timeline-phase">2020</div>
           <div>
-            <div class="timeline-content-title">Pandemic emergency communication</div>
-            <div class="timeline-content-body">Started using memes and humor to communicate COVID-19 safety guidelines. Posts began reaching beyond Santa Maria - people from across Brazil started engaging and sharing.</div>
+            <div class="timeline-content-title">
+              <span lang="en">Pandemic emergency communication</span>
+              <span lang="pt">Comunicação emergencial da pandemia</span>
+            </div>
+            <div class="timeline-content-body">
+              <span lang="en">Started using memes and humor to communicate COVID-19 safety guidelines. Posts began reaching beyond Santa Maria - people from across Brazil started engaging and sharing.</span>
+              <span lang="pt">Começamos a usar memes e humor para comunicar diretrizes de segurança da COVID-19. Os posts passaram a ultrapassar Santa Maria — pessoas de todo o Brasil começaram a engajar e compartilhar.</span>
+            </div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-phase">2021</div>
           <div>
-            <div class="timeline-content-title">Expanding the playbook</div>
-            <div class="timeline-content-body">The format expanded to public works announcements ("Foca no trânsito" - a seal pun), service notices, and civic campaigns. The city's voice was becoming recognizable and distinct.</div>
+            <div class="timeline-content-title">
+              <span lang="en">Expanding the playbook</span>
+              <span lang="pt">Expandindo o repertório</span>
+            </div>
+            <div class="timeline-content-body">
+              <span lang="en">The format expanded to public works announcements ("Foca no trânsito" - a seal pun), service notices, and civic campaigns. The city's voice was becoming recognizable and distinct.</span>
+              <span lang="pt">O formato expandiu para anúncios de obras públicas ("Foca no trânsito" — um trocadilho com a foca), avisos de serviço e campanhas cívicas. A voz da cidade estava se tornando reconhecível e distinta.</span>
+            </div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-phase">2022</div>
           <div>
-            <div class="timeline-content-title">Award-winning campaigns</div>
-            <div class="timeline-content-body">The "Calourada" back-to-school campaign earned two industry awards. A federal Ouvidoria (ombudsman) campaign won a third. The approach was being recognized nationally.</div>
+            <div class="timeline-content-title">
+              <span lang="en">Award-winning campaigns</span>
+              <span lang="pt">Campanhas premiadas</span>
+            </div>
+            <div class="timeline-content-body">
+              <span lang="en">The "Calourada" back-to-school campaign earned two industry awards. A federal Ouvidoria (ombudsman) campaign won a third. The approach was being recognized nationally.</span>
+              <span lang="pt">A campanha de volta às aulas "Calourada" rendeu dois prêmios do setor. Uma campanha federal da Ouvidoria conquistou o terceiro. A abordagem estava sendo reconhecida nacionalmente.</span>
+            </div>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-phase">Today</div>
+          <div class="timeline-phase">
+            <span lang="en">Today</span>
+            <span lang="pt">Hoje</span>
+          </div>
           <div>
-            <div class="timeline-content-title">Trend-first content strategy</div>
-            <div class="timeline-content-body">We now actively monitor internet culture for trends to build communications around - not the other way around. Santa Maria became one of the first municipal governments in Brazil to adopt this model, now widely copied across the country.</div>
+            <div class="timeline-content-title">
+              <span lang="en">Trend-first content strategy</span>
+              <span lang="pt">Estratégia de conteúdo guiada por tendências</span>
+            </div>
+            <div class="timeline-content-body">
+              <span lang="en">We now actively monitor internet culture for trends to build communications around - not the other way around. Santa Maria became one of the first municipal governments in Brazil to adopt this model, now widely copied across the country.</span>
+              <span lang="pt">Hoje monitoramos ativamente a cultura da internet em busca de tendências para construir comunicações ao redor delas — não o contrário. Santa Maria se tornou um dos primeiros governos municipais do Brasil a adotar esse modelo, hoje amplamente copiado pelo país.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -970,8 +1128,14 @@
   <!-- ─── GALLERY 2: Range of work ─────────────────────────── -->
   <section class="gallery-section">
     <div class="container">
-      <p class="section-label fade-up">Phase 02 — Full Campaign Range</p>
-      <h2 class="section-title fade-up">Services, dates, awareness - nothing off-limits</h2>
+      <p class="section-label fade-up">
+        <span lang="en">Phase 02 — Full Campaign Range</span>
+        <span lang="pt">Fase 02 — Amplitude de Campanhas</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">Services, dates, awareness - nothing off-limits</span>
+        <span lang="pt">Serviços, datas, conscientização — nada fora do alcance</span>
+      </h2>
       <div class="photo-grid grid-2 fade-up">
         <div class="gitem"><img src="SantaMaria-Case-img/phase02-01.png" alt="Phase 02 post 1"></div>
         <div class="gitem"><img src="SantaMaria-Case-img/phase02-02.png" alt="Phase 02 post 2"></div>
@@ -984,27 +1148,52 @@
   <!-- ─── AWARDS ────────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">Recognition</p>
-      <h2 class="section-title fade-up">Three awards, one philosophy</h2>
+      <p class="section-label fade-up">
+        <span lang="en">Recognition</span>
+        <span lang="pt">Reconhecimento</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">Three awards, one philosophy</span>
+        <span lang="pt">Três prêmios, uma filosofia</span>
+      </h2>
       <p class="section-body fade-up" style="max-width:600px;">
-        The results weren't just felt in engagement numbers - they were formally recognized by the industry.
+        <span lang="en">The results weren't just felt in engagement numbers - they were formally recognized by the industry.</span>
+        <span lang="pt">Os resultados não foram só sentidos nos números de engajamento — foram formalmente reconhecidos pelo setor.</span>
       </p>
 
       <div class="awards-grid fade-up">
         <div class="award-card">
           <div class="award-icon">🏆</div>
-          <div class="award-title">Calourada Campaign — Award 01</div>
-          <div class="award-desc">Industry recognition for the creative direction of the back-to-school Calourada campaign targeting university students in Santa Maria.</div>
+          <div class="award-title">
+            <span lang="en">Calourada Campaign — Award 01</span>
+            <span lang="pt">Campanha Calourada — Prêmio 01</span>
+          </div>
+          <div class="award-desc">
+            <span lang="en">Industry recognition for the creative direction of the back-to-school Calourada campaign targeting university students in Santa Maria.</span>
+            <span lang="pt">Reconhecimento do setor pela direção criativa da campanha de volta às aulas Calourada, voltada aos estudantes universitários de Santa Maria.</span>
+          </div>
         </div>
         <div class="award-card">
           <div class="award-icon">🏆</div>
-          <div class="award-title">Calourada Campaign — Award 02</div>
-          <div class="award-desc">Second recognition for the same campaign, acknowledging both its creative execution and its measurable impact on public engagement.</div>
+          <div class="award-title">
+            <span lang="en">Calourada Campaign — Award 02</span>
+            <span lang="pt">Campanha Calourada — Prêmio 02</span>
+          </div>
+          <div class="award-desc">
+            <span lang="en">Second recognition for the same campaign, acknowledging both its creative execution and its measurable impact on public engagement.</span>
+            <span lang="pt">Segundo reconhecimento da mesma campanha, considerando tanto a execução criativa quanto o impacto mensurável no engajamento público.</span>
+          </div>
         </div>
         <div class="award-card">
           <div class="award-icon">🥇</div>
-          <div class="award-title">Federal Ouvidoria Campaign</div>
-          <div class="award-desc">National recognition for a federal government ombudsman campaign - bringing the same irreverent, human tone to a typically dry institutional subject.</div>
+          <div class="award-title">
+            <span lang="en">Federal Ouvidoria Campaign</span>
+            <span lang="pt">Campanha Federal de Ouvidoria</span>
+          </div>
+          <div class="award-desc">
+            <span lang="en">National recognition for a federal government ombudsman campaign - bringing the same irreverent, human tone to a typically dry institutional subject.</span>
+            <span lang="pt">Reconhecimento nacional por uma campanha federal de ouvidoria — levando o mesmo tom irreverente e humano para um assunto institucional tipicamente seco.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1013,8 +1202,14 @@
   <!-- ─── GALLERY 3: Recent / trend-first work ─────────────── -->
   <section class="gallery-section">
     <div class="container">
-      <p class="section-label fade-up">Phase 03 — Trend-First Strategy</p>
-      <h2 class="section-title fade-up">The meme comes before the brief</h2>
+      <p class="section-label fade-up">
+        <span lang="en">Phase 03 — Trend-First Strategy</span>
+        <span lang="pt">Fase 03 — Estratégia Guiada por Tendências</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">The meme comes before the brief</span>
+        <span lang="pt">O meme vem antes do briefing</span>
+      </h2>
       <div class="photo-grid grid-3x3 fade-up">
         <div class="gitem"><img src="SantaMaria-Case-img/phase03-01.png" alt="Phase 03 post 1"></div>
         <div class="gitem"><img src="SantaMaria-Case-img/phase03-02.png" alt="Phase 03 post 2"></div>
@@ -1032,17 +1227,27 @@
   <!-- ─── IMPACT ────────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">Impact</p>
-      <h2 class="section-title fade-up">Pioneers in a movement that spread nationwide</h2>
+      <p class="section-label fade-up">
+        <span lang="en">Impact</span>
+        <span lang="pt">Impacto</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">Pioneers in a movement that spread nationwide</span>
+        <span lang="pt">Pioneiros em um movimento que se espalhou pelo país</span>
+      </h2>
 
       <div class="section-cols fade-up">
         <div class="section-body">
-          <p>Santa Maria became one of the first municipal governments in Brazil to adopt meme-based, internet-native communication as a deliberate strategy - not as a one-off experiment, but as the core creative language for the official city account.</p>
-          <p>The engagement shift was immediate: content that had been ignored for years was suddenly being shared, commented on, and discussed. More importantly, residents began to feel a genuine connection with the city's communication — like it was made for them, not issued to them.</p>
+          <p lang="en">Santa Maria became one of the first municipal governments in Brazil to adopt meme-based, internet-native communication as a deliberate strategy - not as a one-off experiment, but as the core creative language for the official city account.</p>
+          <p lang="pt">Santa Maria se tornou um dos primeiros governos municipais do Brasil a adotar a comunicação baseada em memes e nativa da internet como estratégia deliberada — não como experimento isolado, mas como a linguagem criativa central da conta oficial da cidade.</p>
+          <p lang="en">The engagement shift was immediate: content that had been ignored for years was suddenly being shared, commented on, and discussed. More importantly, residents began to feel a genuine connection with the city's communication — like it was made for them, not issued to them.</p>
+          <p lang="pt">A virada no engajamento foi imediata: conteúdo que vinha sendo ignorado por anos passou a ser compartilhado, comentado e discutido. Mais importante: os moradores começaram a sentir uma conexão genuína com a comunicação da cidade — como se fosse feita para eles, não emitida a eles.</p>
         </div>
         <div class="section-body">
-          <p>The model's impact stretched beyond the city limits. Across Brazil, municipal governments began adopting similar approaches to their social media. What we pioneered in Santa Maria became a playbook others would follow.</p>
-          <p><strong>The biggest signal:</strong> people from outside Santa Maria - other cities, other states - started following and engaging with the account. A local government account had become genuinely interesting to strangers. That doesn't happen by accident.</p>
+          <p lang="en">The model's impact stretched beyond the city limits. Across Brazil, municipal governments began adopting similar approaches to their social media. What we pioneered in Santa Maria became a playbook others would follow.</p>
+          <p lang="pt">O impacto do modelo ultrapassou os limites da cidade. Em todo o Brasil, governos municipais começaram a adotar abordagens semelhantes em suas redes sociais. O que iniciamos em Santa Maria virou um repertório que outros passaram a seguir.</p>
+          <p lang="en"><strong>The biggest signal:</strong> people from outside Santa Maria - other cities, other states - started following and engaging with the account. A local government account had become genuinely interesting to strangers. That doesn't happen by accident.</p>
+          <p lang="pt"><strong>O maior sinal:</strong> pessoas de fora de Santa Maria — outras cidades, outros estados — começaram a seguir e engajar com a conta. Uma conta de governo local havia se tornado genuinamente interessante para desconhecidos. Isso não acontece por acaso.</p>
         </div>
       </div>
     </div>
@@ -1051,8 +1256,14 @@
   <!-- ─── CONTACT ───────────────────────────────────────────── -->
   <section class="contact-section">
     <div class="container">
-      <h2 class="contact-title fade-up">Want to talk about this project?</h2>
-      <p class="contact-desc fade-up">Open to full-time, part-time, or freelance opportunities.</p>
+      <h2 class="contact-title fade-up">
+        <span lang="en">Want to talk about this project?</span>
+        <span lang="pt">Quer falar sobre esse projeto?</span>
+      </h2>
+      <p class="contact-desc fade-up">
+        <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
+        <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
+      </p>
       <div class="fade-up">
         <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
           <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
@@ -1076,8 +1287,9 @@
             Behance
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="https://igordtdesign.github.io/LandingPage/" target="_blank" rel="noopener">
-            Portfolio
+          <a href="index.html">
+            <span lang="en">Portfolio</span>
+            <span lang="pt">Portfólio</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
@@ -1171,5 +1383,9 @@
   });
 
 </script>
+
+<!-- i18n: language toggle wiring -->
+<script src="i18n.js"></script>
+
 </body>
 </html>

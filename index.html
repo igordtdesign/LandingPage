@@ -12,6 +12,21 @@
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
 
+  <!-- i18n: detect language synchronously to avoid flash (priority: saved > browser > 'en') -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('site-lang');
+        var lang = (saved === 'en' || saved === 'pt') ? saved
+                  : ((navigator.language || navigator.userLanguage || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en');
+        document.documentElement.setAttribute('data-lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
+      } catch (e) {
+        document.documentElement.setAttribute('data-lang', 'en');
+      }
+    })();
+  </script>
+
   <style>
     :root {
       --bg:           #121212;
@@ -126,6 +141,43 @@
     }
 
     .nav-link:hover { color: var(--text-1); background: var(--surface-1); }
+
+    /* ── i18n: hide inactive language ── */
+    html[data-lang="en"] [lang="pt"] { display: none !important; }
+    html[data-lang="pt"] [lang="en"] { display: none !important; }
+
+    /* ── Lang toggle ── */
+    .nav-end {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lang-toggle {
+      display: flex;
+      gap: 0;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 2px;
+    }
+    .lang-toggle button {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-3);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      transition: color 0.2s, background 0.2s;
+    }
+    .lang-toggle button:hover { color: var(--text-1); }
+    .lang-toggle button[aria-pressed="true"] {
+      color: var(--text-1);
+      background: var(--surface-2);
+    }
 
     @media (max-width: 600px) {
       nav { padding: 16px 24px; }
@@ -776,27 +828,50 @@
       <div class="nav-avatar"></div>
       <span class="nav-name">Igor Dalmolin</span>
     </a>
-    <div class="nav-links">
-      <a href="#work" class="nav-link">Work</a>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#contact" class="nav-link">Contact</a>
+    <div class="nav-end">
+      <div class="nav-links">
+        <a href="#work" class="nav-link">
+          <span lang="en">Work</span>
+          <span lang="pt">Trabalhos</span>
+        </a>
+        <a href="#about" class="nav-link">
+          <span lang="en">About</span>
+          <span lang="pt">Sobre</span>
+        </a>
+        <a href="#contact" class="nav-link">
+          <span lang="en">Contact</span>
+          <span lang="pt">Contato</span>
+        </a>
+      </div>
+      <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+        <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang-btn="pt" aria-pressed="false">PT</button>
+      </div>
     </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <p class="hero-eyebrow">Product Designer · UX/UI · Design Systems</p>
+      <p class="hero-eyebrow">
+        <span lang="en">Product Designer · UX/UI · Design Systems</span>
+        <span lang="pt">Product Designer · UX/UI · Sistemas de Design</span>
+      </p>
       <h1 class="hero-title">
         Igor Dalmolin.<br>
-        <span>Design background.<br>Tech fluency.</span>
+        <span>
+          <span lang="en">Design background.<br>Tech fluency.</span>
+          <span lang="pt">Background em design.<br>Fluência em tecnologia.</span>
+        </span>
       </h1>
       <p class="hero-sub">
-        6+ years from art direction to product thinking. I design experiences - and I know how to build them.
+        <span lang="en">6+ years from art direction to product thinking. I design experiences - and I know how to build them.</span>
+        <span lang="pt">6+ anos da direção de arte ao pensamento de produto. Eu desenho experiências — e sei como construí-las.</span>
       </p>
       <div class="hero-ctas">
         <a href="#" class="btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
-          Get in touch
+          <span lang="en">Get in touch</span>
+          <span lang="pt">Entrar em contato</span>
           <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" class="btn">
@@ -812,7 +887,10 @@
   <!-- SELECTED WORK -->
   <section class="section" id="work">
     <div class="container">
-      <p class="section-label">Selected Work</p>
+      <p class="section-label">
+        <span lang="en">Selected Work</span>
+        <span lang="pt">Trabalhos selecionados</span>
+      </p>
 
       <div class="cases-grid">
 
@@ -827,15 +905,30 @@
           </div>
           <div class="case-card-body">
             <div class="case-card-tags">
-              <span class="tag blue">Art Direction</span>
+              <span class="tag blue">
+                <span lang="en">Art Direction</span>
+                <span lang="pt">Direção de Arte</span>
+              </span>
               <span class="tag blue">Social Media</span>
-              <span class="tag">3 Awards</span>
+              <span class="tag">
+                <span lang="en">3 Awards</span>
+                <span lang="pt">3 Prêmios</span>
+              </span>
               <span class="tag">Agência CENTRO</span>
             </div>
-            <h2 class="case-card-title">When Government Learned to Meme</h2>
-            <p class="case-card-desc">Reimagining public communication for Santa Maria City Hall - turning a stiff government account into content people actually wanted to follow.</p>
+            <h2 class="case-card-title">
+              <span lang="en">When Government Learned to Meme</span>
+              <span lang="pt">Quando o governo aprendeu a fazer meme</span>
+            </h2>
+            <p class="case-card-desc">
+              <span lang="en">Reimagining public communication for Santa Maria City Hall - turning a stiff government account into content people actually wanted to follow.</span>
+              <span lang="pt">Reinventando a comunicação pública da Prefeitura de Santa Maria — transformando uma conta institucional engessada em conteúdo que as pessoas realmente queriam seguir.</span>
+            </p>
             <div class="case-card-footer">
-              <span class="case-card-meta">2020 - Present</span>
+              <span class="case-card-meta">
+                <span lang="en">2020 - Present</span>
+                <span lang="pt">2020 — Hoje</span>
+              </span>
               <div class="case-card-arrow">
                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
@@ -860,13 +953,28 @@
           </div>
           <div class="case-card-body">
             <div class="case-card-tags">
-              <span class="tag blue">UX Research</span>
-              <span class="tag blue">Conversational AI</span>
-              <span class="tag">Grade 10/10</span>
+              <span class="tag blue">
+                <span lang="en">UX Research</span>
+                <span lang="pt">Pesquisa UX</span>
+              </span>
+              <span class="tag blue">
+                <span lang="en">Conversational AI</span>
+                <span lang="pt">IA Conversacional</span>
+              </span>
+              <span class="tag">
+                <span lang="en">Grade 10/10</span>
+                <span lang="pt">Nota 10/10</span>
+              </span>
               <span class="tag">PUCRS</span>
             </div>
-            <h2 class="case-card-title">SteamAI — Game Discovery with AI</h2>
-            <p class="case-card-desc">Postgraduate thesis exploring how conversational AI can solve the game discovery problem on Steam. Qualitative UX research, personas, and prototype.</p>
+            <h2 class="case-card-title">
+              <span lang="en">SteamAI — Game Discovery with AI</span>
+              <span lang="pt">SteamAI — Descobrir jogos com IA</span>
+            </h2>
+            <p class="case-card-desc">
+              <span lang="en">Postgraduate thesis exploring how conversational AI can solve the game discovery problem on Steam. Qualitative UX research, personas, and prototype.</span>
+              <span lang="pt">Tese de pós-graduação explorando como a IA conversacional pode resolver o problema de descoberta de jogos na Steam. Pesquisa qualitativa de UX, personas e protótipo.</span>
+            </p>
             <div class="case-card-footer">
               <span class="case-card-meta">2024 - 2025</span>
               <div class="case-card-arrow">
@@ -889,7 +997,10 @@
 
         <!-- Education -->
         <div>
-          <p class="section-label">Education</p>
+          <p class="section-label">
+            <span lang="en">Education</span>
+            <span lang="pt">Educação</span>
+          </p>
 
           <div class="list-item">
             <div class="list-icon" style="background:var(--surface-2);border:1px solid var(--border);overflow:hidden;">
@@ -897,7 +1008,10 @@
             </div>
             <div class="list-info">
               <div class="list-title">Pontifícia Universidade Católica do Rio Grande do Sul (PUCRS)</div>
-              <div class="list-sub">Postgraduate Diploma in User Experience Design (UX)</div>
+              <div class="list-sub">
+                <span lang="en">Postgraduate Diploma in User Experience Design (UX)</span>
+                <span lang="pt">Pós-graduação em Design de Experiência do Usuário (UX)</span>
+              </div>
             </div>
             <div class="list-date">2024–2025</div>
           </div>
@@ -908,7 +1022,10 @@
             </div>
             <div class="list-info">
               <div class="list-title">Universidade Federal de Santa Maria (UFSM)</div>
-              <div class="list-sub">BA in Communications (Editorial Production)</div>
+              <div class="list-sub">
+                <span lang="en">BA in Communications (Editorial Production)</span>
+                <span lang="pt">Bacharelado em Comunicação Social (Produção Editorial)</span>
+              </div>
             </div>
             <div class="list-date">2017–2022</div>
           </div>
@@ -916,7 +1033,10 @@
 
         <!-- Experience -->
         <div>
-          <p class="section-label">Experience</p>
+          <p class="section-label">
+            <span lang="en">Experience</span>
+            <span lang="pt">Experiência</span>
+          </p>
 
           <div class="list-item" style="align-items:flex-start;">
             <div class="list-icon" style="background:var(--surface-2);border:1px solid var(--border);overflow:hidden;margin-top:2px;">
@@ -924,10 +1044,19 @@
             </div>
             <div class="list-info">
               <div class="list-title">Agência CENTRO</div>
-              <div class="list-sub">Art Director <span style="color:var(--text-3);margin:0 4px;">·</span> 2023–Present</div>
-              <div class="list-sub">Graphic Designer <span style="color:var(--text-3);margin:0 4px;">·</span> 2021–2023</div>
+              <div class="list-sub">
+                <span lang="en">Art Director <span style="color:var(--text-3);margin:0 4px;">·</span> 2023–Present</span>
+                <span lang="pt">Diretor de Arte <span style="color:var(--text-3);margin:0 4px;">·</span> 2023–Hoje</span>
+              </div>
+              <div class="list-sub">
+                <span lang="en">Graphic Designer <span style="color:var(--text-3);margin:0 4px;">·</span> 2021–2023</span>
+                <span lang="pt">Designer Gráfico <span style="color:var(--text-3);margin:0 4px;">·</span> 2021–2023</span>
+              </div>
             </div>
-            <div class="list-date">2021–Present</div>
+            <div class="list-date">
+              <span lang="en">2021–Present</span>
+              <span lang="pt">2021–Hoje</span>
+            </div>
           </div>
 
           <div class="list-item" style="align-items:flex-start;">
@@ -936,8 +1065,14 @@
             </div>
             <div class="list-info">
               <div class="list-title">InovaTech</div>
-              <div class="list-sub">3D Generalist <span style="color:var(--text-3);margin:0 4px;">·</span> 2022</div>
-              <div class="list-sub">Graphic Designer <span style="color:var(--text-3);margin:0 4px;">·</span> 2020–2021</div>
+              <div class="list-sub">
+                <span lang="en">3D Generalist <span style="color:var(--text-3);margin:0 4px;">·</span> 2022</span>
+                <span lang="pt">Generalista 3D <span style="color:var(--text-3);margin:0 4px;">·</span> 2022</span>
+              </div>
+              <div class="list-sub">
+                <span lang="en">Graphic Designer <span style="color:var(--text-3);margin:0 4px;">·</span> 2020–2021</span>
+                <span lang="pt">Designer Gráfico <span style="color:var(--text-3);margin:0 4px;">·</span> 2020–2021</span>
+              </div>
             </div>
             <div class="list-date">2020–2022</div>
           </div>
@@ -948,7 +1083,10 @@
             </div>
             <div class="list-info">
               <div class="list-title">Universidade Federal de Santa Maria</div>
-              <div class="list-sub">Production Assistant & Graphic Designer</div>
+              <div class="list-sub">
+                <span lang="en">Production Assistant & Graphic Designer</span>
+                <span lang="pt">Assistente de Produção & Designer Gráfico</span>
+              </div>
             </div>
             <div class="list-date">2019–2020</div>
           </div>
@@ -964,36 +1102,63 @@
   <!-- SKILLS & HONORS -->
   <section class="section">
     <div class="container">
-      <p class="section-label">Skills &amp; Honors</p>
+      <p class="section-label">
+        <span lang="en">Skills &amp; Honors</span>
+        <span lang="pt">Habilidades &amp; Reconhecimentos</span>
+      </p>
 
       <div class="skills-grid">
         <div class="skill-pill">
           Product Design
-          <div class="skill-pill-sub">Wireframing · prototyping · design systems · interaction design</div>
+          <div class="skill-pill-sub">
+            <span lang="en">Wireframing · prototyping · design systems · interaction design</span>
+            <span lang="pt">Wireframing · prototipação · design systems · design de interação</span>
+          </div>
         </div>
         <div class="skill-pill">
-          UX Research
-          <div class="skill-pill-sub">User research · usability testing · heuristic evaluation · information architecture</div>
+          <span lang="en">UX Research</span>
+          <span lang="pt">Pesquisa UX</span>
+          <div class="skill-pill-sub">
+            <span lang="en">User research · usability testing · heuristic evaluation · information architecture</span>
+            <span lang="pt">Pesquisa com usuários · testes de usabilidade · avaliação heurística · arquitetura da informação</span>
+          </div>
         </div>
         <div class="skill-pill">
-          Graphic Design
-          <div class="skill-pill-sub">Brand identity · editorial · motion graphics · visual systems</div>
+          <span lang="en">Graphic Design</span>
+          <span lang="pt">Design Gráfico</span>
+          <div class="skill-pill-sub">
+            <span lang="en">Brand identity · editorial · motion graphics · visual systems</span>
+            <span lang="pt">Identidade de marca · editorial · motion graphics · sistemas visuais</span>
+          </div>
         </div>
         <div class="skill-pill">
-          Art Direction
-          <div class="skill-pill-sub">Creative leadership · campaign concepting · social media strategy</div>
+          <span lang="en">Art Direction</span>
+          <span lang="pt">Direção de Arte</span>
+          <div class="skill-pill-sub">
+            <span lang="en">Creative leadership · campaign concepting · social media strategy</span>
+            <span lang="pt">Liderança criativa · concepção de campanhas · estratégia de social media</span>
+          </div>
         </div>
         <div class="skill-pill">
-          Tools
+          <span lang="en">Tools</span>
+          <span lang="pt">Ferramentas</span>
           <div class="skill-pill-sub">Figma · Illustrator · Photoshop · InDesign · HTML · CSS · JS</div>
         </div>
         <div class="skill-pill">
-          Languages
-          <div class="skill-pill-sub">PT native · EN C2 · IT B1 · ES A2</div>
+          <span lang="en">Languages</span>
+          <span lang="pt">Idiomas</span>
+          <div class="skill-pill-sub">
+            <span lang="en">PT native · EN C2 · IT B1 · ES A2</span>
+            <span lang="pt">PT nativo · EN C2 · IT B1 · ES A2</span>
+          </div>
         </div>
         <div class="skill-pill">
-          Awards
-          <div class="skill-pill-sub">4 recognitions - Boas Práticas · ARI · Maratona Ouvidoria · Troféu Vento Norte</div>
+          <span lang="en">Awards</span>
+          <span lang="pt">Prêmios</span>
+          <div class="skill-pill-sub">
+            <span lang="en">4 recognitions - Boas Práticas · ARI · Maratona Ouvidoria · Troféu Vento Norte</span>
+            <span lang="pt">4 reconhecimentos — Boas Práticas · ARI · Maratona Ouvidoria · Troféu Vento Norte</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1004,7 +1169,10 @@
   <!-- ABOUT -->
   <section class="section" id="about">
     <div class="container">
-      <p class="section-label">About me</p>
+      <p class="section-label">
+        <span lang="en">About me</span>
+        <span lang="pt">Sobre</span>
+      </p>
 
       <div class="about-card">
         <div class="about-photo">
@@ -1012,14 +1180,21 @@
           <div class="about-photo-overlay"></div>
         </div>
         <div class="about-body">
-          <p class="about-name">I'm Igor Dalmolin.</p>
+          <p class="about-name">
+            <span lang="en">I'm Igor Dalmolin.</span>
+            <span lang="pt">Sou Igor Dalmolin.</span>
+          </p>
           <div class="about-text">
-            <p>Product Designer from southern Brazil, with a background in graphic design and art direction. Over 6 years working across visual identity, campaigns, social media strategy, and UX - always at the intersection of creativity and technology.</p>
-            <p>I started as a Graphic Designer and Production Assistant while still in college. When Covid hit, I had to adapt fast - and discovered that the problem-solving mindset was already there.</p>
+            <p lang="en">Product Designer from southern Brazil, with a background in graphic design and art direction. Over 6 years working across visual identity, campaigns, social media strategy, and UX - always at the intersection of creativity and technology.</p>
+            <p lang="pt">Product Designer do sul do Brasil, com background em design gráfico e direção de arte. Mais de 6 anos trabalhando entre identidade visual, campanhas, estratégia de social media e UX — sempre na intersecção entre criatividade e tecnologia.</p>
+            <p lang="en">I started as a Graphic Designer and Production Assistant while still in college. When Covid hit, I had to adapt fast - and discovered that the problem-solving mindset was already there.</p>
+            <p lang="pt">Comecei como Designer Gráfico e Assistente de Produção ainda na faculdade. Quando a Covid chegou, tive que me adaptar rápido — e descobri que a mentalidade de solucionar problemas já estava lá.</p>
           </div>
           <div class="about-text">
-            <p>I moved into tech, learned UX, and completed a postgraduate degree at PUCRS with a perfect grade. Today I work as Art Director at Agência CENTRO, leading visual systems for public institutions - while building product skills and learning to code.</p>
-            <p>My edge isn't just the craft. It's the ability to direct: to know what to build, why it matters, and how to communicate it clearly - with or without AI in the room.</p>
+            <p lang="en">I moved into tech, learned UX, and completed a postgraduate degree at PUCRS with a perfect grade. Today I work as Art Director at Agência CENTRO, leading visual systems for public institutions - while building product skills and learning to code.</p>
+            <p lang="pt">Migrei para tecnologia, aprendi UX e concluí a pós-graduação na PUCRS com nota máxima. Hoje atuo como Diretor de Arte na Agência CENTRO, conduzindo sistemas visuais para instituições públicas — enquanto desenvolvo habilidades de produto e aprendo a programar.</p>
+            <p lang="en">My edge isn't just the craft. It's the ability to direct: to know what to build, why it matters, and how to communicate it clearly - with or without AI in the room.</p>
+            <p lang="pt">Meu diferencial não é só o ofício. É a capacidade de direção: saber o que construir, por que importa, e como comunicar com clareza — com ou sem IA na sala.</p>
           </div>
         </div>
       </div>
@@ -1032,8 +1207,14 @@
   <!-- CONTACT -->
   <section class="contact-section" id="contact">
     <div class="container">
-      <h2 class="contact-title">Available for full-time, part-time or freelance.</h2>
-      <p class="contact-desc">If you'd like to chat about a potential collaboration, get in touch.</p>
+      <h2 class="contact-title">
+        <span lang="en">Available for full-time, part-time or freelance.</span>
+        <span lang="pt">Disponível para full-time, part-time ou freelance.</span>
+      </h2>
+      <p class="contact-desc">
+        <span lang="en">If you'd like to chat about a potential collaboration, get in touch.</span>
+        <span lang="pt">Se você quiser conversar sobre uma possível colaboração, me chame.</span>
+      </p>
       <a href="#" class="btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
         <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1086,4 +1267,26 @@
 </div>
 
 <a href="#" class="back-top" id="backTop" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="r
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+
+<script>
+  // Back to top button
+  (function () {
+    var backTop = document.getElementById('backTop');
+    if (!backTop) return;
+    window.addEventListener('scroll', function () {
+      backTop.classList.toggle('visible', window.scrollY > 400);
+    });
+    backTop.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>
+
+<!-- i18n: language toggle wiring (head script already set initial language) -->
+<script src="i18n.js"></script>
+
+</body>
+</html>
