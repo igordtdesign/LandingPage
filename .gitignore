@@ -1,0 +1,6 @@
+# macOS
+._*
+.DS_Store
+
+# Local agent / preview tooling
+.claude/
