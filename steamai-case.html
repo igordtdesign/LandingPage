@@ -203,14 +203,7 @@
       gap: 10px;
     }
 
-    .hero-eyebrow::before {
-      content: "";
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--blue);
-      flex-shrink: 0;
-    }
+    .hero-eyebrow::before { content: "/"; color: var(--blue); font-weight: 700; flex-shrink: 0; }
 
     .hero-title {
       font-family: var(--mono);
@@ -358,13 +351,7 @@
       gap: 8px;
     }
 
-    .section-label::before {
-      content: "";
-      display: block;
-      width: 16px;
-      height: 1px;
-      background: var(--blue);
-    }
+    .section-label::before { content: "/"; color: var(--blue); font-weight: 700; flex-shrink: 0; }
 
     .section-title {
       font-family: var(--mono);
@@ -1686,8 +1673,8 @@
           <span lang="pt">Telas principais</span>
         </h2>
         <p class="section-body">
-          <span lang="en">Three core states of the SteamAI interface: entry point, empty state with suggestions, and results with XAI reasoning.</span>
-          <span lang="pt">Três estados centrais da interface do SteamAI: ponto de entrada, estado vazio com sugestões, e resultados com raciocínio XAI.</span>
+          <span lang="en">An interactive prototype of the SteamAI interface across four states: the chatbot opening inside Steam, the entry point, the empty state with suggestions, and results with XAI reasoning. Click any screen, the dots, or use the arrow keys to step through them.</span>
+          <span lang="pt">Um protótipo interativo da interface do SteamAI em quatro estados: o chatbot abrindo dentro da Steam, o ponto de entrada, o estado vazio com sugestões, e os resultados com raciocínio XAI. Clique em qualquer tela, nos pontos, ou use as setas do teclado para navegar.</span>
         </p>
       </div>
 
@@ -1715,7 +1702,7 @@
           color: rgba(255,255,255,0.25);
         }
         .sframe {
-          width: 240px;
+          width: 224px;
           min-height: 480px;
           border-radius: 32px;
           position: relative;
@@ -1820,30 +1807,51 @@
           gap: 24px;
         }
 
-        /* Three phones always side by side, center one highlighted */
+        /* Four phones side by side, focused one highlighted */
         .phones-row {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 16px;
+          gap: 12px;
           width: 100%;
         }
 
         .phone-slot {
           flex-shrink: 0;
-          transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+          transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1);
           cursor: pointer;
+          border-radius: 34px;
+          outline: none;
         }
         .phone-slot.side {
-          opacity: 0.35;
-          transform: scale(0.88);
+          opacity: 0.42;
+          transform: scale(0.84);
         }
         .phone-slot.center {
           opacity: 1;
           transform: scale(1);
           cursor: default;
         }
-        .phone-slot.side:hover { opacity: 0.55; }
+        .phone-slot.side:hover { opacity: 0.72; transform: scale(0.87); }
+        .phone-slot.center .sframe {
+          box-shadow: 0 0 0 1px rgba(78,161,255,0.45), 0 24px 60px rgba(0,0,0,0.55);
+        }
+        .phone-slot:focus-visible { outline: 2px solid #4ea1ff; outline-offset: 6px; }
+
+        /* Interactive hint pill */
+        .proto-hint {
+          display: inline-flex; align-items: center; gap: 8px;
+          font-family: var(--mono); font-size: 11px; font-weight: 700;
+          letter-spacing: 0.04em; color: #6fb4ff;
+          background: rgba(78,161,255,0.08);
+          border: 1px solid rgba(78,161,255,0.22);
+          border-radius: 99px; padding: 5px 13px;
+        }
+        .proto-hint .dot {
+          width: 6px; height: 6px; border-radius: 50%; background: #4ea1ff;
+          animation: protoPulse 2s ease-in-out infinite;
+        }
+        @keyframes protoPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.35;transform:scale(0.6)} }
 
         /* Dots */
         .screen-dots {
@@ -1899,6 +1907,11 @@
       </style>
 
       <div class="screens-wrap fade-up">
+        <div class="proto-hint">
+          <span class="dot"></span>
+          <span lang="en">Interactive prototype · click or use arrow keys</span>
+          <span lang="pt">Protótipo interativo · clique ou use as setas</span>
+        </div>
         <div class="phones-row" id="phonesRow">
 
           <!-- Phone -1: Mobile Steam wireframe with SteamAI opening -->
@@ -2064,6 +2077,7 @@
           slotIds.forEach(function(id, pos) {
             var slot = document.getElementById(id);
             var n = screenIndexes[pos];
+            slot.setAttribute('aria-current', n === i ? 'true' : 'false');
             if (n === i) {
               slot.className = 'phone-slot center';
               slot.onclick = null;
@@ -2123,6 +2137,40 @@
               }
             }, 80);
           }, { passive: true });
+        }
+
+        // Accessibility: make each phone a keyboard-operable button
+        slotIds.forEach(function(id, pos) {
+          var slot = document.getElementById(id);
+          if (!slot) return;
+          var n = screenIndexes[pos];
+          slot.setAttribute('role', 'button');
+          slot.setAttribute('tabindex', '0');
+          slot.setAttribute('aria-label', captions[pos].replace(/<[^>]+>/g, ''));
+          slot.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToScreen(n); }
+          });
+        });
+        // Label the dots too
+        ['dot-0','dot-1','dot-2','dot-3'].forEach(function(id, pos) {
+          var d = document.getElementById(id);
+          if (d) { d.setAttribute('role','button'); d.setAttribute('aria-label', captions[pos].replace(/<[^>]+>/g, '')); }
+        });
+        // Arrow-key navigation across the prototype
+        var protoOrder = [-1, 0, 1, 2];
+        var screensWrap = document.querySelector('.screens-wrap');
+        if (screensWrap) {
+          screensWrap.addEventListener('keydown', function(e) {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+            e.preventDefault();
+            var idx = protoOrder.indexOf(currentScreen);
+            idx += (e.key === 'ArrowRight' ? 1 : -1);
+            if (idx < 0) idx = protoOrder.length - 1;
+            if (idx >= protoOrder.length) idx = 0;
+            goToScreen(protoOrder[idx]);
+            var p = document.getElementById(slotIds[idx]);
+            if (p && p.focus) p.focus();
+          });
         }
 
         // Default: first frame selected & centered

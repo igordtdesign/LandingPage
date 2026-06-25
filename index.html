@@ -202,14 +202,7 @@
       gap: 10px;
     }
 
-    .hero-eyebrow::before {
-      content: "";
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--blue);
-      flex-shrink: 0;
-    }
+    .hero-eyebrow::before { content: "/"; color: var(--blue); font-weight: 700; flex-shrink: 0; }
 
     .hero-title {
       font-family: var(--mono);
@@ -309,14 +302,7 @@
       gap: 10px;
     }
 
-    .section-label::before {
-      content: "";
-      display: block;
-      width: 16px;
-      height: 1px;
-      background: var(--blue);
-      flex-shrink: 0;
-    }
+    .section-label::before { content: "/"; color: var(--blue); font-weight: 700; flex-shrink: 0; }
 
     /* ── CASE CARDS ── */
     .cases-grid {
@@ -375,84 +361,69 @@
       transform: scale(1.04);
     }
 
-    /* SteamAI card thumb */
+    /* Ecobel card thumb — mirrors the case "sheet-green" panel */
+    .ecobel-thumb {
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse 100% 80% at 70% 20%, #2a7a08 0%, #1d5902 60%, #14400a 100%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 28px;
+    }
+    .ecobel-thumb img {
+      width: 100%; max-width: 196px; height: auto; display: block;
+      transition: transform 0.5s ease;
+    }
+    .case-card:hover .ecobel-thumb img { transform: scale(1.04); }
+
+    /* SteamAI card thumb — echoes the prototype entry screen */
     .steamai-thumb {
       width: 100%; height: 100%;
       position: relative; overflow: hidden;
-      background-size: 300% 300%;
-      background-image:
-        radial-gradient(ellipse 80% 60% at 50% -10%, #1a3a6e 0%, transparent 65%),
-        radial-gradient(ellipse 50% 40% at 85% 90%, #2a1040 0%, transparent 55%),
-        linear-gradient(135deg, #0d1b35 0%, #1a0d35 25%, #0d1b35 50%, #07131f 75%, #1a1035 100%);
-      animation: thumbGradient 6s ease infinite;
-      display: flex; align-items: center; justify-content: center;
-    }
-    @keyframes thumbGradient {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .steamai-thumb::before {
-      content: "";
-      position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 180px 180px;
-      opacity: 0.04;
-      pointer-events: none;
-    }
-    .steamai-thumb-inner {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 12px;
-    }
-    .steamai-thumb-wordmark {
-      position: absolute;
-      bottom: 16px;
-      left: 0; right: 0;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: clamp(28px, 3.5vw, 38px);
-      font-weight: 700;
-      letter-spacing: -0.06em;
-      color: white;
-      z-index: 2;
-      line-height: 1;
-    }
-    .steamai-thumb-wordmark span {
-      background: linear-gradient(135deg, #c8436a, #7b2fa0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% -5%, #1a3a6e 0%, transparent 60%),
+        radial-gradient(ellipse 60% 45% at 85% 100%, #3a1550 0%, transparent 55%),
+        linear-gradient(180deg, #0d1b35 0%, #070e1d 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 13px; padding: 24px;
     }
     .steamai-thumb-icon {
-      width: 52px; height: 52px; border-radius: 50%;
+      width: 54px; height: 54px; border-radius: 50%;
       background: linear-gradient(135deg, #c8436a, #7b2fa0);
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      box-shadow: 0 0 0 8px rgba(200,67,106,0.08), 0 0 24px rgba(200,67,106,0.4);
-      animation: thumbPulse 2.5s ease-in-out infinite;
+      font-size: 23px; color: #fff;
+      box-shadow: 0 0 0 8px rgba(200,67,106,0.08), 0 0 26px rgba(200,67,106,0.4);
+      animation: thumbPulse 2.6s ease-in-out infinite;
     }
     @keyframes thumbPulse {
       0%,100% { box-shadow: 0 0 0 8px rgba(200,67,106,0.08), 0 0 24px rgba(200,67,106,0.4); }
-      50%      { box-shadow: 0 0 0 14px rgba(200,67,106,0.03), 0 0 36px rgba(200,67,106,0.55); }
+      50%     { box-shadow: 0 0 0 13px rgba(200,67,106,0.03), 0 0 36px rgba(200,67,106,0.55); }
     }
-    .steamai-thumb-phones {
-      display: flex; gap: 7px; align-items: flex-end;
+    .steamai-thumb-wordmark {
+      font-family: var(--mono);
+      font-size: clamp(26px, 3.4vw, 34px);
+      font-weight: 700; letter-spacing: -0.06em; line-height: 1; color: #fff;
     }
-    .steamai-thumb-phone {
-      border-radius: 8px;
+    .steamai-thumb-wordmark span {
+      background: linear-gradient(135deg, #e0608a, #9b53c4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .steamai-thumb-input {
+      display: flex; align-items: center; gap: 8px;
+      width: 82%; max-width: 230px;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(78,161,255,0.3);
+      border-radius: 99px; padding: 7px 7px 7px 13px;
+      transition: border-color 0.3s, background 0.3s;
     }
-    .steamai-thumb-phone.mid {
-      width: 36px; height: 58px;
-      background: rgba(255,255,255,0.09);
-      border-color: rgba(200,67,106,0.3);
-      transition: transform 0.3s;
+    .steamai-thumb-input > span {
+      font-family: var(--mono); font-size: 11px; letter-spacing: -0.02em;
+      color: rgba(255,255,255,0.45); flex: 1;
     }
-    .steamai-thumb-phone.side { width: 28px; height: 46px; opacity: 0.4; transition: transform 0.3s; }
-    .case-card:hover .steamai-thumb-phone.mid { transform: translateY(-4px); }
-    .case-card:hover .steamai-thumb-phone.side { transform: translateY(-2px); }
+    .steamai-thumb-send {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(78,161,255,0.2);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .case-card:hover .steamai-thumb-input { border-color: rgba(78,161,255,0.55); background: rgba(78,161,255,0.09); }
 
     /* Single-image card cover */
     .thumb-cover {
@@ -948,15 +919,15 @@
         <a href="steamai-case.html" class="case-card">
           <div class="case-card-thumb">
             <div class="steamai-thumb">
-              <div class="steamai-thumb-inner">
-                <div class="steamai-thumb-icon">✦</div>
-                <div class="steamai-thumb-phones">
-                  <div class="steamai-thumb-phone side"></div>
-                  <div class="steamai-thumb-phone mid"></div>
-                  <div class="steamai-thumb-phone side"></div>
+              <div class="steamai-thumb-icon">✦</div>
+              <div class="steamai-thumb-wordmark">Steam<span>AI</span></div>
+              <div class="steamai-thumb-input">
+                <span lang="en">Ask SteamAI anything...</span>
+                <span lang="pt">Pergunte algo à SteamAI...</span>
+                <div class="steamai-thumb-send">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#4ea1ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
               </div>
-              <div class="steamai-thumb-wordmark">Steam<span>AI</span></div>
             </div>
           </div>
           <div class="case-card-body">
@@ -995,7 +966,9 @@
         <!-- CARD 3: Ecobel -->
         <a href="ecobel-case.html" class="case-card">
           <div class="case-card-thumb">
-            <img class="thumb-cover" src="Ecobel-Case-img/mockup-card.jpg" alt="Ecobel rebrand, business cards">
+            <div class="ecobel-thumb">
+              <img src="Ecobel-Case-img/logo-white.svg" alt="Ecobel logo on brand green">
+            </div>
           </div>
           <div class="case-card-body">
             <div class="case-card-tags">
