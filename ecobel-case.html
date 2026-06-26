@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ecobel: Rebrand &amp; B2B Web Product · Igor Dalmolin</title>
   <meta name="description" content="Rebrand and B2B website for Ecobel, a Brazilian recycling company, designed and coded end-to-end to build trust and turn visitors into collection-request leads.">
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "xd2p68963g");
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -230,7 +239,7 @@
 
     /* ─── QUOTE ──────────────────────────────────────────────── */
     .quote {
-      background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+      background: var(--surface-1); border: 1px solid var(--border);
       border-radius: var(--radius-md); padding: 32px 40px; margin: 48px 0;
     }
     .quote-text {
@@ -384,33 +393,6 @@
       background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 4px 14px;
     }
     .browser-shot img { width: 100%; display: block; }
-    .browser-live {
-      container-type: inline-size;
-      position: relative; width: 100%;
-      aspect-ratio: 1280 / 800;
-      overflow: hidden; background: var(--bg);
-    }
-    .browser-live iframe {
-      position: absolute; top: 0; left: 0;
-      width: 1280px; height: 800px; border: 0;
-      transform: scale(calc(100cqw / 1280px));
-      transform-origin: top left;
-      pointer-events: none;
-    }
-    .browser-live-hint {
-      position: absolute; bottom: 12px; right: 12px; z-index: 2;
-      display: inline-flex; align-items: center; gap: 7px;
-      font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-      color: var(--text-1); background: rgba(13,14,17,0.66); backdrop-filter: blur(8px);
-      border: 1px solid var(--border-hover); border-radius: var(--radius-pill); padding: 6px 12px;
-      pointer-events: none;
-    }
-    .browser-live-hint::before {
-      content: ""; width: 7px; height: 7px; border-radius: 50%;
-      background: #43d17a; box-shadow: 0 0 8px #43d17a;
-      animation: livePulse 1.8s ease-in-out infinite;
-    }
-    @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
     @media (prefers-reduced-motion: reduce) { .browser-live-hint::before { animation: none; } }
 
     /* ─── WEB STORY (product narrative) ──────────────────────── */
@@ -895,12 +877,7 @@
           <div class="browser-dots"><span></span><span></span><span></span></div>
           <span class="browser-url">ecobelreciclagem.com.br</span>
         </div>
-        <div class="browser-shot">
-          <div class="browser-live">
-            <iframe src="https://igordtdesign.github.io/ecobel/" title="Ecobel website live preview" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-            <span class="browser-live-hint"><span lang="en">Live preview</span><span lang="pt">Preview ao vivo</span></span>
-          </div>
-        </div>
+        <div class="browser-shot"><img src="Ecobel-Case-img/web-hero.jpg" alt="Ecobel website, desktop home page"></div>
       </div>
 
       <div class="web-split fade-up">
