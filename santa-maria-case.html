@@ -78,6 +78,29 @@
     }
 
     /* ─── LAYOUT ─────────────────────────────────────────────── */
+    /* ── Film grain + animated glow ── */
+    @keyframes glowDrift {
+      0%   { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(-2%, 1.6%, 0) scale(1.08); }
+    }
+    body::before { animation: glowDrift 24s ease-in-out infinite alternate; }
+    body::after {
+      content: ""; position: fixed; inset: -80px; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.06;
+      animation: grain 0.55s steps(3) infinite;
+    }
+    @keyframes grain {
+      0%, 100% { transform: translate(0, 0); }
+      25%      { transform: translate(-5px, 3px); }
+      50%      { transform: translate(4px, -4px); }
+      75%      { transform: translate(-3px, -5px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body::before, body::after { animation: none; }
+    }
+
     .page { position: relative; z-index: 1; }
 
     .container {
@@ -755,6 +778,39 @@
     }
 
     /* ─── BACK TO TOP ────────────────────────────────────────── */
+    /* ── Case navigation (bottom + floating back) ── */
+    .case-nav { padding: 48px 0; border-top: 1px solid var(--border); }
+    .case-nav-row { display: flex; align-items: stretch; justify-content: space-between; gap: 16px; }
+    .case-nav-back, .case-nav-next {
+      display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0;
+      background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 20px 26px; text-decoration: none;
+      transition: border-color .25s, background .25s;
+    }
+    .case-nav-back:hover, .case-nav-next:hover { border-color: var(--border-hover); background: var(--surface-2); }
+    .case-nav-next { justify-content: flex-end; text-align: right; }
+    .case-nav-ico { width: 20px; height: 20px; color: var(--text-3); flex-shrink: 0; transition: transform .25s, color .25s; }
+    .case-nav-back:hover .case-nav-ico { transform: translateX(-3px); color: var(--blue-bright); }
+    .case-nav-next:hover .case-nav-ico { transform: translateX(3px); color: var(--blue-bright); }
+    .case-nav-label { display: block; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-4); }
+    .case-nav-title { display: block; font-family: var(--sans); font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-1); margin-top: 4px; line-height: 1.25; }
+    .case-nav-back .case-nav-title { font-family: var(--mono); font-size: 14px; }
+    @media (max-width: 560px) { .case-nav-row { flex-direction: column; } .case-nav-next { justify-content: flex-start; text-align: left; } }
+
+    .float-back {
+      position: fixed; bottom: 28px; left: 28px; z-index: 50;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(18,19,23,0.7); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border); border-radius: var(--radius-pill);
+      padding: 9px 16px 9px 13px; text-decoration: none;
+      font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-2);
+      transition: color .2s, border-color .2s, background .2s;
+    }
+    .float-back:hover { color: var(--text-1); border-color: var(--border-hover); }
+    .float-back svg { width: 14px; height: 14px; transition: transform .2s; }
+    .float-back:hover svg { transform: translateX(-2px); }
+    @media (max-width: 600px) { .float-back { padding: 10px; } .float-back span { display: none; } }
+
     .back-top {
       position: fixed;
       bottom: 32px;
@@ -1287,6 +1343,28 @@
   </section>
 
   <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <!-- ─── CASE NAVIGATION ──────────────────────────────────── -->
+  <section class="case-nav">
+    <div class="container">
+      <div class="case-nav-row">
+        <a href="index.html#work" class="case-nav-back">
+          <svg class="case-nav-ico" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>
+            <span class="case-nav-label"><span lang="en">Back</span><span lang="pt">Voltar</span></span>
+            <span class="case-nav-title"><span lang="en">All work</span><span lang="pt">Trabalhos</span></span>
+          </span>
+        </a>
+        <a href="steamai-case.html" class="case-nav-next">
+          <span>
+            <span class="case-nav-label"><span lang="en">Next case</span><span lang="pt">Próximo case</span></span>
+            <span class="case-nav-title"><span lang="en">SteamAI: Game Discovery with AI</span><span lang="pt">SteamAI: Descobrir jogos com IA</span></span>
+          </span>
+          <svg class="case-nav-ico" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="container">
       <div class="footer-inner">
@@ -1313,6 +1391,11 @@
 </div><!-- /page -->
 
 <!-- Back to top -->
+<a href="index.html#work" class="float-back" aria-label="Back to all work">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span><span lang="en">Work</span><span lang="pt">Trabalhos</span></span>
+</a>
+
 <a href="#" class="back-top" id="backTop" aria-label="Back to top">
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
