@@ -1245,8 +1245,38 @@
         .wfp-back { width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.08); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.5); padding: 0; margin-right: 2px; flex-shrink: 0; }
         .wfp-back[hidden] { display: none; }
         .wfp-back:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.85); }
+
+        /* Staggered reveal when a suggestion is chosen: the user message lands
+           as "sent", then SteamAI's answer surges in piece by piece (fast). */
+        @keyframes wfpSent { from { opacity: 0; transform: translate(12px, 2px); } to { opacity: 1; transform: none; } }
+        @keyframes wfpRise { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+        .wfp-result > .wfp-user { animation: wfpSent 0.26s cubic-bezier(0.22,1,0.36,1) both; }
+        .wfp-result > .wfp-xai { animation: wfpRise 0.32s ease both; animation-delay: 0.18s; }
+        .wfp-result .wfp-game { animation: wfpRise 0.30s ease both; }
+        .wfp-result .wfp-game:nth-child(1) { animation-delay: 0.30s; }
+        .wfp-result .wfp-game:nth-child(2) { animation-delay: 0.38s; }
+        .wfp-result .wfp-game:nth-child(3) { animation-delay: 0.46s; }
+        /* The refine input is intentionally NOT animated — it stays anchored as a
+           persistent bar so it doesn't blink out and back between states. */
+
+        /* Entry (opening) animation: when SteamAI is opened, its content
+           cascades in. The input bar is excluded so it feels persistent. */
+        #wfpEmpty.wfp-intro > .wfp-greeting,
+        #wfpEmpty.wfp-intro > .wfp-greeting-sub,
+        #wfpEmpty.wfp-intro > .wfp-chips-label,
+        #wfpEmpty.wfp-intro > .wfp-chip { animation: wfpRise 0.30s ease both; }
+        #wfpEmpty.wfp-intro > .wfp-greeting-sub { animation-delay: 0.05s; }
+        #wfpEmpty.wfp-intro > .wfp-chips-label { animation-delay: 0.10s; }
+        #wfpEmpty.wfp-intro > .wfp-chip:nth-of-type(1) { animation-delay: 0.16s; }
+        #wfpEmpty.wfp-intro > .wfp-chip:nth-of-type(2) { animation-delay: 0.22s; }
+        #wfpEmpty.wfp-intro > .wfp-chip:nth-of-type(3) { animation-delay: 0.28s; }
+
         @media (prefers-reduced-motion: reduce) {
           .wf-popup, .wf-backdrop, .wf-fab-bubble { transition: none; }
+          .wfp-result > .wfp-user,
+          .wfp-result > .wfp-xai,
+          .wfp-result .wfp-game,
+          #wfpEmpty.wfp-intro > * { animation: none; }
         }
       </style>
 
@@ -1442,8 +1472,15 @@
           // Internal popup states: entry/empty (CTA suggestions) -> result.
           function showEmpty() {
             for (var i = 0; i < results.length; i++) results[i].hidden = true;
-            if (emptyState) emptyState.hidden = false;
+            if (emptyState) { emptyState.hidden = false; emptyState.classList.remove('wfp-intro'); }
             if (backBtn) backBtn.hidden = true;
+          }
+          // Cascade the entry content in (used when SteamAI is first opened).
+          function playIntro() {
+            if (!emptyState) return;
+            emptyState.classList.remove('wfp-intro');
+            void emptyState.offsetWidth; // force reflow so the animation restarts
+            emptyState.classList.add('wfp-intro');
           }
           function showResult(id) {
             var target = document.getElementById(id);
@@ -1452,6 +1489,11 @@
             for (var i = 0; i < results.length; i++) results[i].hidden = (results[i] !== target);
             if (backBtn) backBtn.hidden = false;
             popup.scrollTop = 0;
+            // Restart the staggered reveal every time (robust even on re-select).
+            var parts = target.querySelectorAll('.wfp-user, .wfp-xai, .wfp-game');
+            for (var a = 0; a < parts.length; a++) parts[a].style.animation = 'none';
+            void target.offsetWidth; // force reflow
+            for (var b = 0; b < parts.length; b++) parts[b].style.animation = '';
           }
 
           function isOpen() { return wrap.classList.contains('is-open'); }
@@ -1460,6 +1502,7 @@
             wrap.classList.add('is-open');
             wrap.classList.remove('is-interactive');
             wrap.setAttribute('aria-expanded', 'true');
+            playIntro(); // animate the content in on open
           }
           function close() {
             wrap.classList.remove('is-open');
