@@ -1,0 +1,160 @@
+/* ═══════════════════════════════════════════════════════════════
+   DOODLES — hand-drawn identity layer (gritty, Vans-ish, still pro)
+   Shared by index + case pages. SVGs live in img/doodles/.
+   Color comes from currentColor via CSS mask, so every doodle
+   follows the site token (--doodle, defaults to portfolio blue).
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --doodle: var(--blue, var(--accent, #4081e2));
+}
+
+/* Any element that hosts absolutely-positioned doodles */
+.doodle-host { position: relative; }
+
+/* ── Base doodle ─────────────────────────────────────────────── */
+.doodle {
+  position: absolute;
+  background-color: var(--doodle);
+  -webkit-mask: var(--doodle-mask) center / contain no-repeat;
+  mask: var(--doodle-mask) center / contain no-repeat;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.4) rotate(calc(var(--doodle-rot, 0deg) - 14deg));
+  transition:
+    opacity 0.5s ease,
+    transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1); /* springy pop */
+  pointer-events: none;
+}
+.doodle.in {
+  opacity: var(--doodle-alpha, 0.9);
+  transform: scale(1) rotate(var(--doodle-rot, 0deg));
+  /* breathing starts only after the entry pop has finished (the delay
+     keeps the animation inert while the transition plays) */
+  animation: doodleDrift var(--fdur, 6s) ease-in-out calc(0.8s + var(--fdel, 0s)) infinite alternate;
+}
+@keyframes doodleDrift {
+  from { transform: translateY(0) scale(1) rotate(var(--doodle-rot, 0deg)); }
+  to   { transform: translateY(-6px) scale(1.04) rotate(calc(var(--doodle-rot, 0deg) + 2.4deg)); }
+}
+
+/* Inline doodle: flows with text (e.g. star beside the hero name) */
+.doodle--inline {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+/* Sticker wiggle on hover (desktop pointers only). The wiggle replaces
+   the drift animation while it plays, then drift resumes. */
+@media (hover: hover) {
+  .doodle { pointer-events: auto; }
+  .doodle.in:hover { animation: doodleWiggle 0.5s ease-in-out; }
+}
+@keyframes doodleWiggle {
+  0%, 100% { transform: scale(1) rotate(var(--doodle-rot, 0deg)); }
+  30%      { transform: scale(1.12) rotate(calc(var(--doodle-rot, 0deg) - 6deg)); }
+  70%      { transform: scale(1.05) rotate(calc(var(--doodle-rot, 0deg) + 5deg)); }
+}
+
+/* ── Variants (one per SVG) ──────────────────────────────────── */
+.doodle--burst1   { --doodle-mask: url("img/doodles/svgBurst01.svg"); }
+.doodle--burst2   { --doodle-mask: url("img/doodles/svgBurst02.svg"); }
+.doodle--coffee   { --doodle-mask: url("img/doodles/svgCoffee.svg"); }
+.doodle--scribble { --doodle-mask: url("img/doodles/svgScribble.svg"); }
+.doodle--smile    { --doodle-mask: url("img/doodles/svgSmile.svg"); }
+.doodle--star     { --doodle-mask: url("img/doodles/svgStar.svg"); }
+
+/* ── Contact panel frame (mirrors the home contact box) ──────── */
+.contact-panel {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-1, rgba(255,255,255,0.024));
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+  border-radius: 32px;
+  padding: 72px 40px;
+  text-align: center;
+}
+.contact-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 90% at 50% 0%, rgba(64,129,226,0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+.contact-panel > :not(.doodle) { position: relative; }
+
+/* ── Scribbled underline on key words ────────────────────────── */
+.scrib-u { position: relative; white-space: nowrap; }
+.scrib-u .scrib-svg {
+  position: absolute;
+  left: -1.5%;
+  bottom: -0.1em;
+  width: 103%;
+  height: 0.22em;
+  overflow: visible;
+  pointer-events: none;
+}
+.scrib-u .scrib-svg path {
+  fill: none;
+  stroke: var(--doodle);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 660;
+  stroke-dashoffset: 660;
+  opacity: 0.95;
+}
+.scrib-u.in .scrib-svg path {
+  animation: scribDraw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
+}
+@keyframes scribDraw { to { stroke-dashoffset: 0; } }
+
+/* Inside gradient-clipped hero text, a positioned wrapper escapes the
+   parent's background-clip — re-apply the gradient on the wrapper */
+.hero-title .accent .scrib-u {
+  background: linear-gradient(120deg, var(--blue-bright, #5b9bff) 0%, #8db4ff 60%, var(--blue, #4081e2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Checkered strip (Vans tape) ─────────────────────────────── */
+/* The SVG viewBox is cropped to exactly one 3-square period of the
+   two-row band, so repeat-x tiles seamlessly (seam gap = inner gaps) */
+.checker-strip {
+  height: 18px;
+  margin: 8px auto;
+  background-color: var(--doodle);
+  -webkit-mask: url("img/doodles/svgChecker.svg") left center / auto 100% repeat-x;
+  mask: url("img/doodles/svgChecker.svg") left center / auto 100% repeat-x;
+  opacity: 0.35;
+  transform: rotate(-0.5deg);
+  pointer-events: none;
+}
+
+/* ── Responsive: keep it out of the content's way ────────────── */
+@media (max-width: 960px) {
+  .doodle { display: none; }
+  .doodle--keep {
+    display: block;
+    transform-origin: center;
+  }
+  .doodle--keep.in { transform: scale(0.72) rotate(var(--doodle-rot, 0deg)); }
+  .doodle--inline.doodle--keep { display: inline-block; }
+  .doodle--inline.doodle--keep.in { transform: scale(1) rotate(var(--doodle-rot, 0deg)); }
+}
+@media (max-width: 720px) {
+  .checker-strip { height: 13px; }
+}
+
+/* ── Reduced motion: everything settles, nothing drifts ─────── */
+@media (prefers-reduced-motion: reduce) {
+  .doodle {
+    transition: opacity 0.4s ease;
+    transform: scale(1) rotate(var(--doodle-rot, 0deg));
+  }
+  .doodle.in { animation: none; }
+  .doodle.in:hover { animation: none; }
+  .scrib-u .scrib-svg path { stroke-dasharray: none; stroke-dashoffset: 0; }
+  .scrib-u.in .scrib-svg path { animation: none; }
+}
