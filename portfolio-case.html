@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Portfolio Is the Product · Igor Dalmolin</title>
+  <meta name="description" content="I treat this portfolio as a live product: instrumented with Microsoft Clarity, usability-tested with 18 people (SUS 86.9), and iterated in public. This is the case study of the site itself.">
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "xd2p68963g");
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="doodles.css">
+  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
+  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
+
+  <!-- i18n: detect language synchronously to avoid flash (priority: saved > browser > 'en') -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('site-lang');
+        var lang = (saved === 'en' || saved === 'pt') ? saved
+                  : ((navigator.language || navigator.userLanguage || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en');
+        document.documentElement.setAttribute('data-lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
+      } catch (e) {
+        document.documentElement.setAttribute('data-lang', 'en');
+      }
+    })();
+  </script>
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --bg:           #0d0e11;
+      --bg-2:         #0a0b0d;
+      --surface-1:    rgba(255,255,255,0.024);
+      --surface-2:    rgba(255,255,255,0.05);
+      --border:       rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.18);
+      --accent:       #4081e2;
+      --blue-bright:  #5b9bff;
+      --accent-dim:   rgba(64, 129, 226, 0.15);
+      --text-1:       #f3f4f6;
+      --text-2:       #c5c8ce;
+      --text-3:       #8b9098;
+      --text-4:       #5d626b;
+      --mono:         "JetBrains Mono", monospace;
+      --sans:         "Inter", sans-serif;
+      --radius-sm:    8px;
+      --radius-md:    12px;
+      --radius-lg:    16px;
+      --radius-pill:  99px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text-1);
+      font-family: var(--sans); font-size: 16px; line-height: 1.6;
+      min-height: 100vh; overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      background:
+        radial-gradient(60% 50% at 15% 0%, rgba(64,129,226,0.10) 0%, transparent 60%),
+        radial-gradient(50% 40% at 95% 8%, rgba(91,155,255,0.06) 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Film grain + animated glow ── */
+    @keyframes glowDrift {
+      0%   { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(-2%, 1.6%, 0) scale(1.08); }
+    }
+    body::before { animation: glowDrift 24s ease-in-out infinite alternate; }
+    body::after {
+      content: ""; position: fixed; inset: -80px; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.08;
+      animation: grain 0.55s steps(3) infinite;
+    }
+    @keyframes grain {
+      0%, 100% { transform: translate(0, 0); }
+      25%      { transform: translate(-5px, 3px); }
+      50%      { transform: translate(4px, -4px); }
+      75%      { transform: translate(-3px, -5px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body::before, body::after { animation: none; }
+    }
+
+    .page { position: relative; z-index: 1; }
+    .container { max-width: 1072px; margin: 0 auto; padding: 0 64px; }
+    @media (max-width: 900px) { .container { padding: 0 40px; } }
+    @media (max-width: 600px) { .container { padding: 0 24px; } }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────── */
+    nav { position: fixed; top: 16px; left: 0; right: 0; z-index: 100; }
+    .nav-inner {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(18,19,23,0.62); backdrop-filter: blur(12px) saturate(140%); -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border: 1px solid var(--border); border-radius: var(--radius-pill);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-avatar {
+      width: 30px; height: 30px; min-width: 30px; border-radius: 50%;
+      overflow: hidden; position: relative; border: 1px solid rgba(163,167,174,0.22); flex-shrink: 0;
+    }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; filter: grayscale(1) contrast(1.05); display: block; }
+    .nav-avatar::after { content: ""; position: absolute; inset: 0; background: rgba(0,38,94,0.42); }
+    .nav-name { font-family: var(--sans); font-weight: 700; font-size: 15px; letter-spacing: -0.02em; color: var(--text-1); }
+    .nav-back {
+      font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--text-3);
+      text-decoration: none; display: flex; align-items: center; gap: 6px; letter-spacing: -0.03em; transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text-1); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    /* ── i18n: hide inactive language ── */
+    html[data-lang="en"] [lang="pt"] { display: none !important; }
+    html[data-lang="pt"] [lang="en"] { display: none !important; }
+
+    /* ── Lang toggle ── */
+    .nav-end { display: flex; align-items: center; gap: 12px; }
+    .lang-switch {
+      position: relative; display: inline-flex; align-items: center;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 3px; cursor: pointer;
+      font-family: var(--mono); -webkit-tap-highlight-color: transparent;
+    }
+    .lang-switch:hover { border-color: var(--border-hover); }
+    .lang-switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .lang-opt {
+      position: relative; z-index: 1;
+      font-size: 11px; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--text-4); padding: 5px 12px; line-height: 1;
+      transition: color 0.25s; user-select: none;
+    }
+    .lang-knob {
+      position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px);
+      background: var(--accent); border-radius: var(--radius-pill);
+      box-shadow: 0 2px 8px rgba(64,129,226,0.45);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); z-index: 0;
+    }
+    .lang-switch[data-active="pt"] .lang-knob { transform: translateX(100%); }
+    .lang-switch[data-active="en"] .lang-opt[data-l="en"] { color: #fff; }
+    .lang-switch[data-active="pt"] .lang-opt[data-l="pt"] { color: #fff; }
+
+    @media (max-width: 600px) {
+      nav { top: 12px; }
+      .nav-back span:not([lang]) { display: none; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero { padding: 160px 0 64px; }
+    .hero-eyebrow {
+      font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before { content: "/"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .hero-title {
+      font-family: var(--sans); font-size: clamp(34px, 5.4vw, 60px); font-weight: 700;
+      letter-spacing: -0.035em; line-height: 1.06; color: var(--text-1); margin-bottom: 24px;
+    }
+    .hero-title .accent { color: var(--blue-bright); }
+    .hero-desc {
+      font-family: var(--sans); font-size: clamp(17px, 2vw, 20px); font-weight: 400; letter-spacing: -0.01em;
+      line-height: 1.6; color: var(--text-2); max-width: 640px; margin-bottom: 48px;
+    }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+    .tag {
+      font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--text-3); background: var(--surface-1); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 5px 12px;
+    }
+    .tag.highlight { color: var(--accent); background: var(--accent-dim); border-color: rgba(64,129,226,0.2); }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 32px; padding-top: 40px; border-top: 1px solid var(--border); }
+    .meta-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-4); margin-bottom: 6px;
+    }
+    .meta-value { font-family: var(--mono); font-size: 14px; font-weight: 400; letter-spacing: -0.03em; color: var(--text-2); }
+
+    /* ─── STAT ROW ───────────────────────────────────────────── */
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 48px 0 0; }
+    @media (max-width: 820px) { .stat-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .stat-row { grid-template-columns: 1fr; } }
+    .stat-item { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+    .stat-number { font-family: var(--sans); font-size: clamp(30px, 4vw, 40px); font-weight: 800; letter-spacing: -0.03em; color: var(--blue-bright); line-height: 1; }
+    .stat-label { font-family: var(--mono); font-size: 11.5px; line-height: 1.55; color: var(--text-4); margin-top: 12px; }
+
+    /* ─── TERMINAL (real git log as hero cover) ──────────────── */
+    .termlog {
+      margin: 64px 0 0; border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--border); background: #0a0c10;
+      font-family: var(--mono);
+    }
+    .termlog-bar {
+      display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+      border-bottom: 1px solid var(--border); background: var(--surface-2);
+    }
+    .termlog-dots { display: flex; gap: 6px; }
+    .termlog-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(230,230,230,0.14); }
+    .termlog-title { flex: 1; text-align: center; font-size: 11px; letter-spacing: -0.02em; color: var(--text-4); }
+    .termlog-body { padding: 22px 24px; font-size: 12.5px; line-height: 2; letter-spacing: -0.02em; overflow-x: auto; }
+    .termlog-body .cmd { color: var(--text-2); }
+    .termlog-body .cmd::before { content: "$ "; color: var(--blue-bright); font-weight: 700; }
+    .termlog-line { display: flex; gap: 12px; white-space: nowrap; }
+    .termlog-hash { color: #d29a4f; flex-shrink: 0; }
+    .termlog-msg { color: var(--text-3); }
+    .termlog-msg strong { color: var(--text-2); font-weight: 500; }
+    .termlog-note {
+      font-family: var(--mono); font-size: 12px; letter-spacing: -0.02em;
+      color: var(--text-4); margin-top: 14px;
+    }
+
+    /* ─── SECTIONS ───────────────────────────────────────────── */
+    .section { padding: 80px 0; border-top: 1px solid var(--border); }
+    .hero + .section, .termwrap + .section { border-top: none; }
+    .section-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 32px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before { content: "/"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .section-title {
+      font-family: var(--sans); font-size: clamp(23px, 3.2vw, 32px); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.15; color: var(--text-1); margin-bottom: 24px;
+    }
+    .section-body {
+      font-family: var(--sans); font-size: 16px; font-weight: 400; letter-spacing: -0.005em;
+      line-height: 1.7; color: var(--text-3); max-width: 680px;
+    }
+    .section-body p + p { margin-top: 18px; }
+    .section-body strong { color: var(--text-2); font-weight: 700; }
+    .section-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    @media (max-width: 800px) { .section-cols { grid-template-columns: 1fr; gap: 40px; } }
+
+    /* ─── QUOTE ──────────────────────────────────────────────── */
+    .quote {
+      background: var(--surface-1); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 32px 40px; margin: 48px 0;
+    }
+    .quote-text {
+      font-family: var(--mono); font-size: clamp(18px, 2.5vw, 22px); font-weight: 700;
+      letter-spacing: -0.05em; line-height: 1.4; color: var(--text-1); font-style: italic;
+    }
+    .quote-text::before { content: "\201C"; color: var(--accent); }
+    .quote-text::after  { content: "\201D"; color: var(--accent); }
+    .quote-cite { font-family: var(--mono); font-size: 12px; color: var(--text-4); margin-top: 14px; letter-spacing: -0.02em; }
+
+    /* ─── LOOP CARDS (signal → change → proof) ───────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+    @media (max-width: 800px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 28px; transition: border-color 0.25s;
+    }
+    .card:hover { border-color: var(--border-hover); }
+    .card-source {
+      font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--blue-bright);
+      background: var(--accent-dim); border: 1px solid rgba(64,129,226,0.2);
+      border-radius: var(--radius-pill); padding: 3px 10px; display: inline-block; margin-bottom: 14px;
+    }
+    .card-title { font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: -0.04em; color: var(--text-1); line-height: 1.4; margin-bottom: 10px; }
+    .card-body { font-family: var(--mono); font-size: 13px; letter-spacing: -0.03em; line-height: 1.65; color: var(--text-3); }
+    .card-body strong { color: var(--text-2); font-weight: 700; }
+
+    /* ─── CALLOUT ────────────────────────────────────────────── */
+    .callout {
+      background: var(--accent-dim); border: 1px solid rgba(64,129,226,0.2);
+      border-radius: var(--radius-md); padding: 24px 28px; margin-top: 40px;
+      font-family: var(--sans); font-size: 15px; line-height: 1.7; color: var(--text-2); letter-spacing: -0.005em;
+    }
+    .callout strong { color: var(--text-1); }
+    .callout a { color: var(--blue-bright); }
+
+    /* ─── STYLED LIST ────────────────────────────────────────── */
+    .styled-list { list-style: none; }
+    .styled-list li {
+      font-family: var(--mono); font-size: 13.5px; letter-spacing: -0.03em; line-height: 1.6;
+      color: var(--text-3); padding: 14px 0 14px 24px; border-top: 1px solid var(--border); position: relative;
+    }
+    .styled-list li:first-child { border-top: none; }
+    .styled-list li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .styled-list strong { color: var(--text-2); }
+
+    /* ─── CTA BUTTON ─────────────────────────────────────────── */
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono);
+      font-size: 14px; font-weight: 700; letter-spacing: -0.04em; color: var(--text-1);
+      background: rgba(173,173,173,0.05); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-pill); padding: 12px 22px; text-decoration: none;
+      position: relative; overflow: hidden; transition: border-color 0.3s, color 0.3s; z-index: 0;
+      align-self: flex-start;
+    }
+    .cta-btn::before {
+      content: ""; position: absolute; right: 8px; top: 6px; bottom: 5px; width: 22px;
+      border-radius: var(--radius-pill); background-color: var(--accent); opacity: 0;
+      transition: width 0.35s cubic-bezier(0.4,0,0.2,1), right 0.35s cubic-bezier(0.4,0,0.2,1), top 0.35s cubic-bezier(0.4,0,0.2,1), bottom 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease;
+      z-index: -1;
+    }
+    .cta-btn:hover::before { width: 100%; right: 0; top: 0; bottom: 0; opacity: 1; }
+    .cta-btn:hover { border-color: var(--accent); color: #fff; }
+    .cta-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ─── CONTACT ────────────────────────────────────────────── */
+    .contact-section { padding: 96px 0; border-top: 1px solid var(--border); text-align: center; }
+    .contact-title { font-family: var(--mono); font-size: clamp(22px, 3vw, 32px); font-weight: 700; letter-spacing: -0.05em; color: var(--text-1); margin-bottom: 16px; }
+    .contact-desc { font-family: var(--mono); font-size: 15px; font-weight: 400; letter-spacing: -0.04em; color: var(--text-3); margin-bottom: 40px; }
+    .contact-section .cta-btn { align-self: center; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer { border-top: 1px solid var(--border); padding: 40px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-copy { font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: -0.03em; color: var(--text-4); }
+    .footer-links { display: flex; gap: 4px; }
+    .footer-links a {
+      font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: -0.03em; color: var(--text-3);
+      text-decoration: none; display: flex; align-items: center; gap: 5px; padding: 6px 10px;
+      border-radius: var(--radius-pill); transition: color 0.2s, background 0.2s;
+    }
+    .footer-links a:hover { color: var(--text-1); background: var(--surface-1); }
+
+    /* ── Case navigation (bottom + floating back) ── */
+    .case-nav { padding: 48px 0; border-top: 1px solid var(--border); }
+    .case-nav-row { display: flex; align-items: stretch; justify-content: space-between; gap: 16px; }
+    .case-nav-back, .case-nav-next {
+      display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0;
+      background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 20px 26px; text-decoration: none;
+      transition: border-color .25s, background .25s;
+    }
+    .case-nav-back:hover, .case-nav-next:hover { border-color: var(--border-hover); background: var(--surface-2); }
+    .case-nav-next { justify-content: flex-end; text-align: right; }
+    .case-nav-ico { width: 20px; height: 20px; color: var(--text-3); flex-shrink: 0; transition: transform .25s, color .25s; }
+    .case-nav-back:hover .case-nav-ico { transform: translateX(-3px); color: var(--blue-bright); }
+    .case-nav-next:hover .case-nav-ico { transform: translateX(3px); color: var(--blue-bright); }
+    .case-nav-label { display: block; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-4); }
+    .case-nav-title { display: block; font-family: var(--sans); font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-1); margin-top: 4px; line-height: 1.25; }
+    .case-nav-back .case-nav-title { font-family: var(--mono); font-size: 14px; }
+    @media (max-width: 560px) { .case-nav-row { flex-direction: column; } .case-nav-next { justify-content: flex-start; text-align: left; } }
+
+    .float-back {
+      position: fixed; bottom: 28px; left: 28px; z-index: 50;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(18,19,23,0.7); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border); border-radius: var(--radius-pill);
+      padding: 9px 16px 9px 13px; text-decoration: none;
+      font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-2);
+      transition: color .2s, border-color .2s, background .2s;
+    }
+    .float-back:hover { color: var(--text-1); border-color: var(--border-hover); }
+    .float-back svg { width: 14px; height: 14px; transition: transform .2s; }
+    .float-back:hover svg { transform: translateX(-2px); }
+    @media (max-width: 600px) { .float-back { padding: 10px; } .float-back span { display: none; } }
+
+    .back-top {
+      position: fixed; bottom: 32px; right: 32px; width: 40px; height: 40px;
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-pill);
+      display: flex; align-items: center; justify-content: center; color: var(--text-3);
+      text-decoration: none; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s, border-color 0.2s, color 0.2s; z-index: 50;
+    }
+    .back-top.visible { opacity: 1; pointer-events: auto; }
+    .back-top:hover { color: var(--text-1); border-color: var(--border-hover); }
+    .back-top svg { width: 16px; height: 16px; }
+
+    /* ─── FADE ───────────────────────────────────────────────── */
+    .fade-up { opacity: 1; transform: none; transition: opacity 0.6s ease, transform 0.6s ease; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 120px 0 48px; }
+      .section { padding: 56px 0; }
+      .contact-section { padding: 64px 0; }
+      .quote { padding: 24px 28px; }
+      .termlog-body { padding: 16px; font-size: 11px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- ─── NAVBAR ────────────────────────────────────────────── -->
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-avatar"><img loading="lazy" decoding="async" src="img/avatar-128.jpg" alt="Igor Dalmolin"></span>
+          <span class="nav-name">Igor Dalmolin</span>
+        </a>
+        <div class="nav-end">
+          <a href="index.html" class="nav-back">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span lang="en">Back to portfolio</span>
+            <span lang="pt">Voltar ao portfólio</span>
+          </a>
+          <button type="button" class="lang-switch" id="langSwitch" aria-label="Toggle language / Trocar idioma">
+            <span class="lang-opt" data-l="en">EN</span>
+            <span class="lang-opt" data-l="pt">PT</span>
+            <span class="lang-knob" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow fade-up">
+        <span lang="en">Meta Case · Product Thinking · 2025-Present</span>
+        <span lang="pt">Case Meta · Mentalidade de Produto · 2025-Hoje</span>
+      </p>
+      <h1 class="hero-title fade-up">
+        <span lang="en">The portfolio is <span class="accent"><span class="scrib-u">the product.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></span>
+        <span lang="pt">O portfólio é <span class="accent"><span class="scrib-u">o produto.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></span>
+      </h1>
+      <p class="hero-desc fade-up">
+        <span lang="en">Most portfolios ship once and freeze. I treat mine as a live product: instrumented with Microsoft Clarity, usability-tested with real people, and improved release after release. This is the case study of the site you're reading it on.</span>
+        <span lang="pt">A maioria dos portfólios é publicada uma vez e congela. Eu trato o meu como produto vivo: instrumentado com Microsoft Clarity, testado com pessoas reais e melhorado versão após versão. Este é o case do próprio site em que você está navegando.</span>
+      </p>
+      <div class="hero-tags fade-up">
+        <span class="tag highlight">
+          <span lang="en">Product Thinking</span>
+          <span lang="pt">Mentalidade de Produto</span>
+        </span>
+        <span class="tag highlight">Microsoft Clarity</span>
+        <span class="tag">
+          <span lang="en">Usability Testing</span>
+          <span lang="pt">Teste de Usabilidade</span>
+        </span>
+        <span class="tag">SUS 86.9</span>
+        <span class="tag">HTML · CSS · JS</span>
+        <span class="tag">i18n EN/PT</span>
+      </div>
+      <div class="hero-meta fade-up">
+        <div class="meta-item">
+          <div class="meta-label"><span lang="en">Role</span><span lang="pt">Função</span></div>
+          <div class="meta-value"><span lang="en">Designer, developer &amp; researcher</span><span lang="pt">Designer, desenvolvedor &amp; pesquisador</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Stack</div>
+          <div class="meta-value"><span lang="en">HTML/CSS/JS, no framework, AI in the loop</span><span lang="pt">HTML/CSS/JS, sem framework, IA no processo</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label"><span lang="en">Method</span><span lang="pt">Método</span></div>
+          <div class="meta-value"><span lang="en">Clarity analytics + moderated tests</span><span lang="pt">Analytics do Clarity + testes moderados</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value"><span lang="en">Live, always shipping</span><span lang="pt">No ar, sempre entregando</span></div>
+        </div>
+      </div>
+
+      <div class="stat-row fade-up">
+        <div class="stat-item">
+          <div class="stat-number">86.9</div>
+          <div class="stat-label"><span lang="en">SUS "excellent", SteamAI project test (n=18)</span><span lang="pt">SUS "excelente", teste do projeto SteamAI (n=18)</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">+56</div>
+          <div class="stat-label"><span lang="en">Portfolio NPS, same test</span><span lang="pt">NPS do portfólio, no mesmo teste</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">83%</div>
+          <div class="stat-label"><span lang="en">would hire after reading the case</span><span lang="pt">contratariam após ler o case</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">-80%</div>
+          <div class="stat-label"><span lang="en">gallery page weight (41MB → 8MB)</span><span lang="pt">peso da galeria (41MB → 8MB)</span></div>
+        </div>
+      </div>
+
+      <!-- Real git log as the hero cover -->
+      <div class="termwrap fade-up">
+        <div class="termlog" role="img" aria-label="Real git log of this website / Git log real deste site">
+          <div class="termlog-bar">
+            <div class="termlog-dots"><span></span><span></span><span></span></div>
+            <span class="termlog-title">igordalmolin.com.br — zsh</span>
+          </div>
+          <div class="termlog-body">
+            <div class="cmd">git log --oneline</div>
+            <div class="termlog-line"><span class="termlog-hash">243c56e</span><span class="termlog-msg">Doodle polish: checker tape + <strong>mobile contact fix</strong></span></div>
+            <div class="termlog-line"><span class="termlog-hash">2243d4e</span><span class="termlog-msg">Add doodle identity layer: scribble underlines, hover wiggle</span></div>
+            <div class="termlog-line"><span class="termlog-hash">79d8de5</span><span class="termlog-msg">Refine SteamAI prototype animations: persistent input bar</span></div>
+            <div class="termlog-line"><span class="termlog-hash">1156af6</span><span class="termlog-msg">Make SteamAI hero prototype interactive; <strong>fix Clarity dead clicks</strong></span></div>
+            <div class="termlog-line"><span class="termlog-hash">92aa5b9</span><span class="termlog-msg">Compress Santa Maria gallery images (<strong>41MB PNG to ~8MB JPG</strong>)</span></div>
+          </div>
+        </div>
+        <p class="termlog-note">
+          <span lang="en">Real commits from this site's repository. The bold ones came straight from watching users.</span>
+          <span lang="pt">Commits reais do repositório deste site. Os em negrito nasceram de observar usuários.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THE PREMISE ───────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-cols">
+        <div>
+          <p class="section-label fade-up">
+            <span lang="en">The Premise</span>
+            <span lang="pt">A Premissa</span>
+          </p>
+          <h2 class="section-title fade-up">
+            <span lang="en">A portfolio has users, and they are in a hurry</span>
+            <span lang="pt">Um portfólio tem usuários, e eles têm pressa</span>
+          </h2>
+        </div>
+        <div class="section-body fade-up">
+          <p lang="en">A recruiter gives a portfolio a few minutes, sometimes less. That makes this site a product with a very clear job: help a busy stranger decide, fast, whether I can do the work. Every friction point here costs me an interview somewhere.</p>
+          <p lang="pt">Um recrutador dá alguns minutos a um portfólio, às vezes menos. Isso faz deste site um produto com um trabalho bem claro: ajudar um estranho ocupado a decidir, rápido, se eu dou conta do trabalho. Cada ponto de atrito aqui me custa uma entrevista em algum lugar.</p>
+          <p lang="en">So I run it like a product. It has instrumentation (Microsoft Clarity), a research base (a moderated usability test with 18 people), a backlog, and a changelog. When the data shows friction, I ship a fix. This page documents that loop.</p>
+          <p lang="pt">Então eu toco o site como produto. Ele tem instrumentação (Microsoft Clarity), base de pesquisa (um teste de usabilidade moderado com 18 pessoas), backlog e changelog. Quando os dados mostram atrito, eu entrego uma correção. Esta página documenta esse ciclo.</p>
+        </div>
+      </div>
+      <div class="quote fade-up">
+        <p class="quote-text">
+          <span lang="en">I didn't settle for a portfolio that just sits there. If I ask clients to iterate, I have to iterate on myself first.</span>
+          <span lang="pt">Não me aquietei com um portfólio parado. Se eu peço iteração aos clientes, tenho que iterar em mim primeiro.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INSTRUMENTATION ───────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-cols">
+        <div>
+          <p class="section-label fade-up">
+            <span lang="en">Instrumentation</span>
+            <span lang="pt">Instrumentação</span>
+          </p>
+          <h2 class="section-title fade-up">
+            <span lang="en">Watching real sessions with Microsoft Clarity</span>
+            <span lang="pt">Assistindo sessões reais com Microsoft Clarity</span>
+          </h2>
+          <div class="section-body fade-up">
+            <p lang="en">Every page of this site runs Microsoft Clarity: session recordings, heatmaps, and frustration signals. I review sessions regularly, looking at how far people scroll, where they hesitate, and what they try to click.</p>
+            <p lang="pt">Todas as páginas deste site rodam Microsoft Clarity: gravações de sessão, mapas de calor e sinais de frustração. Eu reviso sessões com frequência, olhando até onde as pessoas rolam, onde hesitam e o que tentam clicar.</p>
+            <p lang="en">The most valuable signal so far has been the humblest one: the <strong>dead click</strong>. When someone clicks a static element, they're telling me the interface promised something it didn't deliver.</p>
+            <p lang="pt">O sinal mais valioso até agora foi o mais humilde: o <strong>dead click</strong>. Quando alguém clica num elemento estático, está me dizendo que a interface prometeu algo que não entregou.</p>
+          </div>
+        </div>
+        <div class="fade-up">
+          <p class="section-label">
+            <span lang="en">What I watch</span>
+            <span lang="pt">O que eu observo</span>
+          </p>
+          <ul class="styled-list">
+            <li>
+              <span lang="en"><strong>Dead clicks:</strong> clicks on things that look interactive but aren't</span>
+              <span lang="pt"><strong>Dead clicks:</strong> cliques em coisas que parecem interativas mas não são</span>
+            </li>
+            <li>
+              <span lang="en"><strong>Scroll depth:</strong> how far each case study actually gets read</span>
+              <span lang="pt"><strong>Profundidade de rolagem:</strong> até onde cada case é lido de verdade</span>
+            </li>
+            <li>
+              <span lang="en"><strong>Rage clicks &amp; quick-backs:</strong> frustration and instant exits</span>
+              <span lang="pt"><strong>Rage clicks &amp; retornos rápidos:</strong> frustração e saídas imediatas</span>
+            </li>
+            <li>
+              <span lang="en"><strong>Device split:</strong> mobile sessions get the same care as desktop</span>
+              <span lang="pt"><strong>Divisão por dispositivo:</strong> sessões mobile recebem o mesmo cuidado do desktop</span>
+            </li>
+            <li>
+              <span lang="en"><strong>Language:</strong> where visitors come from vs. the language they get</span>
+              <span lang="pt"><strong>Idioma:</strong> de onde os visitantes vêm vs. o idioma que recebem</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THE LOOP: FINDINGS → FIXES ────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label fade-up">
+        <span lang="en">The Loop</span>
+        <span lang="pt">O Ciclo</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">Signal in, fix out: four shipped examples</span>
+        <span lang="pt">Sinal entra, correção sai: quatro exemplos entregues</span>
+      </h2>
+      <p class="section-body fade-up">
+        <span lang="en">Each of these started as a frustration signal from a real visitor and ended as a commit. No redesign-for-redesign's-sake: every change traces back to something a user did.</span>
+        <span lang="pt">Cada um destes começou como um sinal de frustração de um visitante real e terminou como um commit. Nada de redesign por redesign: toda mudança nasce de algo que um usuário fez.</span>
+      </p>
+
+      <div class="grid-2 fade-up">
+        <div class="card">
+          <span class="card-source"><span lang="en">Clarity · dead clicks</span><span lang="pt">Clarity · dead clicks</span></span>
+          <div class="card-title">
+            <span lang="en">People kept clicking a static mockup</span>
+            <span lang="pt">As pessoas insistiam em clicar num mockup parado</span>
+          </div>
+          <div class="card-body">
+            <span lang="en">Recordings showed visitors clicking the SteamAI hero wireframe expecting it to respond. They were right to expect it. <strong>Fix:</strong> I rebuilt it as a working interactive prototype, with an entry state, suggestion chips, and animated results. The dead clicks became the feature.</span>
+            <span lang="pt">As gravações mostravam visitantes clicando no wireframe do herói do SteamAI esperando resposta. Eles tinham razão em esperar. <strong>Correção:</strong> reconstruí como protótipo interativo funcional, com estado de entrada, chips de sugestão e resultados animados. Os dead clicks viraram a funcionalidade.</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="card-source"><span lang="en">Performance · page weight</span><span lang="pt">Performance · peso de página</span></span>
+          <div class="card-title">
+            <span lang="en">A 41MB gallery was punishing mobile visitors</span>
+            <span lang="pt">Uma galeria de 41MB castigava quem estava no celular</span>
+          </div>
+          <div class="card-body">
+            <span lang="en">The Santa Maria case shipped with 41MB of PNGs, brutal on mobile connections. <strong>Fix:</strong> recompressed the entire gallery to ~8MB of optimized JPGs, about 80% lighter, with no visible quality loss on the posts.</span>
+            <span lang="pt">O case Santa Maria foi ao ar com 41MB de PNGs, brutal em conexão de celular. <strong>Correção:</strong> recomprimi a galeria inteira para ~8MB de JPGs otimizados, cerca de 80% mais leve, sem perda visível de qualidade nos posts.</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="card-source"><span lang="en">Audience · language</span><span lang="pt">Audiência · idioma</span></span>
+          <div class="card-title">
+            <span lang="en">Brazilian recruiters were landing on an English-only site</span>
+            <span lang="pt">Recrutadores brasileiros caíam num site só em inglês</span>
+          </div>
+          <div class="card-body">
+            <span lang="en">I apply to jobs in Brazil and abroad, but the site spoke one language. <strong>Fix:</strong> full EN/PT internationalization, with flash-free language detection (saved choice, then browser language) and a persistent toggle in the nav.</span>
+            <span lang="pt">Eu me candidato a vagas no Brasil e fora, mas o site falava uma língua só. <strong>Correção:</strong> internacionalização completa EN/PT, com detecção de idioma sem flash (escolha salva, depois idioma do navegador) e um toggle persistente na nav.</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="card-source">Mobile · layout</span>
+          <div class="card-title">
+            <span lang="en">The contact panel was breaking on small screens</span>
+            <span lang="pt">O painel de contato quebrava em telas pequenas</span>
+          </div>
+          <div class="card-body">
+            <span lang="en">The one section that converts (the contact CTA) had layout issues on mobile, exactly where a recruiter is most likely to skim from. <strong>Fix:</strong> rebuilt the panel's responsive behavior. The conversion point now works on every screen I can get my hands on.</span>
+            <span lang="pt">A única seção que converte (o CTA de contato) tinha problemas de layout no mobile, justamente de onde um recrutador tem mais chance de dar uma olhada. <strong>Correção:</strong> refiz o comportamento responsivo do painel. O ponto de conversão agora funciona em toda tela que eu consigo testar.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── USABILITY TEST ────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-cols">
+        <div>
+          <p class="section-label fade-up">
+            <span lang="en">The Test</span>
+            <span lang="pt">O Teste</span>
+          </p>
+          <h2 class="section-title fade-up">
+            <span lang="en">18 people, moderated sessions, honest numbers</span>
+            <span lang="pt">18 pessoas, sessões moderadas, números honestos</span>
+          </h2>
+        </div>
+        <div class="section-body fade-up">
+          <p lang="en">Analytics shows where people struggle; it rarely says why. So I ran a moderated remote usability test of the portfolio's flagship project, SteamAI, with 18 participants across 7 profiles, from UX designers and developers to founders and people outside tech, each briefed to evaluate me as a candidate. The thesis had started theoretical; this test gave the project real users and real metrics.</p>
+          <p lang="pt">O analytics mostra onde as pessoas travam; raramente diz por quê. Então conduzi um teste de usabilidade moderado e remoto do projeto principal do portfólio, o SteamAI, com 18 participantes de 7 perfis, de designers UX e desenvolvedores a empresários e pessoas fora da tecnologia, cada um orientado a me avaliar como candidato. A tese tinha nascido teórica; esse teste deu ao projeto usuários reais e métricas reais.</p>
+          <p lang="en">The scores came back strong (SUS 86.9, "excellent"). To be honest about scope: the SUS measures the SteamAI project; the NPS and the hiring question speak to the portfolio as a whole. The open feedback was the real payload: the problem statement felt buried, the process lacked signposting, and people wanted results sooner. I redesigned the case around those three complaints. The full method and task table live on the <a href="steamai-case.html" style="color:var(--blue-bright);">SteamAI case</a>.</p>
+          <p lang="pt">As notas vieram fortes (SUS 86.9, "excelente"). Sendo honesto com o escopo: o SUS mede o projeto SteamAI; o NPS e a pergunta de contratação falam do portfólio como um todo. O feedback aberto foi o ouro de verdade: o problema parecia enterrado, o processo não tinha sinalização e as pessoas queriam os resultados mais cedo. Redesenhei o case em torno dessas três reclamações. O método completo e a tabela de tarefas estão no <a href="steamai-case.html" style="color:var(--blue-bright);">case SteamAI</a>.</p>
+        </div>
+      </div>
+
+      <div class="grid-3 fade-up">
+        <div class="card">
+          <span class="card-source"><span lang="en">Finding · 33%</span><span lang="pt">Achado · 33%</span></span>
+          <div class="card-title"><span lang="en">"The problem feels buried"</span><span lang="pt">"O problema parece enterrado"</span></div>
+          <div class="card-body"><span lang="en"><strong>Shipped:</strong> an executive summary at the top with problem, solution, and outcome in 30 seconds.</span><span lang="pt"><strong>Entregue:</strong> um resumo executivo no topo com problema, solução e resultado em 30 segundos.</span></div>
+        </div>
+        <div class="card">
+          <span class="card-source"><span lang="en">Finding · 28%</span><span lang="pt">Achado · 28%</span></span>
+          <div class="card-title"><span lang="en">"I can't see the process"</span><span lang="pt">"Não consigo ver o processo"</span></div>
+          <div class="card-body"><span lang="en"><strong>Shipped:</strong> a visual process timeline, from research to validation, right after the summary.</span><span lang="pt"><strong>Entregue:</strong> uma timeline visual do processo, da pesquisa à validação, logo após o resumo.</span></div>
+        </div>
+        <div class="card">
+          <span class="card-source"><span lang="en">Finding · 22%</span><span lang="pt">Achado · 22%</span></span>
+          <div class="card-title"><span lang="en">"Where are the results?"</span><span lang="pt">"Cadê os resultados?"</span></div>
+          <div class="card-body"><span lang="en"><strong>Shipped:</strong> headline numbers moved to the first screen instead of waiting at the end.</span><span lang="pt"><strong>Entregue:</strong> os números principais foram para a primeira tela em vez de esperar no fim.</span></div>
+        </div>
+      </div>
+
+      <div class="callout fade-up">
+        <p lang="en"><strong>Why this matters beyond a portfolio:</strong> this is the same loop I bring to any product team. Instrument, watch real behavior, test with real people, prioritize by evidence, ship, and measure again. The artifact happens to be my own site; the discipline is the job.</p>
+        <p lang="pt"><strong>Por que isso importa além de um portfólio:</strong> este é o mesmo ciclo que eu levo para qualquer time de produto. Instrumentar, observar comportamento real, testar com pessoas reais, priorizar por evidência, entregar e medir de novo. O artefato por acaso é o meu próprio site; a disciplina é o trabalho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BUILT BY HAND ─────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-cols">
+        <div>
+          <p class="section-label fade-up">
+            <span lang="en">Under the Hood</span>
+            <span lang="pt">Por Baixo do Capô</span>
+          </p>
+          <h2 class="section-title fade-up">
+            <span lang="en">Built by me, with AI in the loop</span>
+            <span lang="pt">Feito por mim, com IA no processo</span>
+          </h2>
+        </div>
+        <div class="section-body fade-up">
+          <p lang="en">No framework, no template, no site builder: plain HTML, CSS, and JavaScript, with AI in the loop. Cursor and Claude Code worked as my pair programmers, and I treated what they produced like any code review: I questioned it, edited it, and rejected plenty. The decisions stayed mine, and owning them is what makes iteration cheap. When Clarity flags a problem, the fix is one commit away.</p>
+          <p lang="pt">Sem framework, sem template, sem construtor de sites: HTML, CSS e JavaScript puros, com IA no processo. Cursor e Claude Code trabalharam como meus pares de programação, e eu tratei o que eles produziam como qualquer code review: questionei, editei e rejeitei bastante coisa. As decisões continuaram minhas, e ser dono delas é o que barateia a iteração. Quando o Clarity aponta um problema, a correção está a um commit de distância.</p>
+          <p lang="en">The hand-drawn doodle layer (scribble underlines, checker tape, wiggling stars) exists for the same reason as everything else here: differentiation you can defend. Clean, generic portfolios all look the same. This one looks like me.</p>
+          <p lang="pt">A camada de rabiscos feitos à mão (sublinhados rabiscados, fita quadriculada, estrelas que balançam) existe pelo mesmo motivo de todo o resto: diferenciação que se defende. Portfólios limpos e genéricos são todos iguais. Este parece comigo.</p>
+        </div>
+      </div>
+
+      <div class="grid-3 fade-up">
+        <div class="card">
+          <div class="card-title">
+            <span lang="en">Accessible by default</span>
+            <span lang="pt">Acessível por padrão</span>
+          </div>
+          <div class="card-body">
+            <span lang="en">Keyboard-operable prototypes, ARIA labels, and full <em>prefers-reduced-motion</em> support: every animation on the site switches off for people who need it to.</span>
+            <span lang="pt">Protótipos operáveis por teclado, rótulos ARIA e suporte completo a <em>prefers-reduced-motion</em>: toda animação do site se desliga para quem precisa.</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <span lang="en">Bilingual, no flash</span>
+            <span lang="pt">Bilíngue, sem flash</span>
+          </div>
+          <div class="card-body">
+            <span lang="en">EN/PT detection runs synchronously in the head, so the page never flashes the wrong language. The choice persists across visits.</span>
+            <span lang="pt">A detecção EN/PT roda de forma síncrona no head, então a página nunca pisca no idioma errado. A escolha persiste entre visitas.</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <span lang="en">Light where it counts</span>
+            <span lang="pt">Leve onde importa</span>
+          </div>
+          <div class="card-body">
+            <span lang="en">Lazy-loaded images, compressed galleries, and CSS-drawn cover art instead of heavy screenshots. Recruiters on hotel Wi-Fi deserve love too.</span>
+            <span lang="pt">Imagens com lazy loading, galerias comprimidas e capas desenhadas em CSS no lugar de screenshots pesados. Recrutador em Wi-Fi de hotel também merece carinho.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ───────────────────────────────────────────── -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-panel">
+        <div class="doodle doodle--burst2 doodle--keep" style="--doodle-rot:90deg; --fdel:.35s; top:20px; right:26px; width:96px; height:96px;" aria-hidden="true"></div>
+        <div class="doodle doodle--star" style="--doodle-rot:-10deg; --fdur:6.8s; bottom:22px; left:34px; width:88px; height:88px;" aria-hidden="true"></div>
+        <h2 class="contact-title fade-up">
+          <span lang="en">You just watched me work. Want this on your product?</span>
+          <span lang="pt">Você acabou de me ver trabalhando. Quer isso no seu produto?</span>
+        </h2>
+        <p class="contact-desc fade-up">
+          <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
+          <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
+        </p>
+        <div class="fade-up">
+          <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
+            <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CASE NAVIGATION ──────────────────────────────────── -->
+  <section class="case-nav">
+    <div class="container">
+      <div class="case-nav-row">
+        <a href="index.html#work" class="case-nav-back">
+          <svg class="case-nav-ico" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>
+            <span class="case-nav-label"><span lang="en">Back</span><span lang="pt">Voltar</span></span>
+            <span class="case-nav-title"><span lang="en">All work</span><span lang="pt">Trabalhos</span></span>
+          </span>
+        </a>
+        <a href="santa-maria-case.html" class="case-nav-next">
+          <span>
+            <span class="case-nav-label"><span lang="en">Next case</span><span lang="pt">Próximo case</span></span>
+            <span class="case-nav-title"><span lang="en">When Government Learned to Meme</span><span lang="pt">Quando o governo aprendeu a fazer meme</span></span>
+          </span>
+          <svg class="case-nav-ico" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Igor Dalmolin.</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener">LinkedIn <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="https://www.behance.net/igordalmolin" target="_blank" rel="noopener">Behance <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="index.html">
+            <span lang="en">Portfolio</span>
+            <span lang="pt">Portfólio</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
+<a href="index.html#work" class="float-back" aria-label="Back to all work">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span><span lang="en">Work</span><span lang="pt">Trabalhos</span></span>
+</a>
+
+<a href="#" class="back-top" id="backTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+
+<script>
+  document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+
+  // Decode obfuscated email addresses
+  (() => {
+    const decode = (el) => {
+      const user = el.getAttribute('data-user');
+      const domain = el.getAttribute('data-domain');
+      const tld = el.getAttribute('data-tld');
+      if (!user || !domain || !tld) return;
+      const email = `${user}@${domain}.${tld}`;
+      if (el.tagName && el.tagName.toLowerCase() === 'a') el.href = `mailto:${email}`;
+      if (el.childElementCount === 0) el.textContent = email;
+    };
+    document.querySelectorAll('[data-obf-email]').forEach(decode);
+  })();
+
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => { backTop.classList.toggle('visible', window.scrollY > 400); });
+  backTop.addEventListener('click', e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+
+<script>
+  // Locale switch: the whole control toggles EN <-> PT
+  (function () {
+    var sw = document.getElementById('langSwitch');
+    if (!sw) return;
+    function sync() { sw.setAttribute('data-active', document.documentElement.getAttribute('data-lang') || 'en'); }
+    sync();
+    sw.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-lang') || 'en';
+      var next = cur === 'en' ? 'pt' : 'en';
+      document.documentElement.setAttribute('data-lang', next);
+      document.documentElement.setAttribute('lang', next === 'pt' ? 'pt-BR' : 'en');
+      try { localStorage.setItem('site-lang', next); } catch (e) {}
+      sync();
+    });
+  })();
+</script>
+
+<!-- i18n: language toggle wiring (head script already set initial language) -->
+<script src="i18n.js"></script>
+<script src="doodles.js" defer></script>
+</body>
+</html>
