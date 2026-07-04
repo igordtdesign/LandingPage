@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
@@ -198,7 +198,7 @@
     .eyebrow {
       font-family: var(--mono);
       font-size: 12px; font-weight: 700;
-      letter-spacing: 0.04em; text-transform: uppercase;
+      letter-spacing: 0.04em; text-transform: uppercase; font-style: italic;
       color: var(--blue-bright);
       display: inline-flex; align-items: center; gap: 9px;
     }
@@ -772,6 +772,34 @@
       .skill.wide .skill-name::after { display: none; }
     }
 
+    /* ─── ABOUT TEASER (below hero) ──────────────────────────── */
+    .about-teaser-wrap { padding: 8px 0 56px; }
+    .about-teaser {
+      display: flex; align-items: center; gap: 26px;
+      background: var(--surface-1); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 28px 32px;
+    }
+    .about-teaser-photo {
+      width: 72px; height: 72px; min-width: 72px;
+      border-radius: 50%; overflow: hidden; position: relative;
+      border: 1px solid rgba(163,167,174,0.22);
+    }
+    .about-teaser-photo img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center 18%;
+      filter: grayscale(1) contrast(1.05); display: block;
+    }
+    .about-teaser-photo::after { content: ""; position: absolute; inset: 0; background: rgba(0,38,94,0.32); }
+    .about-teaser-body { flex: 1; }
+    .about-teaser-body .eyebrow { margin-bottom: 8px; }
+    .about-teaser-text {
+      font-family: var(--sans); font-size: 15px; line-height: 1.65;
+      letter-spacing: -0.005em; color: var(--text-3); max-width: 72ch;
+    }
+    .about-teaser > .btn { flex-shrink: 0; }
+    @media (max-width: 820px) {
+      .about-teaser { flex-direction: column; align-items: flex-start; gap: 18px; padding: 26px 26px; }
+    }
+
     /* ─── ABOUT ──────────────────────────────────────────────── */
     .about {
       display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 28px; align-items: stretch;
@@ -874,8 +902,8 @@
   <section class="hero">
     <div class="container doodle-host">
       <p class="eyebrow">
-        <span lang="en">Product Designer · UX/UI · Design Systems</span>
-        <span lang="pt">Product Designer · UX/UI · Sistemas de Design</span>
+        <span lang="en">Product designer · UX/UI · design systems</span>
+        <span lang="pt">Product designer · UX/UI · sistemas de design</span>
       </p>
       <h1 class="hero-title">
         Igor Dalmolin.<span class="doodle doodle--inline doodle--star doodle--keep" style="--doodle-rot:6deg; --fdur:6.5s; width:.78em; height:.78em; margin-left:.12em; margin-bottom:-.1em;" aria-hidden="true"></span><br>
@@ -902,13 +930,36 @@
     </div>
   </section>
 
+  <!-- ABOUT TEASER -->
+  <section class="about-teaser-wrap">
+    <div class="container">
+      <div class="about-teaser">
+        <div class="about-teaser-photo">
+          <img loading="lazy" decoding="async" src="img/avatar-128.jpg" alt="Igor Dalmolin">
+        </div>
+        <div class="about-teaser-body">
+          <p class="eyebrow"><span lang="en">Who I am</span><span lang="pt">Quem eu sou</span></p>
+          <p class="about-teaser-text">
+            <span lang="en">Art Director at Agência CENTRO and Product Designer with a postgraduate degree in UX from PUCRS (10/10). 6+ years moving between brand, social, and digital product, and I ship what I design, from Figma to front-end code.</span>
+            <span lang="pt">Diretor de Arte na Agência CENTRO e Product Designer com pós-graduação em UX pela PUCRS (nota 10). São 6+ anos transitando entre marca, social e produto digital, e eu entrego o que desenho, do Figma ao código front-end.</span>
+          </p>
+        </div>
+        <a href="#about" class="btn">
+          <span lang="en">More about me</span>
+          <span lang="pt">Mais sobre mim</span>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0 7-7m-7 7-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <div class="checker-strip" aria-hidden="true"></div>
 
   <!-- SELECTED WORK -->
   <section class="section" id="work">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow"><span lang="en">Selected Work</span><span lang="pt">Trabalhos selecionados</span></p>
+        <p class="eyebrow"><span lang="en">Selected work</span><span lang="pt">Trabalhos selecionados</span></p>
         <h2><span lang="en">Four projects, <span class="scrib-u">end to end.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span><span lang="pt">Quatro projetos, <span class="scrib-u">de ponta a ponta.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></h2>
       </div>
 
@@ -1142,7 +1193,7 @@
           <div class="list-item">
             <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/D1dprKC502iVSjejCRj3II7HKBk.svg" alt=""></div>
             <div class="list-info">
-              <div class="list-title">InovaTech</div>
+              <div class="list-title">InovaTech Digital Services</div>
               <div class="list-sub"><span lang="en">3D Generalist <span style="color:var(--text-4);">·</span> 2022</span><span lang="pt">Generalista 3D <span style="color:var(--text-4);">·</span> 2022</span></div>
               <div class="list-sub"><span lang="en">Graphic Designer <span style="color:var(--text-4);">·</span> 2020-2021</span><span lang="pt">Designer Gráfico <span style="color:var(--text-4);">·</span> 2020-2021</span></div>
             </div>
@@ -1168,7 +1219,7 @@
     <div class="container doodle-host">
       <div class="doodle doodle--scribble" style="--doodle-rot:0deg; --fdel:.2s; --fdur:7s; top:-34px; right:6%; width:140px; height:140px;" aria-hidden="true"></div>
       <div class="section-head">
-        <p class="eyebrow"><span lang="en">Skills &amp; Honors</span><span lang="pt">Habilidades &amp; Reconhecimentos</span></p>
+        <p class="eyebrow"><span lang="en">Skills &amp; honors</span><span lang="pt">Habilidades &amp; reconhecimentos</span></p>
       </div>
       <div class="skills-grid">
         <div class="skill">
@@ -1241,10 +1292,17 @@
         <div class="doodle doodle--star" style="--doodle-rot:-10deg; --fdur:6.8s; bottom:22px; left:34px; width:88px; height:88px;" aria-hidden="true"></div>
         <h2><span lang="en">Available for <span class="nowrap">full-time</span>, <span class="nowrap">part-time</span>, or freelance.</span><span lang="pt">Disponível para <span class="nowrap">full-time</span>, <span class="nowrap">part-time</span> ou freelance.</span></h2>
         <p><span lang="en">Got a project or a role in mind? Write me. I answer fast.</span><span lang="pt">Tem um projeto ou uma vaga em mente? Me escreve. Eu respondo rápido.</span></p>
-        <a href="#" class="btn primary" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
-          <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
-          <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+        <div style="position:relative; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="#" class="btn primary" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
+            <span lang="en">Send me an email</span>
+            <span lang="pt">Envie um e-mail</span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" class="btn">
+            LinkedIn
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -1272,10 +1330,6 @@
         <div class="footer-links">
           <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener">
             LinkedIn
-            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="https://www.behance.net/igordalmolin" target="_blank" rel="noopener">
-            Behance
             <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>

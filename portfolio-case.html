@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
@@ -167,7 +167,7 @@
     .hero { padding: 160px 0 64px; }
     .hero-eyebrow {
       font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 24px;
+      text-transform: uppercase; font-style: italic; color: var(--accent); margin-bottom: 24px;
       display: flex; align-items: center; gap: 10px;
     }
     .hero-eyebrow::before { content: "/"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
@@ -232,7 +232,7 @@
     .hero + .section, .termwrap + .section { border-top: none; }
     .section-label {
       font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 32px;
+      text-transform: uppercase; font-style: italic; color: var(--accent); margin-bottom: 32px;
       display: flex; align-items: center; gap: 10px;
     }
     .section-label::before { content: "/"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
@@ -425,8 +425,8 @@
   <section class="hero">
     <div class="container">
       <p class="hero-eyebrow fade-up">
-        <span lang="en">Meta Case · Product Thinking · 2025-Present</span>
-        <span lang="pt">Case Meta · Mentalidade de Produto · 2025-Hoje</span>
+        <span lang="en">Meta case · product thinking · 2025-present</span>
+        <span lang="pt">Case meta · mentalidade de produto · 2025-hoje</span>
       </p>
       <h1 class="hero-title fade-up">
         <span lang="en">The portfolio is <span class="accent"><span class="scrib-u">the product.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></span>
@@ -512,14 +512,51 @@
     </div>
   </section>
 
+  <!-- ─── EXECUTIVE SUMMARY ─────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label fade-up">
+        <span lang="en">Executive summary</span>
+        <span lang="pt">Resumo executivo</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">The 30-second version</span>
+        <span lang="pt">A versão de 30 segundos</span>
+      </h2>
+      <div class="grid-3 fade-up">
+        <div class="card">
+          <div class="card-title" style="color: var(--blue-bright);"><span lang="en">Problem</span><span lang="pt">Problema</span></div>
+          <div class="card-body">
+            <span lang="en">Recruiters give a portfolio a few minutes. A static gallery can't prove product thinking, and it never tells you where readers get stuck.</span>
+            <span lang="pt">Recrutadores dão poucos minutos a um portfólio. Uma galeria estática não prova mentalidade de produto, e nunca mostra onde o leitor trava.</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color: var(--blue-bright);"><span lang="en">Solution</span><span lang="pt">Solução</span></div>
+          <div class="card-body">
+            <span lang="en">Run the site as a live product: Microsoft Clarity instrumentation, a moderated usability test with 18 people, a backlog, and fixes shipped by evidence.</span>
+            <span lang="pt">Tocar o site como produto vivo: instrumentação com Microsoft Clarity, teste de usabilidade moderado com 18 pessoas, backlog e correções entregues por evidência.</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color: var(--blue-bright);"><span lang="en">Outcome</span><span lang="pt">Resultado</span></div>
+          <div class="card-body">
+            <span lang="en">SUS 86.9 ("excellent") on the flagship case, portfolio NPS +56, 83% would hire after reading, and a public loop of continuous improvement.</span>
+            <span lang="pt">SUS 86,9 ("excelente") no case principal, NPS +56 do portfólio, 83% contratariam após ler e um ciclo público de melhoria contínua.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ─── THE PREMISE ───────────────────────────────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-cols">
         <div>
           <p class="section-label fade-up">
-            <span lang="en">The Premise</span>
-            <span lang="pt">A Premissa</span>
+            <span lang="en">The premise</span>
+            <span lang="pt">A premissa</span>
           </p>
           <h2 class="section-title fade-up">
             <span lang="en">A portfolio has users, and they are in a hurry</span>
@@ -598,8 +635,8 @@
   <section class="section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">The Loop</span>
-        <span lang="pt">O Ciclo</span>
+        <span lang="en">The loop</span>
+        <span lang="pt">O ciclo</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">Signal in, fix out: four shipped examples</span>
@@ -665,8 +702,8 @@
       <div class="section-cols">
         <div>
           <p class="section-label fade-up">
-            <span lang="en">The Test</span>
-            <span lang="pt">O Teste</span>
+            <span lang="en">The test</span>
+            <span lang="pt">O teste</span>
           </p>
           <h2 class="section-title fade-up">
             <span lang="en">18 people, moderated sessions, honest numbers</span>
@@ -712,8 +749,8 @@
       <div class="section-cols">
         <div>
           <p class="section-label fade-up">
-            <span lang="en">Under the Hood</span>
-            <span lang="pt">Por Baixo do Capô</span>
+            <span lang="en">Under the hood</span>
+            <span lang="pt">Por baixo do capô</span>
           </p>
           <h2 class="section-title fade-up">
             <span lang="en">Built by me, with AI in the loop</span>
@@ -770,16 +807,21 @@
         <div class="doodle doodle--burst2 doodle--keep" style="--doodle-rot:90deg; --fdel:.35s; top:20px; right:26px; width:96px; height:96px;" aria-hidden="true"></div>
         <div class="doodle doodle--star" style="--doodle-rot:-10deg; --fdur:6.8s; bottom:22px; left:34px; width:88px; height:88px;" aria-hidden="true"></div>
         <h2 class="contact-title fade-up">
-          <span lang="en">You just watched me work. Want this on your product?</span>
-          <span lang="pt">Você acabou de me ver trabalhando. Quer isso no seu produto?</span>
+          <span lang="en">You just watched me work.<br>Want this on your product?</span>
+          <span lang="pt">Você acabou de me ver trabalhando.<br>Quer isso no seu produto?</span>
         </h2>
         <p class="contact-desc fade-up">
           <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
           <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
         </p>
-        <div class="fade-up">
+        <div class="fade-up" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
           <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
-            <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
+            <span lang="en">Send me an email</span>
+            <span lang="pt">Envie um e-mail</span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" class="cta-btn">
+            LinkedIn
             <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
@@ -815,7 +857,6 @@
         <span class="footer-copy">© 2026 Igor Dalmolin.</span>
         <div class="footer-links">
           <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener">LinkedIn <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <a href="https://www.behance.net/igordalmolin" target="_blank" rel="noopener">Behance <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <a href="index.html">
             <span lang="en">Portfolio</span>
             <span lang="pt">Portfólio</span>

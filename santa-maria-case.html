@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
@@ -228,6 +228,7 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      font-style: italic;
       color: var(--blue);
       margin-bottom: 24px;
       display: flex;
@@ -357,6 +358,7 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      font-style: italic;
       color: var(--blue);
       margin-bottom: 32px;
       display: flex;
@@ -932,8 +934,8 @@
     <div class="container">
 
       <p class="hero-eyebrow fade-up">
-        <span lang="en">Social Media · Art Direction</span>
-        <span lang="pt">Social Media · Direção de Arte</span>
+        <span lang="en">Social media · art direction</span>
+        <span lang="pt">Social media · direção de arte</span>
       </p>
 
       <h1 class="hero-title fade-up">
@@ -1023,14 +1025,76 @@
     </div>
   </div>
 
+  <!-- ─── EXECUTIVE SUMMARY ─────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label fade-up">
+        <span lang="en">Executive summary</span>
+        <span lang="pt">Resumo executivo</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">The 30-second version</span>
+        <span lang="pt">A versão de 30 segundos</span>
+      </h2>
+      <style>
+        .xsum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
+        @media (max-width: 800px) { .xsum-grid { grid-template-columns: 1fr; } }
+        .xsum-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+        .xsum-k { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.02em; color: var(--blue-bright); margin-bottom: 10px; }
+        .xsum-card p { font-family: var(--mono); font-size: 13px; letter-spacing: -0.02em; line-height: 1.65; color: var(--text-3); }
+      </style>
+      <div class="xsum-grid fade-up">
+        <div class="xsum-card">
+          <div class="xsum-k"><span lang="en">Problem</span><span lang="pt">Problema</span></div>
+          <p>
+            <span lang="en">Santa Maria's official channels were formal, stiff, and ignored, with engagement near zero. When COVID-19 hit, actually reaching people stopped being optional.</span>
+            <span lang="pt">Os canais oficiais de Santa Maria eram formais, engessados e ignorados, com engajamento perto de zero. Quando a COVID-19 chegou, alcançar as pessoas de verdade deixou de ser opcional.</span>
+          </p>
+        </div>
+        <div class="xsum-card">
+          <div class="xsum-k"><span lang="en">Solution</span><span lang="pt">Solução</span></div>
+          <p>
+            <span lang="en">I swapped the institutional tone for the internet's own language: memes and trends leading public communication, with my art direction from concept to post.</span>
+            <span lang="pt">Troquei o tom institucional pela linguagem da própria internet: memes e tendências guiando a comunicação pública, com minha direção de arte do conceito ao post.</span>
+          </p>
+        </div>
+        <div class="xsum-card">
+          <div class="xsum-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></div>
+          <p>
+            <span lang="en">A feed people follow by choice, 3 industry awards, and a playbook that city halls across Brazil went on to copy.</span>
+            <span lang="pt">Um feed que as pessoas seguem porque querem, 3 prêmios do setor e um repertório que prefeituras do Brasil inteiro passaram a copiar.</span>
+          </p>
+        </div>
+      </div>
+      <div class="sm-stats fade-up" style="margin-top: 16px;">
+        <div class="sm-stat">
+          <div class="sm-stat-num">86.9K</div>
+          <div class="sm-stat-label"><span lang="en"><strong>Followers</strong> · ≈31% of the city</span><span lang="pt"><strong>Seguidores</strong> · ≈31% da cidade</span></div>
+        </div>
+        <div class="sm-stat">
+          <div class="sm-stat-num">6.9M</div>
+          <div class="sm-stat-label"><span lang="en"><strong>Views</strong> · last 90 days</span><span lang="pt"><strong>Visualizações</strong> · últimos 90 dias</span></div>
+        </div>
+        <div class="sm-stat">
+          <div class="sm-stat-num">176K</div>
+          <div class="sm-stat-label"><span lang="en"><strong>Interactions</strong> · last 90 days</span><span lang="pt"><strong>Interações</strong> · últimos 90 dias</span></div>
+        </div>
+        <div class="sm-stat">
+          <div class="sm-stat-num">3</div>
+          <div class="sm-stat-label"><span lang="en"><strong>Industry awards</strong> for the work</span><span lang="pt"><strong>Prêmios do setor</strong> pelo trabalho</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ─── MY ROLE ───────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-cols">
         <div>
           <p class="section-label fade-up">
-            <span lang="en">My Role</span>
-            <span lang="pt">Minha Função</span>
+            <span lang="en">My role</span>
+            <span lang="pt">Minha função</span>
           </p>
           <h2 class="section-title fade-up">
             <span lang="en">I owned the creative, concept to post</span>
@@ -1051,8 +1115,8 @@
       <div class="section-cols">
         <div>
           <p class="section-label fade-up">
-            <span lang="en">The Challenge</span>
-            <span lang="pt">O Desafio</span>
+            <span lang="en">The challenge</span>
+            <span lang="pt">O desafio</span>
           </p>
           <h2 class="section-title fade-up">
             <span lang="en">A government that nobody listened to</span>
@@ -1075,8 +1139,8 @@
   <section class="section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">The Approach</span>
-        <span lang="pt">A Abordagem</span>
+        <span lang="en">The approach</span>
+        <span lang="pt">A abordagem</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">Using the internet's language to reach people</span>
@@ -1111,8 +1175,8 @@
   <section class="gallery-section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">Phase 01: Pandemic Communication</span>
-        <span lang="pt">Fase 01: Comunicação na Pandemia</span>
+        <span lang="en">Phase 01: pandemic communication</span>
+        <span lang="pt">Fase 01: comunicação na pandemia</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">Meeting people during the hardest moments</span>
@@ -1207,8 +1271,8 @@
   <section class="gallery-section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">Phase 02: Full Campaign Range</span>
-        <span lang="pt">Fase 02: Amplitude de Campanhas</span>
+        <span lang="en">Phase 02: full campaign range</span>
+        <span lang="pt">Fase 02: amplitude de campanhas</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">Services, dates, awareness: nothing off-limits</span>
@@ -1281,8 +1345,8 @@
   <section class="gallery-section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">Phase 03: Trend-First Strategy</span>
-        <span lang="pt">Fase 03: Estratégia Guiada por Tendências</span>
+        <span lang="en">Phase 03: trend-first strategy</span>
+        <span lang="pt">Fase 03: estratégia guiada por tendências</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">The meme comes before the brief</span>
@@ -1381,9 +1445,14 @@
           <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
           <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
         </p>
-        <div class="fade-up">
+        <div class="fade-up" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
           <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
-            <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
+            <span lang="en">Send me an email</span>
+            <span lang="pt">Envie um e-mail</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" class="cta-btn">
+            LinkedIn
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
@@ -1421,10 +1490,6 @@
         <div class="footer-links">
           <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener">
             LinkedIn
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="https://www.behance.net/igordalmolin" target="_blank" rel="noopener">
-            Behance
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
           <a href="index.html">

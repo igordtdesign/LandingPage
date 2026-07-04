@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
@@ -172,7 +172,7 @@
     .hero { padding: 160px 0 96px; }
     .hero-eyebrow {
       font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 24px;
+      text-transform: uppercase; font-style: italic; color: var(--accent); margin-bottom: 24px;
       display: flex; align-items: center; gap: 10px;
     }
     .hero-eyebrow::before { content: "/"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
@@ -221,7 +221,7 @@
     .section { padding: 80px 0; border-top: 1px solid var(--border); }
     .section-label {
       font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 32px;
+      text-transform: uppercase; font-style: italic; color: var(--accent); margin-bottom: 32px;
       display: flex; align-items: center; gap: 10px;
     }
     .section-label::before { content: "/"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
@@ -551,8 +551,8 @@
   <section class="hero">
     <div class="container">
       <p class="hero-eyebrow fade-up">
-        <span lang="en">Product Design · B2B Web · Brand System</span>
-        <span lang="pt">Product Design · Web B2B · Sistema de Marca</span>
+        <span lang="en">Product design · B2B web · brand system</span>
+        <span lang="pt">Product design · web B2B · sistema de marca</span>
       </p>
       <h1 class="hero-title fade-up">
         <span lang="en"><span class="scrib-u">Ecobel:<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span><br><span class="accent">a rebrand, shipped as a B2B sales channel</span></span>
@@ -615,14 +615,58 @@
     </div>
   </div>
 
+  <!-- ─── EXECUTIVE SUMMARY ─────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label fade-up">
+        <span lang="en">Executive summary</span>
+        <span lang="pt">Resumo executivo</span>
+      </p>
+      <h2 class="section-title fade-up">
+        <span lang="en">The 30-second version</span>
+        <span lang="pt">A versão de 30 segundos</span>
+      </h2>
+      <style>
+        .xsum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
+        @media (max-width: 800px) { .xsum-grid { grid-template-columns: 1fr; } }
+        .xsum-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+        .xsum-k { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.02em; color: var(--blue-bright); margin-bottom: 10px; }
+        .xsum-card p { font-family: var(--mono); font-size: 13px; letter-spacing: -0.02em; line-height: 1.65; color: var(--text-3); }
+      </style>
+      <div class="xsum-grid fade-up">
+        <div class="xsum-card">
+          <div class="xsum-k"><span lang="en">Problem</span><span lang="pt">Problema</span></div>
+          <p>
+            <span lang="en">A B2B recycling company whose growth depended on a credible public face, stuck with a cliché logo and no website built to generate leads.</span>
+            <span lang="pt">Uma empresa de reciclagem B2B cujo crescimento dependia de uma cara pública confiável, presa a um logo clichê e sem um site feito para gerar leads.</span>
+          </p>
+        </div>
+        <div class="xsum-card">
+          <div class="xsum-k"><span lang="en">Solution</span><span lang="pt">Solução</span></div>
+          <p>
+            <span lang="en">I revitalized the brand without losing its equity (the recycling symbol moved into the "b") and designed + coded a responsive site end-to-end, aimed at "request a collection" leads.</span>
+            <span lang="pt">Revitalizei a marca sem perder seu valor (o símbolo de reciclagem foi para o "b") e projetei + codifiquei um site responsivo de ponta a ponta, focado em leads de "solicitar coleta".</span>
+          </p>
+        </div>
+        <div class="xsum-card">
+          <div class="xsum-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></div>
+          <p>
+            <span lang="en">A live site working as the company's main sales channel, on top of a coherent brand system applied from stationery to trucks. All by one person: me.</span>
+            <span lang="pt">Um site no ar funcionando como o principal canal de vendas da empresa, sobre um sistema de marca coerente aplicado do papel timbrado aos caminhões. Tudo por uma pessoa: eu.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ─── CHALLENGE ─────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-cols">
         <div>
           <p class="section-label fade-up">
-            <span lang="en">The Challenge</span>
-            <span lang="pt">O Desafio</span>
+            <span lang="en">The challenge</span>
+            <span lang="pt">O desafio</span>
           </p>
           <h2 class="section-title fade-up">
             <span lang="en">Win business clients, not applause</span>
@@ -657,8 +701,8 @@
   <section class="section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">The Approach</span>
-        <span lang="pt">A Abordagem</span>
+        <span lang="en">The approach</span>
+        <span lang="pt">A abordagem</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">Build the meaning into the letterforms</span>
@@ -836,8 +880,8 @@
   <section class="section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">In the Wild</span>
-        <span lang="pt">No Mundo Real</span>
+        <span lang="en">In the wild</span>
+        <span lang="pt">No mundo real</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">The brand applied</span>
@@ -861,8 +905,8 @@
   <section class="section">
     <div class="container">
       <p class="section-label fade-up">
-        <span lang="en">The Website</span>
-        <span lang="pt">O Site</span>
+        <span lang="en">The website</span>
+        <span lang="pt">O site</span>
       </p>
       <h2 class="section-title fade-up">
         <span lang="en">From identity to a living B2B product</span>
@@ -959,9 +1003,14 @@
           <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
           <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
         </p>
-        <div class="fade-up">
+        <div class="fade-up" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
           <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
-            <span data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">igordt [at] outlook [dot] com</span>
+            <span lang="en">Send me an email</span>
+            <span lang="pt">Envie um e-mail</span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" class="cta-btn">
+            LinkedIn
             <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
@@ -998,7 +1047,6 @@
         <span class="footer-copy">© 2026 Igor Dalmolin.</span>
         <div class="footer-links">
           <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener">LinkedIn <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <a href="https://www.behance.net/igordalmolin" target="_blank" rel="noopener">Behance <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <a href="index.html">
             <span lang="en">Portfolio</span>
             <span lang="pt">Portfólio</span>
