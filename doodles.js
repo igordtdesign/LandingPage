@@ -9,7 +9,7 @@
     return r.width > 0 && r.height > 0 && r.top < vh && r.bottom > 0;
   }
 
-  /* Reveal anything already on screen synchronously — IntersectionObserver
+  /* Reveal anything already on screen synchronously; IntersectionObserver
      can be throttled (hidden tabs, embedded previews) and never fire */
   var pending = [];
   els.forEach(function (el) {

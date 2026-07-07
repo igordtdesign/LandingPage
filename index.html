@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Igor Dalmolin | Product Designer | UX/UI</title>
-  <meta name="description" content="Product Designer with 6+ years across UX, art direction and front-end. I design experiences and build them myself.">
+  <meta name="description" content="Product Designer with 7+ years across UX, art direction and front-end. I design experiences and build them myself.">
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
     (function (c, l, a, r, i, t, y) {
@@ -426,7 +426,7 @@
     }
     .case-row:hover .steamai-thumb-input { border-color: rgba(78,161,255,0.55); background: rgba(78,161,255,0.09); }
 
-    /* Santa Maria cover — playful social motif, consistent with the others */
+    /* Santa Maria cover: playful social motif, consistent with the others */
     .sm-thumb {
       width: 100%; height: 100%; position: relative; overflow: hidden;
       background:
@@ -462,7 +462,7 @@
     .sm-bar svg { width: 17px; height: 17px; display: block; color: rgba(255,255,255,0.8); }
     .case-row:hover .sm-bar { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.28); }
 
-    /* Portfolio meta-case cover — Clarity blue, consistent with the others */
+    /* Portfolio meta-case cover: Clarity blue, consistent with the others */
     .pf-thumb {
       width: 100%; height: 100%; position: relative; overflow: hidden;
       background:
@@ -728,6 +728,9 @@
     }
     .panel > .eyebrow { margin-bottom: 8px; }
     .panel-list { display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    /* Explicit divider so space-between centers it between items (used where a panel has extra height) */
+    .panel-list--split .list-item { border-top: none; }
+    .list-div { height: 1px; background: var(--border); }
 
     .list-item {
       display: flex; align-items: flex-start; gap: 14px;
@@ -771,6 +774,14 @@
       .skill.wide { flex-direction: column; align-items: flex-start; gap: 8px; }
       .skill.wide .skill-name::after { display: none; }
     }
+    .skill.awards { flex-direction: column; align-items: stretch; gap: 16px; }
+    .skill.awards .skill-name::after { display: none; }
+    .award-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; }
+    @media (max-width: 640px) { .award-list { grid-template-columns: 1fr; } }
+    .award-list li { position: relative; padding-left: 16px; display: flex; flex-direction: column; gap: 3px; }
+    .award-list li::before { content: ""; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue-bright); }
+    .award-title { font-family: var(--sans); font-size: 13.5px; font-weight: 500; letter-spacing: -0.01em; color: var(--text-2); line-height: 1.35; }
+    .award-org { font-family: var(--mono); font-size: 11px; letter-spacing: -0.01em; color: var(--text-4); }
 
     /* ─── ABOUT TEASER (below hero) ──────────────────────────── */
     .about-teaser-wrap { padding: 8px 0 56px; }
@@ -913,8 +924,8 @@
         </span>
       </h1>
       <p class="hero-sub">
-        <span lang="en">Product Designer with 6+ years across UX, art direction, and <span class="nowrap">front-end</span>. I design experiences, and I know how to build them.</span>
-        <span lang="pt">Product Designer com 6+ anos em UX, direção de arte e <span class="nowrap">front-end</span>. Eu desenho experiências, e sei como <span class="nowrap">construí-las</span>.</span>
+        <span lang="en">Product Designer with 7+ years across UX, art direction, and <span class="nowrap">front-end</span>. I design experiences, and I know how to build them.</span>
+        <span lang="pt">Product Designer com 7+ anos em UX, direção de arte e <span class="nowrap">front-end</span>. Eu desenho experiências, e sei como <span class="nowrap">construí-las</span>.</span>
       </p>
       <div class="hero-ctas">
         <a href="#" class="btn primary" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
@@ -940,8 +951,8 @@
         <div class="about-teaser-body">
           <p class="eyebrow"><span lang="en">Who I am</span><span lang="pt">Quem eu sou</span></p>
           <p class="about-teaser-text">
-            <span lang="en">Art Director at Agência CENTRO and Product Designer with a postgraduate degree in UX from PUCRS (10/10). 6+ years moving between brand, social, and digital product, and I ship what I design, from Figma to front-end code.</span>
-            <span lang="pt">Diretor de Arte na Agência CENTRO e Product Designer com pós-graduação em UX pela PUCRS (nota 10). São 6+ anos transitando entre marca, social e produto digital, e eu entrego o que desenho, do Figma ao código front-end.</span>
+            <span lang="en">Art Director at Agência CENTRO and Product Designer with a postgraduate degree in UX from PUCRS (10/10). 7+ years moving between brand, social, and digital product, and I understand how things get built, from Figma to front-end handoff.</span>
+            <span lang="pt">Diretor de Arte na Agência CENTRO e Product Designer com pós-graduação em UX pela PUCRS (nota 10). São 7+ anos transitando entre marca, social e produto digital, e sei como as coisas são construídas, do Figma ao handoff com o front-end.</span>
           </p>
         </div>
         <a href="#about" class="btn">
@@ -1157,7 +1168,7 @@
         <!-- Education -->
         <div class="panel">
           <p class="eyebrow"><span lang="en">Education</span><span lang="pt">Educação</span></p>
-          <div class="panel-list">
+          <div class="panel-list panel-list--split">
           <div class="list-item">
             <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/YcyG9QsC7RV1Onc50wyEXquv1k.svg" alt=""></div>
             <div class="list-info">
@@ -1166,6 +1177,7 @@
             </div>
             <div class="list-date">2024-2025</div>
           </div>
+          <div class="list-div" aria-hidden="true"></div>
           <div class="list-item">
             <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/ZokCuPJkR8AKgTToaXlDYY95I.svg" alt=""></div>
             <div class="list-info">
@@ -1194,8 +1206,7 @@
             <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/D1dprKC502iVSjejCRj3II7HKBk.svg" alt=""></div>
             <div class="list-info">
               <div class="list-title">InovaTech Digital Services</div>
-              <div class="list-sub"><span lang="en">3D Generalist <span style="color:var(--text-4);">·</span> 2022</span><span lang="pt">Generalista 3D <span style="color:var(--text-4);">·</span> 2022</span></div>
-              <div class="list-sub"><span lang="en">Graphic Designer <span style="color:var(--text-4);">·</span> 2020-2021</span><span lang="pt">Designer Gráfico <span style="color:var(--text-4);">·</span> 2020-2021</span></div>
+              <div class="list-sub"><span lang="en">Product Designer</span><span lang="pt">Product Designer</span></div>
             </div>
             <div class="list-date">2020-2022</div>
           </div>
@@ -1244,11 +1255,28 @@
         </div>
         <div class="skill">
           <div class="skill-name"><span lang="en">Languages</span><span lang="pt">Idiomas</span></div>
-          <div class="skill-sub"><span lang="en">PT native · EN C2 · IT B1 · ES A2</span><span lang="pt">PT nativo · EN C2 · IT B1 · ES A2</span></div>
+          <div class="skill-sub"><span lang="en">PT native · EN C2 · IT B1</span><span lang="pt">PT nativo · EN C2 · IT B1</span></div>
         </div>
-        <div class="skill wide">
+        <div class="skill wide awards">
           <div class="skill-name"><span lang="en">Awards</span><span lang="pt">Prêmios</span></div>
-          <div class="skill-sub"><span lang="en">4 recognitions: Boas Práticas · ARI · Maratona Ouvidoria · Troféu Vento Norte</span><span lang="pt">4 reconhecimentos: Boas Práticas · ARI · Maratona Ouvidoria · Troféu Vento Norte</span></div>
+          <ul class="award-list">
+            <li>
+              <span class="award-title">Prêmio Boas Práticas da Gestão Pública Municipal</span>
+              <span class="award-org">FAMURS</span>
+            </li>
+            <li>
+              <span class="award-title">Prêmio ARI de Assessoria de Imprensa</span>
+              <span class="award-org">ARI</span>
+            </li>
+            <li>
+              <span class="award-title">3ª Maratona de Defesa dos Direitos dos Usuários de Serviços Públicos</span>
+              <span class="award-org">CGU</span>
+            </li>
+            <li>
+              <span class="award-title">Troféu Vento Norte</span>
+              <span class="award-org">Santa Maria Vídeo e Cinema</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -1268,8 +1296,8 @@
         <div class="about-body">
           <p class="about-name"><span lang="en">I'm Igor Dalmolin.</span><span lang="pt">Sou Igor Dalmolin.</span></p>
           <div class="about-text">
-            <p lang="en">Product Designer from southern Brazil, with a background in graphic design and art direction. Over 6 years across visual identity, campaigns, social media strategy, and UX, always with one foot in the creative and the other in tech.</p>
-            <p lang="pt">Product Designer do sul do Brasil, com background em design gráfico e direção de arte. Mais de 6 anos entre identidade visual, campanhas, estratégia de social media e UX, sempre com um pé no criativo e outro na tecnologia.</p>
+            <p lang="en">Product Designer from southern Brazil, with a background in graphic design and art direction. Over 7 years across visual identity, campaigns, social media strategy, and UX, always with one foot in the creative and the other in tech.</p>
+            <p lang="pt">Product Designer do sul do Brasil, com background em design gráfico e direção de arte. Mais de 7 anos entre identidade visual, campanhas, estratégia de social media e UX, sempre com um pé no criativo e outro na tecnologia.</p>
             <p lang="en">I started as a Graphic Designer and Production Assistant while still in college. Then COVID scrambled everything, and adapting fast turned out to be the part of the job I was best at.</p>
             <p lang="pt">Comecei como Designer Gráfico e Assistente de Produção ainda na faculdade. Aí a Covid bagunçou tudo, e me adaptar rápido acabou sendo a parte do trabalho que eu fazia melhor.</p>
             <p lang="en">I moved into tech, learned UX, and completed a postgraduate degree at PUCRS with a perfect grade. Today I work as Art Director at Agência CENTRO, leading visual systems for public institutions, while designing and shipping digital products end to end, from UX to front-end code (this site included).</p>

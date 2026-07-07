@@ -1,4 +1,4 @@
-/* i18n.js — language toggle + persistence
+/* i18n.js: language toggle + persistence
    Detection priority: localStorage > navigator.language > default 'en'
    The initial detection runs inline in each page's <head> to avoid flash.
    This file wires up the EN/PT toggle buttons and persists the choice.

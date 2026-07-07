@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   DOODLES — hand-drawn identity layer (gritty, Vans-ish, still pro)
+   DOODLES: hand-drawn identity layer (gritty, Vans-ish, still pro)
    Shared by index + case pages. SVGs live in img/doodles/.
    Color comes from currentColor via CSS mask, so every doodle
    follows the site token (--doodle, defaults to portfolio blue).
@@ -114,7 +114,7 @@
 @keyframes scribDraw { to { stroke-dashoffset: 0; } }
 
 /* Inside gradient-clipped hero text, a positioned wrapper escapes the
-   parent's background-clip — re-apply the gradient on the wrapper */
+   parent's background-clip, so re-apply the gradient on the wrapper */
 .hero-title .accent .scrib-u {
   background: linear-gradient(120deg, var(--blue-bright, #5b9bff) 0%, #8db4ff 60%, var(--blue, #4081e2) 100%);
   -webkit-background-clip: text;

@@ -1259,7 +1259,7 @@
         .wfp-result .wfp-game:nth-child(1) { animation-delay: 0.30s; }
         .wfp-result .wfp-game:nth-child(2) { animation-delay: 0.38s; }
         .wfp-result .wfp-game:nth-child(3) { animation-delay: 0.46s; }
-        /* The refine input is intentionally NOT animated — it stays anchored as a
+        /* The refine input is intentionally NOT animated; it stays anchored as a
            persistent bar so it doesn't blink out and back between states. */
 
         /* Entry (opening) animation: when SteamAI is opened, its content
@@ -1394,8 +1394,8 @@
               <div class="wfp-xai">
                 <div class="wfp-xai-label"><span lang="en">Why these games</span><span lang="pt">Por que estes jogos</span></div>
                 <div class="wfp-xai-text">
-                  <span lang="en">Pirate-themed adventures with humor and puzzle-solving — the core of Monkey Island.</span>
-                  <span lang="pt">Aventuras com tema pirata, humor e puzzles — o núcleo de Monkey Island.</span>
+                  <span lang="en">Pirate-themed adventures with humor and puzzle-solving, the core of Monkey Island.</span>
+                  <span lang="pt">Aventuras com tema pirata, humor e puzzles, o núcleo de Monkey Island.</span>
                 </div>
               </div>
               <div class="wfp-games">
@@ -2448,7 +2448,7 @@
 
           isProgrammaticScroll = true;
           try {
-            // Center the frame within the horizontal carousel only — never scroll the page.
+            // Center the frame within the horizontal carousel only; never scroll the page.
             var rowRect = phonesRow.getBoundingClientRect();
             var slotRect = slot.getBoundingClientRect();
             var delta = (slotRect.left + slotRect.width / 2) - (rowRect.left + rowRect.width / 2);
