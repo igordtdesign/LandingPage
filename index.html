@@ -660,68 +660,67 @@
     .sab-thumb {
       width: 100%; height: 100%; position: relative; overflow: hidden;
       background:
-        radial-gradient(ellipse 80% 55% at 50% -5%, #1a3a6e 0%, transparent 60%),
-        radial-gradient(ellipse 60% 45% at 85% 100%, #3a1550 0%, transparent 55%),
-        linear-gradient(180deg, #0d1b35 0%, #070e1d 100%);
+        radial-gradient(ellipse 80% 55% at 50% -5%, rgba(147,170,120,0.30) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 45% at 85% 100%, rgba(207,233,78,0.14) 0%, transparent 55%),
+        linear-gradient(180deg, #131a11 0%, #0d110c 100%);
       display: flex; align-items: center; justify-content: center;
       padding: 34px 38px;
     }
     .sab-card {
       width: 100%; max-width: 280px;
-      background: #0d1422; border: 1px solid rgba(200,67,106,0.35);
+      background: #151b13; border: 1px solid #2e3a29;
       border-radius: 16px; padding: 13px; position: relative;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(207,233,78,0.05);
       transition: transform 0.5s ease;
       display: flex; flex-direction: column;
     }
     .case-row:hover .sab-card { transform: translateY(-3px); }
     .sab-head { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
     .sab-icon {
-      width: 22px; height: 22px; min-width: 22px; border-radius: 50%;
-      background: linear-gradient(135deg, #c8436a, #7b2fa0);
+      width: 22px; height: 22px; min-width: 22px; border-radius: 7px;
+      background: #253022;
       display: flex; align-items: center; justify-content: center;
-      font-size: 10px; color: #fff;
-      box-shadow: 0 0 10px rgba(200,67,106,0.4);
+      font-family: var(--sans); font-size: 11px; font-weight: 800; color: #cfe94e;
     }
-    .sab-name { font-family: var(--sans); font-size: 11.5px; font-weight: 700; letter-spacing: -0.03em; color: #fff; }
-    .sab-name span { color: rgba(255,255,255,0.4); font-weight: 400; }
+    .sab-name { font-family: var(--sans); font-size: 11.5px; font-weight: 800; letter-spacing: -0.03em; color: #f2efe1; }
+    .sab-name span { color: #cfe94e; font-weight: 800; }
     .sab-user {
-      background: linear-gradient(135deg, #1d4faa, #2563c4);
+      background: #cfe94e;
       border-radius: 11px 11px 3px 11px; padding: 6px 10px;
-      font-family: var(--sans); font-size: 9.5px; line-height: 1.4; color: #fff;
+      font-family: var(--sans); font-size: 9.5px; font-weight: 600; line-height: 1.4; color: #0d110c;
       max-width: 88%; margin-left: auto; margin-bottom: 9px;
     }
     .sab-xai {
-      background: rgba(78,161,255,0.08); border: 1px solid rgba(78,161,255,0.18);
+      background: #253022; border: 1px solid #2e3a29;
       border-radius: 9px; padding: 7px 9px; margin-bottom: 9px;
     }
     .sab-xai-label {
       font-family: var(--mono); font-size: 7.5px; font-weight: 700;
-      letter-spacing: 0.07em; text-transform: uppercase; color: #4ea1ff; margin-bottom: 5px;
+      letter-spacing: 0.07em; text-transform: uppercase; color: #cfe94e; margin-bottom: 5px;
     }
-    .sab-xai-line { height: 5px; border-radius: 2px; background: rgba(255,255,255,0.14); }
+    .sab-xai-line { height: 5px; border-radius: 2px; background: rgba(242,239,225,0.14); }
     .sab-xai-line + .sab-xai-line { margin-top: 4px; width: 62%; }
     .sab-games { display: flex; gap: 5px; margin-bottom: 10px; }
-    .sab-game { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 7px; overflow: hidden; }
-    .sab-game-thumb { height: 30px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .sab-game { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid #2e3a29; border-radius: 7px; overflow: hidden; }
+    .sab-game-thumb { height: 30px; background: linear-gradient(135deg, #1d251a, #253022); display: flex; align-items: center; justify-content: center; font-size: 12px; }
     .sab-game-match {
-      font-family: var(--mono); font-size: 7px; font-weight: 700; color: #4ea1ff;
-      background: rgba(78,161,255,0.12); border-radius: 3px; padding: 1px 4px;
+      font-family: var(--mono); font-size: 7px; font-weight: 700; color: #93aa78;
+      background: rgba(13,17,12,0.75); border-radius: 99px; padding: 1px 5px;
       display: inline-block; margin: 4px 5px 5px;
     }
     .sab-input {
       display: flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(78,161,255,0.3);
+      background: #1d251a; border: 1px solid #2e3a29;
       border-radius: 99px; padding: 6px 6px 6px 11px;
-      transition: border-color 0.3s, background 0.3s;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
-    .case-row:hover .sab-input { border-color: rgba(78,161,255,0.55); background: rgba(78,161,255,0.09); }
-    .sab-input-text { flex: 1; font-family: var(--mono); font-size: 8.5px; letter-spacing: -0.02em; color: rgba(255,255,255,0.4); }
-    .sab-cursor { width: 1.5px; height: 9px; background: #4ea1ff; border-radius: 1px; animation: sabBlink 1s step-end infinite; }
+    .case-row:hover .sab-input { border-color: #93aa78; box-shadow: 0 0 0 2px rgba(207,233,78,0.22); }
+    .sab-input-text { flex: 1; font-family: var(--mono); font-size: 8.5px; letter-spacing: -0.02em; color: #6d7a62; }
+    .sab-cursor { width: 1.5px; height: 9px; background: #cfe94e; border-radius: 1px; animation: sabBlink 1s step-end infinite; }
     @keyframes sabBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     .sab-send {
       width: 16px; height: 16px; min-width: 16px; border-radius: 50%;
-      background: rgba(78,161,255,0.2);
+      background: #cfe94e;
       display: flex; align-items: center; justify-content: center;
     }
     @media (prefers-reduced-motion: reduce) { .sab-cursor { animation: none; } }
@@ -960,7 +959,7 @@
           <img loading="lazy" decoding="async" src="img/avatar-128.jpg" alt="Igor Dalmolin">
         </div>
         <div class="about-teaser-body">
-          <p class="eyebrow"><span lang="en">Who I am</span><span lang="pt">Quem eu sou</span></p>
+          <p class="eyebrow"><span lang="en">Who I am</span><span lang="pt">Quem sou eu</span></p>
           <p class="about-teaser-text">
             <span lang="en">Art Director at Agência CENTRO and Product Designer with a postgraduate degree in UX from PUCRS (10/10). 7+ years moving between brand, social, and digital product, and I understand how things get built, from Figma to front-end handoff.</span>
             <span lang="pt">Diretor de Arte na Agência CENTRO e Product Designer com pós-graduação em UX pela PUCRS (nota 10). São 7+ anos transitando entre marca, social e produto digital, e sei como as coisas são construídas, do Figma ao handoff com o front-end.</span>
@@ -988,7 +987,57 @@
       <div class="cases doodle-host">
         <div class="doodle doodle--coffee" style="--doodle-rot:8deg; --fdur:7s; top:-44px; right:44px; width:86px; height:86px; z-index:3;" aria-hidden="true"></div>
 
-        <!-- CASE 1: Santa Maria -->
+        <!-- CASE 1: WhichGameToBuy -->
+        <a href="whichgametobuy-case.html" class="case-row">
+          <div class="case-vis">
+            <div class="sab-thumb">
+              <div class="sab-card">
+                <div class="sab-head">
+                  <span class="sab-icon" aria-hidden="true">W</span>
+                  <span class="sab-name">WhichGameToBuy<span>.</span></span>
+                </div>
+                <div class="sab-user">
+                  <span lang="en">Like Monkey Island: pirates, humor, puzzles</span>
+                  <span lang="pt">Tipo Monkey Island: piratas, humor, puzzles</span>
+                </div>
+                <div class="sab-xai">
+                  <div class="sab-xai-label"><span lang="en">Why these games</span><span lang="pt">Por que estes jogos</span></div>
+                  <div class="sab-xai-line"></div>
+                  <div class="sab-xai-line"></div>
+                </div>
+                <div class="sab-games">
+                  <div class="sab-game"><div class="sab-game-thumb">🎮</div><span class="sab-game-match">★ 92%</span></div>
+                  <div class="sab-game"><div class="sab-game-thumb">🎮</div><span class="sab-game-match">★ 88%</span></div>
+                  <div class="sab-game"><div class="sab-game-thumb">🎮</div><span class="sab-game-match">★ 81%</span></div>
+                </div>
+                <div class="sab-input">
+                  <span class="sab-input-text"><span lang="en">Refine your search...</span><span lang="pt">Refine sua busca...</span></span>
+                  <span class="sab-cursor" aria-hidden="true"></span>
+                  <span class="sab-send"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#0d110c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="case-info">
+            <div class="case-tags">
+              <span class="tag blue"><span lang="en">Live Product</span><span lang="pt">Produto de verdade</span></span>
+              <span class="tag blue"><span lang="en">Conversational AI</span><span lang="pt">IA Conversacional</span></span>
+              <span class="tag"><span lang="en">Grade 10/10</span><span lang="pt">Nota 10/10</span></span>
+              <span class="tag">PUCRS</span>
+            </div>
+            <h3 class="case-title"><span lang="en">WhichGameToBuy: From Thesis to Product</span><span lang="pt">WhichGameToBuy: Da Tese ao Produto</span></h3>
+            <p class="case-desc">
+              <span lang="en">Born as my PUCRS thesis on game discovery (10/10), tested with 18 users, then shipped by me as an independent product: chat discovery with recommendations that explain themselves, live at whichgametobuy.com.</span>
+              <span lang="pt">Nasceu como minha tese na PUCRS sobre descoberta de jogos (nota 10), foi testado com 18 usuários e virou produto independente lançado por mim: descoberta por chat com recomendações que se explicam, no ar em whichgametobuy.com.</span>
+            </p>
+            <div class="case-foot">
+              <span class="case-meta">2024-2026</span>
+              <span class="case-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+        </a>
+
+        <!-- CASE 2: Santa Maria -->
         <a href="santa-maria-case.html" class="case-row">
           <div class="case-vis">
             <div class="smb-thumb">
@@ -1033,56 +1082,6 @@
             </p>
             <div class="case-foot">
               <span class="case-meta"><span lang="en">2020-Present</span><span lang="pt">2020-Hoje</span></span>
-              <span class="case-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </div>
-          </div>
-        </a>
-
-        <!-- CASE 2: SteamAI -->
-        <a href="steamai-case.html" class="case-row">
-          <div class="case-vis">
-            <div class="sab-thumb">
-              <div class="sab-card">
-                <div class="sab-head">
-                  <span class="sab-icon" aria-hidden="true">✦</span>
-                  <span class="sab-name">Steam<span>AI</span></span>
-                </div>
-                <div class="sab-user">
-                  <span lang="en">Like Monkey Island: pirates, humor, puzzles</span>
-                  <span lang="pt">Tipo Monkey Island: piratas, humor, puzzles</span>
-                </div>
-                <div class="sab-xai">
-                  <div class="sab-xai-label"><span lang="en">Why these games</span><span lang="pt">Por que estes jogos</span></div>
-                  <div class="sab-xai-line"></div>
-                  <div class="sab-xai-line"></div>
-                </div>
-                <div class="sab-games">
-                  <div class="sab-game"><div class="sab-game-thumb">🎮</div><span class="sab-game-match">92%</span></div>
-                  <div class="sab-game"><div class="sab-game-thumb">🎮</div><span class="sab-game-match">88%</span></div>
-                  <div class="sab-game"><div class="sab-game-thumb">🎮</div><span class="sab-game-match">81%</span></div>
-                </div>
-                <div class="sab-input">
-                  <span class="sab-input-text"><span lang="en">Refine your search...</span><span lang="pt">Refine sua busca...</span></span>
-                  <span class="sab-cursor" aria-hidden="true"></span>
-                  <span class="sab-send"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#4ea1ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="case-info">
-            <div class="case-tags">
-              <span class="tag blue"><span lang="en">UX Research</span><span lang="pt">Pesquisa UX</span></span>
-              <span class="tag blue"><span lang="en">Conversational AI</span><span lang="pt">IA Conversacional</span></span>
-              <span class="tag"><span lang="en">Grade 10/10</span><span lang="pt">Nota 10/10</span></span>
-              <span class="tag">PUCRS</span>
-            </div>
-            <h3 class="case-title"><span lang="en">SteamAI: Game Discovery with AI</span><span lang="pt">SteamAI: Descobrir jogos com IA</span></h3>
-            <p class="case-desc">
-              <span lang="en">Postgraduate thesis exploring how conversational AI can solve the game discovery problem on Steam. Qualitative UX research, personas, and prototype.</span>
-              <span lang="pt">Tese de pós-graduação explorando como a IA conversacional pode resolver o problema de descoberta de jogos na Steam. Pesquisa qualitativa de UX, personas e protótipo.</span>
-            </p>
-            <div class="case-foot">
-              <span class="case-meta">2024-2025</span>
               <span class="case-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </div>
