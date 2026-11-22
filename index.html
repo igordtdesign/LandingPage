@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Igor Dalmolin | Product Designer | UX/UI</title>
-  <meta name="description" content="Product Designer with 7+ years across UX, art direction and front-end. I design experiences and build them myself.">
+  <title>Igor Dalmolin | Art Director &amp; Senior Visual Designer</title>
+  <meta name="description" content="Art Director and Senior Visual Designer with 7+ years in campaigns, branding, motion, and digital design. I lead a team of 10 designers, with UX and front-end in the toolkit.">
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
     (function (c, l, a, r, i, t, y) {
@@ -267,6 +267,7 @@
 
     /* ─── SECTION RHYTHM ─────────────────────────────────────── */
     .section { padding: 76px 0; }
+    section[id] { scroll-margin-top: 24px; } /* anchor jumps clear the floating nav */
     @media (max-width: 720px) { .section { padding: 52px 0; } }
     .nowrap { white-space: nowrap; }
     .section-head { max-width: 720px; margin-bottom: 48px; }
@@ -297,6 +298,8 @@
       color: var(--text-2); max-width: 620px; margin-bottom: 44px;
     }
     .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn-skip svg { transition: transform 0.3s ease; }
+    .btn-skip:hover svg { transform: translateY(2px); }
 
     /* ─── STACKED CASES ──────────────────────────────────────── */
     .cases { display: flex; flex-direction: column; gap: 28px; margin-top: 8px; }
@@ -725,6 +728,34 @@
     }
     @media (prefers-reduced-motion: reduce) { .sab-cursor { animation: none; } }
 
+    /* Ecobel cover, alt B: the live site in a browser, on brand green
+       (old .ecobel-thumb logo cover kept above for revert) */
+    .ecb-thumb {
+      width: 100%; height: 100%; position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 100% 80% at 70% 20%, #2a7a08 0%, #1d5902 60%, #14400a 100%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 36px 40px;
+    }
+    .ecb-browser {
+      width: 100%; max-width: 360px; border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.18); background: #efeee6;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+      transition: transform 0.5s ease;
+    }
+    .case-row:hover .ecb-browser { transform: translateY(-3px); }
+    .ecb-bar {
+      display: flex; align-items: center; gap: 6px; padding: 7px 10px;
+      background: #e4e3d8; border-bottom: 1px solid rgba(20,24,14,0.08);
+    }
+    .ecb-dots { display: flex; gap: 4px; }
+    .ecb-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(20,24,14,0.18); }
+    .ecb-url {
+      flex: 1; margin: 0 8px; text-align: center;
+      font-family: var(--mono); font-size: 8.5px; letter-spacing: -0.02em; color: rgba(20,24,14,0.55);
+      background: rgba(255,255,255,0.7); border-radius: 99px; padding: 3px 8px;
+    }
+    .ecb-browser img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+
     /* ─── PANEL GRID (experience / education) ────────────────── */
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
     @media (max-width: 820px) { .two-col { grid-template-columns: 1fr; gap: 16px; } }
@@ -747,12 +778,14 @@
       border-top: 1px solid var(--border);
     }
     .panel-list .list-item:first-child { border-top: none; }
+    /* Line icon per role (what I did there), same blue tint as .tag.blue */
     .list-icon {
-      width: 38px; height: 38px; min-width: 38px;
-      border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      width: 40px; height: 40px; min-width: 40px;
+      border-radius: 11px; background: var(--blue-soft); border: 1px solid rgba(64,129,226,0.22);
+      color: var(--blue-bright);
+      display: flex; align-items: center; justify-content: center;
     }
-    .list-icon img { width: 22px; height: 22px; filter: grayscale(1); object-fit: contain; }
+    .list-icon svg { width: 18px; height: 18px; display: block; }
     .list-info { flex: 1; }
     .list-title { font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-1); line-height: 1.35; }
     .list-sub { font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: -0.02em; color: var(--text-3); margin-top: 4px; }
@@ -840,6 +873,102 @@
     .about-text p { font-family: var(--sans); font-size: 15.5px; line-height: 1.7; color: var(--text-3); letter-spacing: -0.005em; }
     .about-text p + p { margin-top: 14px; }
 
+    /* ─── GALLERY ────────────────────────────────────────────── */
+    /* Every piece is 1080x1440 (3:4), so a regular grid instead of masonry */
+    .g-wrap { position: relative; }
+    .g-wrap.is-collapsed .g-wall { max-height: 1150px; overflow: hidden; }
+    .g-wrap.is-collapsed::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 220px;
+      background: linear-gradient(180deg, rgba(11,12,15,0) 0%, rgba(11,12,15,0.85) 60%, #0b0c0f 100%);
+      pointer-events: none;
+    }
+    @media (max-width: 720px) { .g-wrap.is-collapsed .g-wall { max-height: 900px; } }
+    /* 4 or 2 columns only: 32 pieces always close full rows */
+    .g-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    @media (max-width: 960px) { .g-wall { gap: 10px; } }
+    @media (max-width: 720px) { .g-wall { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    .g-item {
+      margin: 0; position: relative;
+      border-radius: var(--r-md); overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg-2);
+      transform: translateZ(0); /* keeps the radius clipping during the zoom */
+    }
+    @media (max-width: 720px) { .g-item { border-radius: var(--r-sm); } }
+    .g-open { display: block; width: 100%; padding: 0; margin: 0; border: 0; background: none; cursor: zoom-in; position: relative; }
+    .g-open:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+    .g-open picture { display: block; }
+    .g-open img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; transition: transform 0.6s ease; }
+    .g-item:hover .g-open img { transform: scale(1.04); }
+    .g-item figcaption {
+      position: absolute; left: 0; right: 0; bottom: 0; padding: 34px 14px 12px;
+      background: linear-gradient(0deg, rgba(8,9,11,0.92) 0%, rgba(8,9,11,0) 100%);
+      opacity: 0; transform: translateY(6px); pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .g-item:hover figcaption, .g-item:focus-within figcaption { opacity: 1; transform: none; }
+    @media (hover: none) { .g-item figcaption { display: none; } }
+    .g-t { display: block; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-1); line-height: 1.3; }
+    .g-k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: -0.02em; color: var(--text-3); margin-top: 3px; }
+    .g-more { display: flex; justify-content: center; margin-top: 4px; position: relative; z-index: 1; }
+    .g-more[hidden] { display: none; }
+    .g-more .btn { cursor: pointer; }
+
+    /* Gallery viewer */
+    .glb {
+      position: fixed; inset: 0; z-index: 300;
+      display: flex; align-items: center; justify-content: center;
+      padding: 64px 96px;
+      background: rgba(8,9,11,0.94);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    }
+    .glb[hidden] { display: none; }
+    .glb-fig { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 100%; }
+    /* All pieces are 3:4: size the frame up front so the thumb-to-full swap never jumps */
+    .glb-media img {
+      display: block; aspect-ratio: 3 / 4; width: auto;
+      height: min(calc(100vh - 170px), calc((100vw - 192px) * 4 / 3), 1440px);
+      height: min(calc(100dvh - 170px), calc((100vw - 192px) * 4 / 3), 1440px);
+      border-radius: var(--r-md); border: 1px solid var(--border); background: var(--bg-2);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    }
+    .glb-cap { display: flex; align-items: baseline; gap: 14px; text-align: center; flex-wrap: wrap; justify-content: center; }
+    .glb-cap .g-t { display: inline; font-size: 14px; }
+    .glb-cap .g-k { display: inline; margin: 0 0 0 10px; }
+    .glb-num { font-family: var(--mono); font-size: 11px; color: var(--text-4); }
+    .glb-close {
+      position: absolute; top: 22px; right: 26px;
+      font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-3); background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--r-pill); padding: 7px 14px; cursor: pointer;
+      transition: color .2s, border-color .2s;
+    }
+    .glb-close:hover { color: var(--text-1); border-color: var(--border-hover); }
+    .glb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-2); background: var(--surface-2); border: 1px solid var(--border);
+      cursor: pointer; transition: color .2s, border-color .2s, background .2s;
+    }
+    .glb-nav:hover { color: #fff; background: var(--blue); border-color: var(--blue); }
+    .glb-nav svg { width: 20px; height: 20px; }
+    .glb-nav.prev { left: 24px; }
+    .glb-nav.next { right: 24px; }
+    .glb-close:focus-visible, .glb-nav:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+    @media (max-width: 720px) {
+      .glb { padding: 64px 12px 96px; }
+      .glb-nav { top: auto; bottom: 24px; transform: none; }
+      .glb-nav.prev { left: calc(50% - 60px); }
+      .glb-nav.next { right: calc(50% - 60px); }
+      .glb-cap { flex-direction: column; align-items: center; gap: 4px; }
+      .glb-cap .g-t, .glb-cap .g-k { display: block; margin: 0; }
+      .glb-cap .g-k { margin-top: 3px; }
+      .glb-media img {
+        height: min(calc(100vh - 230px), calc((100vw - 24px) * 4 / 3));
+        height: min(calc(100dvh - 230px), calc((100vw - 24px) * 4 / 3));
+      }
+    }
+
     /* ─── CONTACT ────────────────────────────────────────────── */
     .contact {
       text-align: center; padding: 4px 0 84px;
@@ -904,6 +1033,7 @@
         <div class="nav-end">
           <div class="nav-links">
             <a href="#work" class="nav-link"><span lang="en">Work</span><span lang="pt">Trabalhos</span></a>
+            <a href="#gallery" class="nav-link"><span lang="en">Gallery</span><span lang="pt">Galeria</span></a>
             <a href="#about" class="nav-link"><span lang="en">About</span><span lang="pt">Sobre</span></a>
             <a href="#contact" class="nav-link"><span lang="en">Contact</span><span lang="pt">Contato</span></a>
           </div>
@@ -923,25 +1053,30 @@
   <section class="hero">
     <div class="container doodle-host">
       <p class="eyebrow">
-        <span lang="en">Product designer · UX/UI · design systems</span>
-        <span lang="pt">Product designer · UX/UI · sistemas de design</span>
+        <span lang="en">Art director · senior visual designer</span>
+        <span lang="pt">Diretor de arte · visual designer sênior</span>
       </p>
       <h1 class="hero-title">
         Igor Dalmolin.<span class="doodle doodle--inline doodle--star doodle--keep" style="--doodle-rot:6deg; --fdur:6.5s; width:.78em; height:.78em; margin-left:.12em; margin-bottom:-.1em;" aria-hidden="true"></span><br>
         <span class="accent">
-          <span lang="en">Design background.<br>Tech <span class="scrib-u">fluency.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span>
-          <span lang="pt">Background em design.<br>Fluência em <span class="scrib-u">tecnologia.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span>
+          <span lang="en">Art direction.<br>Tech <span class="scrib-u">fluency.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span>
+          <span lang="pt">Direção de arte.<br>Fluência em <span class="scrib-u">tecnologia.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span>
         </span>
       </h1>
       <p class="hero-sub">
-        <span lang="en">Product Designer with 7+ years across UX, art direction, and <span class="nowrap">front-end</span>. I design experiences, and I know how to build them.</span>
-        <span lang="pt">Product Designer com 7+ anos em UX, direção de arte e <span class="nowrap">front-end</span>. Eu desenho experiências, e sei como <span class="nowrap">construí-las</span>.</span>
+        <span lang="en">Art Director and Senior Visual Designer with 7+ years in campaigns, brand, motion, and digital design. I lead a team of 10 designers and know UX and <span class="nowrap">front-end</span> well enough to take an idea from concept to code.</span>
+        <span lang="pt">Diretor de Arte e Visual Designer Sênior com 7+ anos em campanhas, marca, motion e design digital. Lidero um time de 10 designers e entendo de UX e <span class="nowrap">front-end</span> o bastante pra levar uma ideia do conceito ao código.</span>
       </p>
       <div class="hero-ctas">
         <a href="#" class="btn primary" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
           <span lang="en">Get in touch</span>
           <span lang="pt">Entrar em contato</span>
           <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#gallery" class="btn btn-skip">
+          <span lang="en">TL;DR: just the work</span>
+          <span lang="pt">Sem textão, só o trabalho</span>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0 7-7m-7 7-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" class="btn">
           LinkedIn
@@ -961,8 +1096,8 @@
         <div class="about-teaser-body">
           <p class="eyebrow"><span lang="en">Who I am</span><span lang="pt">Quem sou eu</span></p>
           <p class="about-teaser-text">
-            <span lang="en">Art Director at Agência CENTRO and Product Designer with a postgraduate degree in UX from PUCRS (10/10). 7+ years moving between brand, social, and digital product, and I understand how things get built, from Figma to front-end handoff.</span>
-            <span lang="pt">Diretor de Arte na Agência CENTRO e Product Designer com pós-graduação em UX pela PUCRS (nota 10). São 7+ anos transitando entre marca, social e produto digital, e sei como as coisas são construídas, do Figma ao handoff com o front-end.</span>
+            <span lang="en">Art Director at Agência CENTRO, where I lead 10 designers and keep the design systems of six public organizations running. 7+ years across campaigns, social, motion, and brand, with a postgraduate degree in UX from PUCRS (10/10) as my complement.</span>
+            <span lang="pt">Diretor de Arte na Agência CENTRO, onde lidero 10 designers e mantenho os design systems de seis organizações públicas. São 7+ anos entre campanhas, social, motion e marca, com a pós em UX pela PUCRS (nota 10) como complemento.</span>
           </p>
         </div>
         <a href="#about" class="btn">
@@ -981,13 +1116,95 @@
     <div class="container">
       <div class="section-head">
         <p class="eyebrow"><span lang="en">Selected work</span><span lang="pt">Trabalhos selecionados</span></p>
-        <h2><span lang="en">Four projects, <span class="scrib-u">end to end.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span><span lang="pt">Quatro projetos, <span class="scrib-u">de ponta a ponta.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></h2>
+        <h2><span lang="en">Four projects, <span class="scrib-u">up close.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span><span lang="pt">Quatro projetos, <span class="scrib-u">de perto.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></h2>
       </div>
 
       <div class="cases doodle-host">
         <div class="doodle doodle--coffee" style="--doodle-rot:8deg; --fdur:7s; top:-44px; right:44px; width:86px; height:86px; z-index:3;" aria-hidden="true"></div>
 
-        <!-- CASE 1: WhichGameToBuy -->
+        <!-- CASE 1: Santa Maria -->
+        <a href="santa-maria-case.html" class="case-row">
+          <div class="case-vis">
+            <div class="smb-thumb">
+              <div class="smb-card">
+                <div class="smb-head">
+                  <span class="smb-ava"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+                  <span class="smb-handle">Prefeitura de Santa Maria
+                    <span class="smb-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  </span>
+                </div>
+                <div class="smb-media">
+                  <span class="smb-emoji" aria-hidden="true">😂</span>
+                  <span class="smb-meme"></span>
+                  <span class="smb-meme short"></span>
+                </div>
+                <div class="smb-actions">
+                  <svg class="smb-heart-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                  <svg class="smb-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div class="smb-likes">♥ 176K <span><span lang="en">interactions · 90 days</span><span lang="pt">interações · 90 dias</span></span></div>
+                <div class="smb-float" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="case-info">
+            <div class="case-tags">
+              <span class="tag blue"><span lang="en">Art Direction</span><span lang="pt">Direção de Arte</span></span>
+              <span class="tag blue">Social Media</span>
+              <span class="tag"><span lang="en">3 Awards</span><span lang="pt">3 Prêmios</span></span>
+              <span class="tag">Agência CENTRO</span>
+            </div>
+            <h3 class="case-title"><span lang="en">Public Service, Internet Language</span><span lang="pt">Serviço público, linguagem de internet</span></h3>
+            <p class="case-desc">
+              <span lang="en">Public communication for Santa Maria City Hall, made with the Agência CENTRO team: a stiff government account rebuilt into a feed people from all over Brazil follow by choice.</span>
+              <span lang="pt">Comunicação pública da Prefeitura de Santa Maria, feita com o time da Agência CENTRO: uma conta institucional engessada refeita em um perfil que gente do Brasil inteiro segue porque quer.</span>
+            </p>
+            <div class="case-foot">
+              <span class="case-meta"><span lang="en">2021-Present</span><span lang="pt">2021-Hoje</span></span>
+              <span class="case-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+        </a>
+
+        <!-- CASE 2: Ecobel -->
+        <a href="ecobel-case.html" class="case-row">
+          <div class="case-vis">
+            <div class="ecb-thumb">
+              <div class="ecb-browser">
+                <div class="ecb-bar">
+                  <div class="ecb-dots"><span></span><span></span><span></span></div>
+                  <span class="ecb-url">ecobelreciclagem.com.br</span>
+                </div>
+                <img loading="lazy" decoding="async" src="Ecobel-Case-img/site-hero.jpg" alt="Ecobel website home page, live">
+              </div>
+            </div>
+          </div>
+          <div class="case-info">
+            <div class="case-tags">
+              <span class="tag blue"><span lang="en">Brand Identity</span><span lang="pt">Identidade Visual</span></span>
+              <span class="tag blue">Web Design</span>
+              <span class="tag"><span lang="en">Live site</span><span lang="pt">Site no ar</span></span>
+              <span class="tag">Ecobel</span>
+            </div>
+            <h3 class="case-title"><span lang="en">Ecobel: Recycling Without the Cliché</span><span lang="pt">Ecobel: Reciclagem sem clichê</span></h3>
+            <p class="case-desc">
+              <span lang="en">A B2B recycling company that needed to look as serious as it works. I redesigned the brand and designed the website, now live as its main sales channel.</span>
+              <span lang="pt">Uma empresa de reciclagem B2B que precisava parecer tão séria quanto trabalha. Redesenhei a marca e projetei o site, que hoje está no ar como principal canal de vendas.</span>
+            </p>
+            <div class="case-foot">
+              <span class="case-meta">2025</span>
+              <span class="case-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+        </a>
+
+        <!-- CASE 3: WhichGameToBuy -->
         <a href="whichgametobuy-case.html" class="case-row">
           <div class="case-vis">
             <div class="sab-thumb">
@@ -1037,82 +1254,6 @@
           </div>
         </a>
 
-        <!-- CASE 2: Santa Maria -->
-        <a href="santa-maria-case.html" class="case-row">
-          <div class="case-vis">
-            <div class="smb-thumb">
-              <div class="smb-card">
-                <div class="smb-head">
-                  <span class="smb-ava"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
-                  <span class="smb-handle">Prefeitura de Santa Maria
-                    <span class="smb-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                  </span>
-                </div>
-                <div class="smb-media">
-                  <span class="smb-emoji" aria-hidden="true">😂</span>
-                  <span class="smb-meme"></span>
-                  <span class="smb-meme short"></span>
-                </div>
-                <div class="smb-actions">
-                  <svg class="smb-heart-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                  <svg class="smb-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-                </div>
-                <div class="smb-likes">♥ 176K <span><span lang="en">interactions · 90 days</span><span lang="pt">interações · 90 dias</span></span></div>
-                <div class="smb-float" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="case-info">
-            <div class="case-tags">
-              <span class="tag blue"><span lang="en">Art Direction</span><span lang="pt">Direção de Arte</span></span>
-              <span class="tag blue">Social Media</span>
-              <span class="tag"><span lang="en">3 Awards</span><span lang="pt">3 Prêmios</span></span>
-              <span class="tag">Agência CENTRO</span>
-            </div>
-            <h3 class="case-title"><span lang="en">When Government Learned to Meme</span><span lang="pt">Quando o governo aprendeu a fazer meme</span></h3>
-            <p class="case-desc">
-              <span lang="en">Public communication for Santa Maria City Hall: a stiff government account rebuilt into a feed people from all over Brazil follow by choice.</span>
-              <span lang="pt">Comunicação pública da Prefeitura de Santa Maria: uma conta institucional engessada refeita em um perfil que gente do Brasil inteiro segue porque quer.</span>
-            </p>
-            <div class="case-foot">
-              <span class="case-meta"><span lang="en">2020-Present</span><span lang="pt">2020-Hoje</span></span>
-              <span class="case-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </div>
-          </div>
-        </a>
-
-        <!-- CASE 3: Ecobel -->
-        <a href="ecobel-case.html" class="case-row">
-          <div class="case-vis">
-            <div class="ecobel-thumb">
-              <img loading="lazy" decoding="async" src="Ecobel-Case-img/logo-white.svg" alt="Ecobel logo on brand green">
-            </div>
-          </div>
-          <div class="case-info">
-            <div class="case-tags">
-              <span class="tag blue"><span lang="en">B2B Web Product</span><span lang="pt">Produto Web B2B</span></span>
-              <span class="tag blue"><span lang="en">Lead Generation</span><span lang="pt">Geração de Leads</span></span>
-              <span class="tag"><span lang="en">Brand System</span><span lang="pt">Sistema de Marca</span></span>
-              <span class="tag">Ecobel</span>
-            </div>
-            <h3 class="case-title"><span lang="en">Ecobel: A Rebrand That Sells</span><span lang="pt">Ecobel: Um Rebrand Que Vende</span></h3>
-            <p class="case-desc">
-              <span lang="en">A B2B recycling company's main sales channel: I rebranded it and designed + coded a responsive website end-to-end to build trust and generate "request a collection" leads.</span>
-              <span lang="pt">O principal canal de vendas de uma empresa de reciclagem B2B: refiz a marca e projetei + codifiquei um site responsivo de ponta a ponta para gerar confiança e captar leads de "solicitar coleta".</span>
-            </p>
-            <div class="case-foot">
-              <span class="case-meta">2025</span>
-              <span class="case-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </div>
-          </div>
-        </a>
-
         <!-- CASE 4: The portfolio itself -->
         <a href="portfolio-case.html" class="case-row">
           <div class="case-vis">
@@ -1147,15 +1288,15 @@
           </div>
           <div class="case-info">
             <div class="case-tags">
-              <span class="tag blue"><span lang="en">Product Thinking</span><span lang="pt">Mentalidade de Produto</span></span>
-              <span class="tag blue">Microsoft Clarity</span>
-              <span class="tag"><span lang="en">Usability Testing</span><span lang="pt">Teste de Usabilidade</span></span>
+              <span class="tag blue">Web Design</span>
+              <span class="tag blue">Front-end</span>
+              <span class="tag">Microsoft Clarity</span>
               <span class="tag"><span lang="en">Meta case</span><span lang="pt">Case meta</span></span>
             </div>
             <h3 class="case-title"><span lang="en">The Portfolio Is the Product</span><span lang="pt">O portfólio é o produto</span></h3>
             <p class="case-desc">
-              <span lang="en">I treat this site as a live product: instrumented with Microsoft Clarity, usability-tested with 18 people on its flagship project, and iterated in public. The case study of the site you're on.</span>
-              <span lang="pt">Trato este site como produto vivo: instrumentado com Microsoft Clarity, testado com 18 pessoas no projeto principal e iterado em público. O case do próprio site em que você está navegando.</span>
+              <span lang="en">The site you're on, designed and coded by me, then measured with Microsoft Clarity and a usability test, and adjusted based on what visitors did.</span>
+              <span lang="pt">O site em que você está, desenhado e codificado por mim, medido com Microsoft Clarity e teste de usabilidade, e ajustado a partir do que os visitantes fizeram.</span>
             </p>
             <div class="case-foot">
               <span class="case-meta"><span lang="en">2025-Present</span><span lang="pt">2025-Hoje</span></span>
@@ -1177,10 +1318,10 @@
 
         <!-- Education -->
         <div class="panel">
-          <p class="eyebrow"><span lang="en">Education</span><span lang="pt">Educação</span></p>
+          <p class="eyebrow"><span lang="en">Education</span><span lang="pt">Formação acadêmica</span></p>
           <div class="panel-list panel-list--split">
           <div class="list-item">
-            <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/YcyG9QsC7RV1Onc50wyEXquv1k.svg" alt=""></div>
+            <div class="list-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg></div>
             <div class="list-info">
               <div class="list-title">Pontifícia Universidade Católica do Rio Grande do Sul (PUCRS)</div>
               <div class="list-sub"><span lang="en">Postgraduate Diploma in User Experience Design (UX)</span><span lang="pt">Pós-graduação em Design de Experiência do Usuário (UX)</span></div>
@@ -1189,7 +1330,7 @@
           </div>
           <div class="list-div" aria-hidden="true"></div>
           <div class="list-item">
-            <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/ZokCuPJkR8AKgTToaXlDYY95I.svg" alt=""></div>
+            <div class="list-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
             <div class="list-info">
               <div class="list-title">Universidade Federal de Santa Maria (UFSM)</div>
               <div class="list-sub"><span lang="en">BA in Communications (Editorial Production)</span><span lang="pt">Bacharelado em Comunicação Social (Produção Editorial)</span></div>
@@ -1204,7 +1345,7 @@
           <p class="eyebrow"><span lang="en">Experience</span><span lang="pt">Experiência</span></p>
           <div class="panel-list">
           <div class="list-item">
-            <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/IhqoDpNLyvSB5X4hEwl3EMr6Xw.svg" alt=""></div>
+            <div class="list-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
             <div class="list-info">
               <div class="list-title">Agência CENTRO</div>
               <div class="list-sub"><span lang="en">Art Director <span style="color:var(--text-4);">·</span> 2023-Present</span><span lang="pt">Diretor de Arte <span style="color:var(--text-4);">·</span> 2023-Hoje</span></div>
@@ -1213,15 +1354,15 @@
             <div class="list-date"><span lang="en">2021-Present</span><span lang="pt">2021-Hoje</span></div>
           </div>
           <div class="list-item">
-            <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/D1dprKC502iVSjejCRj3II7HKBk.svg" alt=""></div>
+            <div class="list-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
             <div class="list-info">
               <div class="list-title">InovaTech Digital Services</div>
-              <div class="list-sub"><span lang="en">Product Designer</span><span lang="pt">Product Designer</span></div>
+              <div class="list-sub"><span lang="en">Graphic Designer</span><span lang="pt">Designer Gráfico</span></div>
             </div>
             <div class="list-date">2020-2022</div>
           </div>
           <div class="list-item">
-            <div class="list-icon"><img loading="lazy" decoding="async" src="https://framerusercontent.com/images/ScGavdIdTjHTgHXBhFQXusFFEn4.svg" alt=""></div>
+            <div class="list-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
             <div class="list-info">
               <div class="list-title">Universidade Federal de Santa Maria</div>
               <div class="list-sub"><span lang="en">Production Assistant & Graphic Designer</span><span lang="pt">Assistente de Produção & Designer Gráfico</span></div>
@@ -1244,26 +1385,30 @@
       </div>
       <div class="skills-grid">
         <div class="skill">
-          <div class="skill-name">Product Design</div>
-          <div class="skill-sub"><span lang="en">Wireframing · prototyping · design systems · interaction design</span><span lang="pt">Wireframing · prototipação · design systems · design de interação</span></div>
-        </div>
-        <div class="skill">
-          <div class="skill-name"><span lang="en">UX Research</span><span lang="pt">Pesquisa UX</span></div>
-          <div class="skill-sub"><span lang="en">User research · usability testing · heuristic evaluation · information architecture</span><span lang="pt">Pesquisa com usuários · testes de usabilidade · avaliação heurística · arquitetura da informação</span></div>
-        </div>
-        <div class="skill">
-          <div class="skill-name"><span lang="en">Graphic Design</span><span lang="pt">Design Gráfico</span></div>
-          <div class="skill-sub"><span lang="en">Brand identity · editorial · motion graphics · visual systems</span><span lang="pt">Identidade de marca · editorial · motion graphics · sistemas visuais</span></div>
-        </div>
-        <div class="skill">
           <div class="skill-name"><span lang="en">Art Direction</span><span lang="pt">Direção de Arte</span></div>
-          <div class="skill-sub"><span lang="en">Creative leadership · campaign concepting · social media strategy</span><span lang="pt">Liderança criativa · concepção de campanhas · estratégia de social media</span></div>
+          <div class="skill-sub"><span lang="en">Creative direction · concept · key visual · multichannel campaigns (digital, social, OOH, broadcast)</span><span lang="pt">Direção criativa · conceito · key visual · campanhas multicanal (digital, social, OOH, broadcast)</span></div>
+        </div>
+        <div class="skill">
+          <div class="skill-name"><span lang="en">Brand &amp; Graphic Design</span><span lang="pt">Marca &amp; Design Gráfico</span></div>
+          <div class="skill-sub"><span lang="en">Visual identity · logo design · editorial · typography · social media</span><span lang="pt">Identidade visual · logotipos · editorial · tipografia · social media</span></div>
+        </div>
+        <div class="skill">
+          <div class="skill-name">Motion &amp; Audiovisual</div>
+          <div class="skill-sub"><span lang="en">Motion graphics · animation · video editing &amp; color grading · Lottie</span><span lang="pt">Motion graphics · animação · edição e colorização de vídeo · Lottie</span></div>
+        </div>
+        <div class="skill">
+          <div class="skill-name">Digital &amp; UI</div>
+          <div class="skill-sub"><span lang="en">UI design · design systems · web &amp; landing pages · usability testing · WCAG 2.1 AA · HTML/CSS/JS</span><span lang="pt">UI design · design systems · web e landing pages · testes de usabilidade · WCAG 2.1 AA · HTML/CSS/JS</span></div>
+        </div>
+        <div class="skill">
+          <div class="skill-name"><span lang="en">Leadership</span><span lang="pt">Liderança</span></div>
+          <div class="skill-sub"><span lang="en">Team of 10 designers · mentoring · design critique · stakeholder presentations</span><span lang="pt">Time de 10 designers · mentoria · design critique · apresentações a stakeholders</span></div>
         </div>
         <div class="skill">
           <div class="skill-name"><span lang="en">Tools</span><span lang="pt">Ferramentas</span></div>
-          <div class="skill-sub">Figma · Illustrator · Photoshop · InDesign · HTML · CSS · JS</div>
+          <div class="skill-sub">Figma · Illustrator · Photoshop · InDesign · After Effects · Premiere · Claude · Cursor</div>
         </div>
-        <div class="skill">
+        <div class="skill wide">
           <div class="skill-name"><span lang="en">Languages</span><span lang="pt">Idiomas</span></div>
           <div class="skill-sub"><span lang="en">PT native · EN C2 · IT B1</span><span lang="pt">PT nativo · EN C2 · IT B1</span></div>
         </div>
@@ -1306,16 +1451,425 @@
         <div class="about-body">
           <p class="about-name"><span lang="en">I'm Igor Dalmolin.</span><span lang="pt">Sou Igor Dalmolin.</span></p>
           <div class="about-text">
-            <p lang="en">Product Designer from southern Brazil, with a background in graphic design and art direction. Over 7 years across visual identity, campaigns, social media strategy, and UX, always with one foot in the creative and the other in tech.</p>
-            <p lang="pt">Product Designer do sul do Brasil, com background em design gráfico e direção de arte. Mais de 7 anos entre identidade visual, campanhas, estratégia de social media e UX, sempre com um pé no criativo e outro na tecnologia.</p>
+            <p lang="en">Art Director and Senior Visual Designer from southern Brazil. Over 7 years across campaigns, visual identity, social media, and motion, always with one foot in the creative and the other in tech.</p>
+            <p lang="pt">Diretor de Arte e Visual Designer Sênior do sul do Brasil. Mais de 7 anos entre campanhas, identidade visual, social media e motion, sempre com um pé no criativo e outro na tecnologia.</p>
             <p lang="en">I started as a Graphic Designer and Production Assistant while still in college. Then COVID scrambled everything, and adapting fast turned out to be the part of the job I was best at.</p>
             <p lang="pt">Comecei como Designer Gráfico e Assistente de Produção ainda na faculdade. Aí a Covid bagunçou tudo, e me adaptar rápido acabou sendo a parte do trabalho que eu fazia melhor.</p>
-            <p lang="en">I moved into tech, learned UX, and completed a postgraduate degree at PUCRS with a perfect grade. Today I work as Art Director at Agência CENTRO, leading visual systems for public institutions, while designing and shipping digital products end to end, from UX to front-end code (this site included).</p>
-            <p lang="pt">Migrei para tecnologia, aprendi UX e concluí a pós-graduação na PUCRS com nota máxima. Hoje atuo como Diretor de Arte na Agência CENTRO, conduzindo sistemas visuais para instituições públicas, enquanto desenho e entrego produtos digitais de ponta a ponta, do UX ao código front-end (incluindo este site).</p>
-            <p lang="en">Craft gets you halfway. What I add is direction: knowing what to build, why it matters, and how to communicate it clearly, with or without AI in the room.</p>
-            <p lang="pt">O ofício leva até a metade do caminho. O que eu somo é direção: saber o que construir, por que importa e como comunicar com clareza, com ou sem IA na sala.</p>
+            <p lang="en">I joined Agência CENTRO as a graphic designer in 2021 and became Art Director in 2023. Today I lead a team of 10 designers and the design systems of six public organizations, and the work has picked up a few industry awards along the way.</p>
+            <p lang="pt">Entrei na Agência CENTRO como designer gráfico em 2021 e virei Diretor de Arte em 2023. Hoje lidero um time de 10 designers e os design systems de seis organizações públicas, e o trabalho somou alguns prêmios do setor pelo caminho.</p>
+            <p lang="en">UX is my complement: a postgraduate degree at PUCRS (10/10) and enough front-end to build what I design (this site included). It makes me an art director who also thinks about how a piece gets used, and who gets along easily with the dev team.</p>
+            <p lang="pt">UX é o meu complemento: pós-graduação na PUCRS (nota 10) e front-end suficiente pra construir o que eu desenho (incluindo este site). Isso me faz um diretor de arte que também pensa em como a peça vai ser usada, e que conversa fácil com o time de desenvolvimento.</p>
+            <p lang="en">Craft gets you halfway. What I add is direction: knowing what to make, why it matters, and how to communicate it clearly, with or without AI in the room.</p>
+            <p lang="pt">O ofício leva até a metade do caminho. O que eu somo é direção: saber o que fazer, por que importa e como comunicar com clareza, com ou sem IA na sala.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY: the visual-only path (hero "TL;DR" button lands here).
+       Assets: img/gallery/t = 480px thumbs, img/gallery/f = 1080px full; AVIF + JPEG fallback each. -->
+  <section class="section" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow"><span lang="en">Gallery</span><span lang="pt">Galeria</span></p>
+        <h2><span lang="en">Just the work. <span class="scrib-u">No reading required.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span><span lang="pt">Só o trabalho. <span class="scrib-u">Sem textão.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></h2>
+        <p class="lede"><span lang="en">Social media for Santa Maria City Hall, created at Agência CENTRO. Click any piece to see it full size.</span><span lang="pt">Social media da Prefeitura de Santa Maria, criada na Agência CENTRO. Clica em qualquer peça pra ver em tamanho grande.</span></p>
+      </div>
+
+      <div class="g-wrap is-collapsed" id="gWrap">
+        <div class="g-wall" id="gWall">
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-fanfest-copa-do-mundo-jul01" aria-label="Santa Maria Fan Fest World Cup screening post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-fanfest-copa-do-mundo-jul01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-fanfest-copa-do-mundo-jul01.jpg" width="480" height="640" alt="Santa Maria Fan Fest World Cup screening post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Santa Maria Fan Fest</span>
+              <span class="g-k"><span lang="en">Post · World Cup screening</span><span lang="pt">Card · transmissão da Copa</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-lorax-abr07" aria-label="The Lorax asking for green sidewalks">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-lorax-abr07.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-lorax-abr07.jpg" width="480" height="640" alt="The Lorax asking for green sidewalks">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">O Lorax pediu</span>
+              <span class="g-k"><span lang="en">Post · Calçada Verde program</span><span lang="pt">Card · programa Calçada Verde</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-turno-estendido-toy-story" aria-label="Toy Story styled post about extended clinic hours">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-turno-estendido-toy-story.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-turno-estendido-toy-story.jpg" width="480" height="640" alt="Toy Story styled post about extended clinic hours">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Ao infinito e à ESF Bela União</span>
+              <span class="g-k"><span lang="en">Post · extended clinic hours</span><span lang="pt">Card · turno estendido na saúde</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-outubrorosa-out20-01" aria-label="Outubro Rosa carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-outubrorosa-out20-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-outubrorosa-out20-01.jpg" width="480" height="640" alt="Outubro Rosa carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Outubro Rosa</span>
+              <span class="g-k"><span lang="en">Carousel · breast cancer awareness</span><span lang="pt">Carrossel · prevenção ao câncer de mama</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-inicio-inverno" aria-label="Snow-covered Santa Maria for the first day of winter">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-inicio-inverno.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-inicio-inverno.jpg" width="480" height="640" alt="Snow-covered Santa Maria for the first day of winter">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Esfriou em Santa Maria</span>
+              <span class="g-k"><span lang="en">Post · first day of winter</span><span lang="pt">Card · início do inverno</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-golpeprocon-ago18-01" aria-label="Scam alert carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-golpeprocon-ago18-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-golpeprocon-ago18-01.jpg" width="480" height="640" alt="Scam alert carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Golpe do falso advogado</span>
+              <span class="g-k"><span lang="en">Carousel · scam alert</span><span lang="pt">Carrossel · alerta de golpe</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-santa-maria-skate-abr29" aria-label="Santa Maria Skate circuit post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-santa-maria-skate-abr29.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-santa-maria-skate-abr29.jpg" width="480" height="640" alt="Santa Maria Skate circuit post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Santa Maria Skate</span>
+              <span class="g-k"><span lang="en">Post · skate circuit</span><span lang="pt">Card · circuito de skate</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-doacaosanguecopa-01" aria-label="Blood donation carousel styled as a football line-up">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-doacaosanguecopa-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-doacaosanguecopa-01.jpg" width="480" height="640" alt="Blood donation carousel styled as a football line-up">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Escalação da vida</span>
+              <span class="g-k"><span lang="en">Carousel · blood donation, World Cup theme</span><span lang="pt">Carrossel · doação de sangue, tema Copa</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-save-the-date-maratona-sm-out09" aria-label="Santa Maria marathon save the date">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-save-the-date-maratona-sm-out09.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-save-the-date-maratona-sm-out09.jpg" width="480" height="640" alt="Santa Maria marathon save the date">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Faltam 365 dias</span>
+              <span class="g-k"><span lang="en">Post · marathon save the date</span><span lang="pt">Card · save the date da maratona</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-feiras-veggietales" aria-label="VeggieTales styled farmers&#x27; market post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-feiras-veggietales.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-feiras-veggietales.jpg" width="480" height="640" alt="VeggieTales styled farmers&#x27; market post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Vem para as feiras!</span>
+              <span class="g-k"><span lang="en">Post · farmers&#x27; markets</span><span lang="pt">Card · feiras da agricultura familiar</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-feiradopeixevivo-mar30-01" aria-label="Feira do Peixe Vivo carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-feiradopeixevivo-mar30-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-feiradopeixevivo-mar30-01.jpg" width="480" height="640" alt="Feira do Peixe Vivo carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">34ª Feira do Peixe Vivo</span>
+              <span class="g-k"><span lang="en">Carousel · fish fair</span><span lang="pt">Carrossel · feira do peixe</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-estrada-do-perau-nov20" aria-label="Aerial photo of the reopened Perau road">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-estrada-do-perau-nov20.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-estrada-do-perau-nov20.jpg" width="480" height="640" alt="Aerial photo of the reopened Perau road">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Estrada do Perau liberada</span>
+              <span class="g-k"><span lang="en">Post · road reopening</span><span lang="pt">Card · liberação de estrada</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-turnojunino-01" aria-label="June festival styled carousel about clinic hours">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-turnojunino-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-turnojunino-01.jpg" width="480" height="640" alt="June festival styled carousel about clinic hours">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Arraial do turno alternativo</span>
+              <span class="g-k"><span lang="en">Carousel · clinic hours, June festival theme</span><span lang="pt">Carrossel · turno alternativo, tema junino</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-dia-das-criancas-2026-00" aria-label="Children&#x27;s Day post with toys">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-dia-das-criancas-2026-00.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-dia-das-criancas-2026-00.jpg" width="480" height="640" alt="Children&#x27;s Day post with toys">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Dia das Crianças 2026</span>
+              <span class="g-k"><span lang="en">Post · Children&#x27;s Day</span><span lang="pt">Card · Dia das Crianças</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-kit-rustica-meme" aria-label="Race kit pickup meme">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-kit-rustica-meme.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-kit-rustica-meme.jpg" width="480" height="640" alt="Race kit pickup meme">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Kit da Rústica</span>
+              <span class="g-k"><span lang="en">Post · race kit meme</span><span lang="pt">Card · meme do kit da corrida</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-maio-amarelo-encontro-de-motociclistas" aria-label="Maio Amarelo road safety post with a motorcyclist">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-maio-amarelo-encontro-de-motociclistas.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-maio-amarelo-encontro-de-motociclistas.jpg" width="480" height="640" alt="Maio Amarelo road safety post with a motorcyclist">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Maio Amarelo</span>
+              <span class="g-k"><span lang="en">Post · road safety</span><span lang="pt">Card · segurança no trânsito</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-ruadolazer-ago27-01" aria-label="Rua do Lazer carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-ruadolazer-ago27-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-ruadolazer-ago27-01.jpg" width="480" height="640" alt="Rua do Lazer carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Rua do Lazer</span>
+              <span class="g-k"><span lang="en">Carousel · Sunday leisure street</span><span lang="pt">Carrossel · rua de lazer</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-fundo-bem-estar-animal" aria-label="Animal welfare fund post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-fundo-bem-estar-animal.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-fundo-bem-estar-animal.jpg" width="480" height="640" alt="Animal welfare fund post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Fundo de Bem-Estar Animal</span>
+              <span class="g-k"><span lang="en">Post · animal welfare</span><span lang="pt">Card · bem-estar animal</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-doe-sangue-out01" aria-label="Blood donation post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-doe-sangue-out01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-doe-sangue-out01.jpg" width="480" height="640" alt="Blood donation post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Doe sangue</span>
+              <span class="g-k"><span lang="en">Post · blood donation</span><span lang="pt">Card · doação de sangue</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-vacinacao-ago19-01" aria-label="Vaccination day carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-vacinacao-ago19-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-vacinacao-ago19-01.jpg" width="480" height="640" alt="Vaccination day carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Dia D de multivacinação</span>
+              <span class="g-k"><span lang="en">Carousel · vaccination</span><span lang="pt">Carrossel · vacinação</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-inter-sm-fev28" aria-label="Inter-SM football post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-inter-sm-fev28.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-inter-sm-fev28.jpg" width="480" height="640" alt="Inter-SM football post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Inter-SM, estamos contigo!</span>
+              <span class="g-k"><span lang="en">Post · football</span><span lang="pt">Card · futebol</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-copo-festival-do-xis" aria-label="Festival do Xis official cup post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-copo-festival-do-xis.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-copo-festival-do-xis.jpg" width="480" height="640" alt="Festival do Xis official cup post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Copo oficial do Festival do Xis</span>
+              <span class="g-k"><span lang="en">Post · festival merch</span><span lang="pt">Card · produto do festival</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-caminhada-atipica" aria-label="Inclusion walk post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-caminhada-atipica.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-caminhada-atipica.jpg" width="480" height="640" alt="Inclusion walk post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">3ª Caminhada Atípica</span>
+              <span class="g-k"><span lang="en">Post · inclusion walk</span><span lang="pt">Card · caminhada pela inclusão</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-estagiario-da-prefa-mar09-2" aria-label="Internship call post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-estagiario-da-prefa-mar09-2.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-estagiario-da-prefa-mar09-2.jpg" width="480" height="640" alt="Internship call post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Estagiário da Prefa</span>
+              <span class="g-k"><span lang="en">Post · internship call</span><span lang="pt">Card · seleção de estágio</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-3obras3pracas-jun02-01" aria-label="Square revitalization carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-3obras3pracas-jun02-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-3obras3pracas-jun02-01.jpg" width="480" height="640" alt="Square revitalization carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">3 praças, 3 revitalizações</span>
+              <span class="g-k"><span lang="en">Carousel · public works</span><span lang="pt">Carrossel · obras</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-6o-aniversario-pedalamigos-nov17" aria-label="Cycling group anniversary ride post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-6o-aniversario-pedalamigos-nov17.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-6o-aniversario-pedalamigos-nov17.jpg" width="480" height="640" alt="Cycling group anniversary ride post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">6º aniversário Pedalamigos</span>
+              <span class="g-k"><span lang="en">Post · cycling event</span><span lang="pt">Card · evento de ciclismo</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-festival-do-xis-questionario" aria-label="Festival do Xis call for vendors">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-festival-do-xis-questionario.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-festival-do-xis-questionario.jpg" width="480" height="640" alt="Festival do Xis call for vendors">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">4º Festival Nacional do Xis</span>
+              <span class="g-k"><span lang="en">Post · call for vendors</span><span lang="pt">Card · chamada para expositores</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-rsqualificacao-out06-01" aria-label="Free training course carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-rsqualificacao-out06-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-rsqualificacao-out06-01.jpg" width="480" height="640" alt="Free training course carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">RS Qualificação</span>
+              <span class="g-k"><span lang="en">Carousel · free training course</span><span lang="pt">Carrossel · curso gratuito</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-venda-lotes-romaria-3" aria-label="Romaria vendor lot sales post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-venda-lotes-romaria-3.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-venda-lotes-romaria-3.jpg" width="480" height="640" alt="Romaria vendor lot sales post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">83ª Romaria da Medianeira</span>
+              <span class="g-k"><span lang="en">Post · vendor lot sales</span><span lang="pt">Card · venda de lotes</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-ruasconvocacao-v3-01" aria-label="Street paving plan carousel cover">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-ruasconvocacao-v3-01.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-ruasconvocacao-v3-01.jpg" width="480" height="640" alt="Street paving plan carousel cover">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Plano de pavimentação</span>
+              <span class="g-k"><span lang="en">Carousel · street paving plan</span><span lang="pt">Carrossel · plano de pavimentação</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/card-inscricoes-rusticasm-abr13-alt-2" aria-label="Race registration post">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/card-inscricoes-rusticasm-abr13-alt-2.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/card-inscricoes-rusticasm-abr13-alt-2.jpg" width="480" height="640" alt="Race registration post">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Rústica de Santa Maria</span>
+              <span class="g-k"><span lang="en">Post · race registration</span><span lang="pt">Card · inscrições da corrida</span></span>
+            </figcaption>
+          </figure>
+          <figure class="g-item">
+            <button type="button" class="g-open" data-full="img/gallery/f/carrossel-maratonaleitura-jul31-06" aria-label="Reading marathon carousel slide">
+              <picture>
+                <source type="image/avif" srcset="img/gallery/t/carrossel-maratonaleitura-jul31-06.avif">
+                <img loading="lazy" decoding="async" src="img/gallery/t/carrossel-maratonaleitura-jul31-06.jpg" width="480" height="640" alt="Reading marathon carousel slide">
+              </picture>
+            </button>
+            <figcaption>
+              <span class="g-t">Maratona de Leitura</span>
+              <span class="g-k"><span lang="en">Carousel · reading marathon</span><span lang="pt">Carrossel · maratona de leitura</span></span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="g-more" id="gMore">
+        <button type="button" class="btn" id="gMoreBtn">
+          <span lang="en">See more</span><span lang="pt">Ver mais</span>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0 7-7m-7 7-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
   </section>
@@ -1377,6 +1931,21 @@
 
 </div>
 
+<!-- Gallery viewer -->
+<div class="glb" id="glb" role="dialog" aria-modal="true" aria-label="Gallery viewer" hidden>
+  <button type="button" class="glb-close" id="glbClose"><span lang="en">ESC · Close</span><span lang="pt">ESC · Fechar</span></button>
+  <button type="button" class="glb-nav prev" id="glbPrev" aria-label="Previous piece">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <figure class="glb-fig">
+    <div class="glb-media" id="glbMedia"></div>
+    <figcaption class="glb-cap"><span class="glb-text" id="glbText"></span><span class="glb-num" id="glbNum"></span></figcaption>
+  </figure>
+  <button type="button" class="glb-nav next" id="glbNext" aria-label="Next piece">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
 <a href="#" class="back-top" id="backTop" aria-label="Back to top">
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
@@ -1410,6 +1979,126 @@
       document.documentElement.setAttribute('lang', next === 'pt' ? 'pt-BR' : 'en');
       try { localStorage.setItem('site-lang', next); } catch (e) {}
       sync();
+    });
+  })();
+</script>
+
+<script>
+  // Section links scroll without writing #section into the address bar, and an
+  // incoming #section (shared link, "back to work" from a case) is honored once,
+  // then cleaned. Otherwise reopening or reloading the site kept landing mid-page.
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      var id = a.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      });
+    });
+    if (location.hash && history.replaceState) {
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          history.replaceState(null, '', location.pathname + location.search);
+        }, 600);
+      });
+    }
+  })();
+</script>
+
+<script>
+  // Gallery: "show all" and the viewer (thumb shows instantly, full size swaps in once loaded)
+  (function () {
+    var wall = document.getElementById('gWall');
+    if (!wall) return;
+    var wrap = document.getElementById('gWrap');
+    var more = document.getElementById('gMore');
+    // Fresh order on every visit (Fisher-Yates), so the first rows change each time
+    var items = Array.prototype.slice.call(wall.querySelectorAll('.g-item'));
+    for (var k = items.length - 1; k > 0; k--) {
+      var j = Math.floor(Math.random() * (k + 1));
+      var tmp = items[k]; items[k] = items[j]; items[j] = tmp;
+    }
+    items.forEach(function (it) { wall.appendChild(it); });
+
+    document.getElementById('gMoreBtn').addEventListener('click', function () {
+      wrap.classList.remove('is-collapsed');
+      more.hidden = true;
+    });
+
+    var lb = document.getElementById('glb');
+    var media = document.getElementById('glbMedia');
+    var text = document.getElementById('glbText');
+    var num = document.getElementById('glbNum');
+    var closeBtn = document.getElementById('glbClose');
+    var idx = 0, lastFocus = null, token = 0;
+
+    // Same format the browser picked for the thumbs (AVIF where supported, JPEG otherwise)
+    function fullSrc(it) {
+      var thumb = it.querySelector('img');
+      var ext = /\.avif(\?|$)/.test(thumb.currentSrc || '') ? '.avif' : '.jpg';
+      return it.querySelector('.g-open').getAttribute('data-full') + ext;
+    }
+    function render() {
+      var it = items[idx];
+      var thumb = it.querySelector('img');
+      var img = new Image();
+      img.alt = thumb.alt;
+      img.width = 1080; img.height = 1440;
+      img.src = thumb.currentSrc || thumb.src;
+      media.innerHTML = '';
+      media.appendChild(img);
+      var my = ++token;
+      var full = new Image();
+      full.onload = function () { if (my === token) img.src = full.src; };
+      full.src = fullSrc(it);
+      // warm the neighbours so arrowing through feels instant
+      [1, -1].forEach(function (d) {
+        var n = items[(idx + d + items.length) % items.length];
+        (new Image()).src = fullSrc(n);
+      });
+      text.innerHTML = it.querySelector('figcaption').innerHTML;
+      num.textContent = (idx + 1) + ' / ' + items.length;
+    }
+    function open(i) {
+      idx = i;
+      lastFocus = document.activeElement;
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      render();
+      closeBtn.focus();
+    }
+    function close() {
+      lb.hidden = true;
+      token++;
+      media.innerHTML = '';
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    function step(d) { idx = (idx + d + items.length) % items.length; render(); }
+
+    items.forEach(function (it, i) {
+      it.querySelector('.g-open').addEventListener('click', function () { open(i); });
+    });
+    closeBtn.addEventListener('click', close);
+    document.getElementById('glbPrev').addEventListener('click', function () { step(-1); });
+    document.getElementById('glbNext').addEventListener('click', function () { step(1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') step(-1);
+      else if (e.key === 'ArrowRight') step(1);
+    });
+    var x0 = null;
+    lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+      x0 = null;
     });
   })();
 </script>

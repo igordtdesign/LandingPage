@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ecobel: Rebrand &amp; B2B Web Product · Igor Dalmolin</title>
-  <meta name="description" content="Rebrand and B2B website for Ecobel, a Brazilian recycling company, designed and coded end-to-end to build trust and turn visitors into collection-request leads.">
+  <title>Ecobel: Recycling Without the Cliché · Igor Dalmolin</title>
+  <meta name="description" content="Brand identity and website design for Ecobel, a Brazilian B2B recycling company: a rebrand that escapes the recycling cliché and a site, now live, built to turn trust into collection requests.">
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
     (function (c, l, a, r, i, t, y) {
@@ -191,6 +191,18 @@
       line-height: 1.6; color: var(--text-2); max-width: 640px; margin-bottom: 48px;
     }
     .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+    .hero-tags + .hero-cta-row { margin-top: -16px; }
+    .hero-cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 48px; }
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--accent-bright); flex-shrink: 0;
+      box-shadow: 0 0 0 0 rgba(118,219,0,0.55); animation: livePulse 2s ease-out infinite;
+    }
+    @keyframes livePulse {
+      0%   { box-shadow: 0 0 0 0 rgba(118,219,0,0.55); }
+      70%  { box-shadow: 0 0 0 8px rgba(118,219,0,0); }
+      100% { box-shadow: 0 0 0 0 rgba(118,219,0,0); }
+    }
+    @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
     .tag {
       font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: -0.03em;
       color: var(--text-3); background: var(--surface-1); border: 1px solid var(--border);
@@ -398,8 +410,101 @@
       font-family: var(--mono); font-size: 11px; letter-spacing: -0.02em; color: var(--text-4);
       background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 4px 14px;
     }
-    .browser-shot img { width: 100%; display: block; }
+    .browser-shot img { width: 100%; height: auto; display: block; }
     @media (prefers-reduced-motion: reduce) { .browser-live-hint::before { animation: none; } }
+
+    /* Live site: hover-to-scroll capture of the real page */
+    .browser--live { box-shadow: 0 40px 90px -40px rgba(0,0,0,0.7); }
+    .browser--live .browser-url { text-decoration: none; transition: color .2s, border-color .2s; }
+    .browser--live .browser-url:hover { color: var(--text-2); border-color: var(--border-hover); }
+    .browser-live {
+      display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+      font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent-bright);
+    }
+    .browser-shot.scroller {
+      position: relative; aspect-ratio: 16 / 10; overflow: hidden; cursor: pointer;
+      background: #dcdccf; outline: none;
+    }
+    .browser-shot.scroller:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+    .browser-shot.scroller img {
+      transform: translateY(0);
+      transition: transform 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .browser-shot.scroller.is-panning img {
+      transform: translateY(var(--pan, 0px));
+      transition: transform var(--pan-dur, 10s) cubic-bezier(0.45, 0.05, 0.35, 1);
+    }
+    .scroll-hint {
+      position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+      font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: -0.02em;
+      color: #fff; background: rgba(13,14,17,0.72);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius-pill);
+      padding: 8px 14px; pointer-events: none;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .scroll-hint svg { width: 13px; height: 13px; animation: hintNudge 1.6s ease-in-out infinite; }
+    @keyframes hintNudge { 0%, 100% { transform: translateY(-1px); } 50% { transform: translateY(2px); } }
+    .scroller.is-panning .scroll-hint { opacity: 0; transform: translate(-50%, 8px); }
+    .hint-touch { display: none; }
+    @media (hover: none) { .hint-hover { display: none; } .hint-touch { display: inline; } }
+    @media (prefers-reduced-motion: reduce) {
+      .browser-shot.scroller.is-panning img { transition-duration: 0s; }
+      .scroll-hint svg { animation: none; }
+    }
+
+    /* Phone + story */
+    .web-showcase {
+      display: grid; grid-template-columns: 300px 1fr; gap: 64px; align-items: center;
+      margin-top: 72px;
+    }
+    @media (max-width: 860px) { .web-showcase { grid-template-columns: 1fr; gap: 48px; justify-items: center; } .web-story { width: 100%; } }
+    .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .phone {
+      /* explicit height: aspect-ratio would let the tall capture stretch the box */
+      position: relative; width: 280px; height: 606px;
+      padding: 10px; border-radius: 46px;
+      background: linear-gradient(150deg, #2b2e34 0%, #121418 60%, #1c1f24 100%);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 50px 90px -40px rgba(0,0,0,0.85), 0 0 0 6px rgba(118,219,0,0.04), inset 0 1px 1px rgba(255,255,255,0.12);
+    }
+    .phone::before {
+      content: ""; position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+      width: 84px; height: 24px; border-radius: var(--radius-pill); background: #050607; z-index: 2;
+    }
+    .phone-screen { position: relative; width: 100%; height: 100%; border-radius: 36px; overflow: hidden; background: #dcdccf; }
+    .phone-screen img {
+      width: 100%; height: auto; display: block;
+      animation: phoneScroll var(--dur, 50s) ease-in-out infinite;
+      animation-play-state: paused;
+    }
+    .phone-screen.in-view img { animation-play-state: running; }
+    @keyframes phoneScroll {
+      0%, 5%    { transform: translateY(0); }
+      80%, 88%  { transform: translateY(var(--pan, 0px)); }
+      100%      { transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) { .phone-screen img { animation: none; } }
+    .phone-cap { font-family: var(--mono); font-size: 12px; letter-spacing: -0.02em; color: var(--text-4); }
+
+    /* Design notes */
+    .sub-title {
+      font-family: var(--sans); font-size: clamp(20px, 2.4vw, 24px); font-weight: 700;
+      letter-spacing: -0.02em; color: var(--text-1); margin: 88px 0 24px;
+    }
+    .design-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 860px) { .design-notes { grid-template-columns: 1fr; } }
+    .note-card {
+      background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 26px; transition: border-color .25s, background .25s;
+    }
+    .note-card:hover { border-color: var(--border-hover); background: var(--surface-2); }
+    .note-num { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent-bright); margin-bottom: 14px; }
+    .note-title { font-family: var(--sans); font-size: 17px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-1); margin-bottom: 10px; line-height: 1.3; }
+    .note-body { font-family: var(--sans); font-size: 14.5px; line-height: 1.65; color: var(--text-3); }
 
     /* ─── WEB STORY (product narrative) ──────────────────────── */
     .web-split { margin-top: 12px; }
@@ -557,41 +662,43 @@
   <section class="hero">
     <div class="container">
       <p class="hero-eyebrow fade-up">
-        <span lang="en">Product design · B2B web · brand system</span>
-        <span lang="pt">Product design · web B2B · sistema de marca</span>
+        <span lang="en">Brand identity · web design · B2B</span>
+        <span lang="pt">Identidade visual · web design · B2B</span>
       </p>
       <h1 class="hero-title fade-up">
-        <span lang="en"><span class="scrib-u">Ecobel:<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span><br><span class="accent">a rebrand, shipped as a B2B sales channel</span></span>
-        <span lang="pt"><span class="scrib-u">Ecobel:<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span><br><span class="accent">um rebrand, entregue como canal de vendas B2B</span></span>
+        <span lang="en"><span class="scrib-u">Ecobel:<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span><br><span class="accent">recycling without the cliché</span></span>
+        <span lang="pt"><span class="scrib-u">Ecobel:<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span><br><span class="accent">reciclagem sem clichê</span></span>
       </h1>
       <p class="hero-desc fade-up">
-        <span lang="en">Ecobel is a Brazilian recycling company that sells to other businesses rather than consumers. I rebranded it and designed + coded its website end-to-end: a responsive B2B product whose job is to build trust and turn visitors into "request a collection" leads. The new visual identity is the foundation that product stands on.</span>
-        <span lang="pt">A Ecobel é uma empresa brasileira de reciclagem que vende para outras empresas, em vez de para o consumidor final. Eu refiz a marca e projetei + codifiquei o site de ponta a ponta: um produto B2B responsivo cuja função é gerar confiança e transformar visitantes em leads de "solicitar coleta". A nova identidade visual é a base sobre a qual esse produto se apoia.</span>
+        <span lang="en">Ecobel is a Brazilian recycling company that sells to other businesses rather than consumers. I redesigned its visual identity and designed the website, then handed it off to the developer, who refined the build and put it live. The site's job: build trust and turn visitors into "request a collection" leads.</span>
+        <span lang="pt">A Ecobel é uma empresa brasileira de reciclagem que vende para outras empresas, em vez de para o consumidor final. Redesenhei a identidade visual e projetei o site, depois fiz o handoff para o desenvolvedor, que refinou a construção e colocou no ar. A função do site: gerar confiança e transformar visitantes em leads de "solicitar coleta".</span>
       </p>
       <div class="hero-tags fade-up">
         <span class="tag highlight">
-          <span lang="en">B2B Lead Generation</span>
-          <span lang="pt">Geração de Leads B2B</span>
+          <span lang="en">Brand Identity</span>
+          <span lang="pt">Identidade Visual</span>
         </span>
-        <span class="tag highlight">
-          <span lang="en">Responsive Web Product</span>
-          <span lang="pt">Produto Web Responsivo</span>
-        </span>
+        <span class="tag highlight">Web Design</span>
         <span class="tag">
-          <span lang="en">Front-end Code</span>
-          <span lang="pt">Código Front-end</span>
+          <span lang="en">Design Handoff</span>
+          <span lang="pt">Handoff para Dev</span>
         </span>
-        <span class="tag">
-          <span lang="en">Brand System</span>
-          <span lang="pt">Sistema de Marca</span>
-        </span>
+        <span class="tag">B2B</span>
         <span class="tag">Ecobel</span>
         <span class="tag">2025</span>
+      </div>
+      <div class="hero-cta-row fade-up">
+        <a href="https://ecobelreciclagem.com.br/" target="_blank" rel="noopener" class="cta-btn">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span lang="en">See it live: ecobelreciclagem.com.br</span>
+          <span lang="pt">Ver no ar: ecobelreciclagem.com.br</span>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
       <div class="hero-meta fade-up">
         <div class="meta-item">
           <div class="meta-label"><span lang="en">Role</span><span lang="pt">Função</span></div>
-          <div class="meta-value"><span lang="en">Sole designer &amp; developer</span><span lang="pt">Designer &amp; desenvolvedor único</span></div>
+          <div class="meta-value"><span lang="en">Brand &amp; web designer</span><span lang="pt">Designer de marca e web</span></div>
         </div>
         <div class="meta-item">
           <div class="meta-label"><span lang="en">Client</span><span lang="pt">Cliente</span></div>
@@ -599,11 +706,15 @@
         </div>
         <div class="meta-item">
           <div class="meta-label"><span lang="en">Scope</span><span lang="pt">Escopo</span></div>
-          <div class="meta-value"><span lang="en">Strategy · Brand · Web product · Code</span><span lang="pt">Estratégia · Marca · Produto web · Código</span></div>
+          <div class="meta-value"><span lang="en">Brand · Web design · Dev handoff</span><span lang="pt">Marca · Web design · Handoff para dev</span></div>
         </div>
         <div class="meta-item">
           <div class="meta-label"><span lang="en">Goal</span><span lang="pt">Objetivo</span></div>
           <div class="meta-value"><span lang="en">B2B leads: "request a collection"</span><span lang="pt">Leads B2B: "solicitar coleta"</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value"><span lang="en">Live</span><span lang="pt">No ar</span></div>
         </div>
       </div>
     </div>
@@ -650,15 +761,15 @@
         <div class="xsum-card">
           <div class="xsum-k"><span lang="en">Solution</span><span lang="pt">Solução</span></div>
           <p>
-            <span lang="en">I revitalized the brand without losing its equity (the recycling symbol moved into the "b") and designed + coded a responsive site end-to-end, aimed at "request a collection" leads.</span>
-            <span lang="pt">Revitalizei a marca sem perder seu valor (o símbolo de reciclagem foi para o "b") e projetei + codifiquei um site responsivo de ponta a ponta, focado em leads de "solicitar coleta".</span>
+            <span lang="en">I revitalized the brand without losing its equity (the recycling symbol moved into the "b") and designed a responsive site aimed at "request a collection" leads, then handed it off for development.</span>
+            <span lang="pt">Revitalizei a marca sem perder seu valor (o símbolo de reciclagem foi para o "b") e projetei um site responsivo focado em leads de "solicitar coleta", com handoff para o desenvolvimento.</span>
           </p>
         </div>
         <div class="xsum-card">
           <div class="xsum-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></div>
           <p>
-            <span lang="en">A live site working as the company's main sales channel, on top of a coherent brand system applied from stationery to trucks. All by one person: me.</span>
-            <span lang="pt">Um site no ar funcionando como o principal canal de vendas da empresa, sobre um sistema de marca coerente aplicado do papel timbrado aos caminhões. Tudo por uma pessoa: eu.</span>
+            <span lang="en">A site live at ecobelreciclagem.com.br working as the company's main sales channel, on top of a brand system applied from business cards to the fleet. Design by me; development and launch by the developer.</span>
+            <span lang="pt">Um site no ar em ecobelreciclagem.com.br funcionando como o principal canal de vendas da empresa, sobre um sistema de marca aplicado do cartão de visita à frota. Design meu; desenvolvimento e publicação pelo dev.</span>
           </p>
         </div>
       </div>
@@ -915,81 +1026,133 @@
         <span lang="pt">O site</span>
       </p>
       <h2 class="section-title fade-up">
-        <span lang="en">From identity to a living B2B product</span>
-        <span lang="pt">Da identidade a um produto B2B vivo</span>
+        <span lang="en">From identity to a live site</span>
+        <span lang="pt">Da identidade ao site no ar</span>
       </h2>
       <p class="section-body fade-up">
-        <span lang="en">A recycling company sells to <strong>other businesses</strong> that need a serious, compliant partner for their waste. So the site had one job: convince a company that Ecobel is a safe choice, then convert that trust into a collection request. I designed and coded it end-to-end, a responsive product that turns the new brand into Ecobel's main sales channel.</span>
-        <span lang="pt">Uma empresa de reciclagem vende para <strong>outras empresas</strong> que precisam de um parceiro sério e em conformidade para destinar seus resíduos. Então o site tinha um trabalho só: convencer uma empresa de que a Ecobel é uma escolha segura e converter essa confiança em pedido de coleta. Projetei e codifiquei de ponta a ponta, um produto responsivo que transforma a nova marca no principal canal de vendas da Ecobel.</span>
+        <span lang="en">A recycling company sells to <strong>other businesses</strong> that need a serious, compliant partner for their waste. So the site had one job: convince a company that Ecobel is a safe choice, then turn that trust into a collection request. I designed it on top of the new brand and handed it off to the developer, who refined the build and took it live.</span>
+        <span lang="pt">Uma empresa de reciclagem vende para <strong>outras empresas</strong> que precisam de um parceiro sério e em conformidade para destinar seus resíduos. Então o site tinha um trabalho só: convencer uma empresa de que a Ecobel é uma escolha segura e converter essa confiança em pedido de coleta. Desenhei o site em cima da nova marca e fiz o handoff para o desenvolvedor, que refinou a construção e colocou no ar.</span>
       </p>
 
-      <div class="browser fade-up">
+      <div class="browser browser--live fade-up">
         <div class="browser-bar">
           <div class="browser-dots"><span></span><span></span><span></span></div>
-          <span class="browser-url">ecobelreciclagem.com.br</span>
+          <a class="browser-url" href="https://ecobelreciclagem.com.br/" target="_blank" rel="noopener">ecobelreciclagem.com.br</a>
+          <span class="browser-live"><span class="live-dot" aria-hidden="true"></span><span lang="en">Live</span><span lang="pt">No ar</span></span>
         </div>
-        <div class="browser-shot"><img loading="lazy" decoding="async" src="Ecobel-Case-img/web-hero.jpg" alt="Ecobel website, desktop home page"></div>
+        <div class="browser-shot scroller" data-scroller tabindex="0" role="button" aria-label="Scroll through the Ecobel home page">
+          <img loading="lazy" decoding="async" src="Ecobel-Case-img/site-desktop-full.jpg" width="1600" height="6435" alt="Ecobel website, the full home page on desktop: hero, values, materials, four steps, contact form">
+          <span class="scroll-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0 6-6m-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="hint-hover"><span lang="en">Hover to scroll the page</span><span lang="pt">Passe o mouse para rolar a página</span></span>
+            <span class="hint-touch"><span lang="en">Tap to scroll the page</span><span lang="pt">Toque para rolar a página</span></span>
+          </span>
+        </div>
       </div>
+      <p class="brand-figcaption fade-up">
+        <span lang="en">The live home page, top to bottom: hero, values, accepted materials, the four steps, and the contact form.</span>
+        <span lang="pt">A home no ar, de cima a baixo: hero, valores, materiais aceitos, os quatro passos e o formulário de contato.</span>
+      </p>
 
-      <div class="web-split fade-up">
+      <div class="web-showcase fade-up">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-screen" data-autoscroll>
+              <img loading="lazy" decoding="async" src="Ecobel-Case-img/site-mobile-full.jpg" width="640" height="13929" alt="Ecobel website on a phone, full home page">
+            </div>
+          </div>
+          <p class="phone-cap"><span lang="en">Same page, on a phone</span><span lang="pt">A mesma página, no celular</span></p>
+        </div>
         <div class="web-story">
           <div class="web-story-title">
             <span lang="en">Four steps. <span class="accent">Zero bureaucracy.</span></span>
             <span lang="pt">Quatro passos. <span class="accent">Zero burocracia.</span></span>
           </div>
           <p class="section-body" style="max-width:none;">
-            <span lang="en">The core of the product is a tight funnel: explain the process, prove seriousness, and convert into a "Request collection" lead. The number of steps was a deliberate call: businesses assume outsourcing waste is a bureaucratic headache, so showing the entire relationship as <strong>just four steps</strong> makes it feel simple. That reframing is the conversion lever. Built fully responsive, on the brand's paper-and-kraft palette and the Manrope + Nunito type pairing.</span>
-            <span lang="pt">O núcleo do produto é um funil enxuto: explicar o processo, provar seriedade e converter em um lead de "Solicitar coleta". O número de passos foi uma decisão deliberada: empresas presumem que terceirizar resíduos é uma dor de cabeça burocrática, então mostrar toda a relação em <strong>apenas quatro passos</strong> faz parecer simples. Esse reposicionamento é a alavanca de conversão. Construído totalmente responsivo, na paleta de papel e kraft da marca e no par tipográfico Manrope + Nunito.</span>
+            <span lang="en">The core of the site is a tight funnel: explain the process, prove seriousness, and convert into a "Request collection" lead. The number of steps was a deliberate call: businesses assume outsourcing waste is a bureaucratic headache, so showing the whole relationship as <strong>just four steps</strong> makes it feel simple. Fully responsive, on the brand's paper-and-kraft palette and the Manrope + Nunito type pairing.</span>
+            <span lang="pt">O núcleo do site é um funil enxuto: explicar o processo, provar seriedade e converter em um lead de "Solicitar coleta". O número de passos foi uma decisão deliberada: empresas presumem que terceirizar resíduos é uma dor de cabeça burocrática, então mostrar toda a relação em <strong>apenas quatro passos</strong> faz parecer simples. Totalmente responsivo, na paleta de papel e kraft da marca e no par tipográfico Manrope + Nunito.</span>
           </p>
           <ul class="web-steps">
             <li class="web-step">
               <div class="web-step-num">01</div>
               <div>
-                <div class="web-step-title"><span lang="en">Request</span><span lang="pt">Solicitação</span></div>
-                <div class="web-step-desc"><span lang="en">A business requests a collection in a few clicks.</span><span lang="pt">A empresa solicita uma coleta em poucos cliques.</span></div>
+                <div class="web-step-title"><span lang="en">Diagnosis</span><span lang="pt">Diagnóstico</span></div>
+                <div class="web-step-desc"><span lang="en">A visit to map waste types and volumes and plan the best collection flow.</span><span lang="pt">Uma visita para mapear tipos e volumes de resíduos e planejar o melhor fluxo de coleta.</span></div>
               </div>
             </li>
             <li class="web-step">
               <div class="web-step-num">02</div>
               <div>
                 <div class="web-step-title"><span lang="en">Scheduled pickup</span><span lang="pt">Coleta programada</span></div>
-                <div class="web-step-desc"><span lang="en">A trained team collects on a set schedule.</span><span lang="pt">Uma equipe treinada coleta em data combinada.</span></div>
+                <div class="web-step-desc"><span lang="en">A route with a frequency that fits each company's volume.</span><span lang="pt">Uma rota com frequência adequada ao volume de cada empresa.</span></div>
               </div>
             </li>
             <li class="web-step">
               <div class="web-step-num">03</div>
               <div>
-                <div class="web-step-title"><span lang="en">Sorting &amp; weighing</span><span lang="pt">Triagem e pesagem</span></div>
-                <div class="web-step-desc"><span lang="en">Every kilo is sorted, weighed, and logged.</span><span lang="pt">Cada quilo é triado, pesado e registrado.</span></div>
+                <div class="web-step-title"><span lang="en">Sorting &amp; baling</span><span lang="pt">Triagem e prensagem</span></div>
+                <div class="web-step-desc"><span lang="en">Materials are separated, weighed, and baled at Ecobel's facility.</span><span lang="pt">Os materiais são separados, pesados e prensados na unidade da Ecobel.</span></div>
               </div>
             </li>
             <li class="web-step">
               <div class="web-step-num">04</div>
               <div>
-                <div class="web-step-title"><span lang="en">Certified disposal</span><span lang="pt">Destinação certificada</span></div>
-                <div class="web-step-desc"><span lang="en">Sent to the right recycler, with monthly environmental reports.</span><span lang="pt">Enviado à recicladora certa, com relatórios ambientais mensais.</span></div>
+                <div class="web-step-title"><span lang="en">Proper disposal</span><span lang="pt">Destinação correta</span></div>
+                <div class="web-step-desc"><span lang="en">Everything goes to the right recycling industry.</span><span lang="pt">Tudo segue para a indústria recicladora certa.</span></div>
               </div>
             </li>
           </ul>
         </div>
       </div>
 
-      <p class="section-body fade-up" style="margin-top:40px;">
-        <span lang="en">Material streams the site is built to handle:</span>
-        <span lang="pt">Fluxos de material que o site é feito para atender:</span>
+      <h3 class="sub-title fade-up">
+        <span lang="en">What the design does</span>
+        <span lang="pt">O que o design faz</span>
+      </h3>
+      <div class="design-notes fade-up">
+        <div class="note-card">
+          <div class="note-num">01</div>
+          <div class="note-title"><span lang="en">The ask is always in reach</span><span lang="pt">O pedido sempre à mão</span></div>
+          <p class="note-body">
+            <span lang="en">"Request collection" sits in the header, the hero, and the closing band, and WhatsApp floats one tap away. Nobody has to hunt for the next step.</span>
+            <span lang="pt">O "Solicitar coleta" está no cabeçalho, no hero e no fechamento, e o WhatsApp flutua a um toque de distância. Ninguém precisa procurar o próximo passo.</span>
+          </p>
+        </div>
+        <div class="note-card">
+          <div class="note-num">02</div>
+          <div class="note-title"><span lang="en">Trust before the pitch</span><span lang="pt">Confiança antes do pedido</span></div>
+          <p class="note-body">
+            <span lang="en">Values (transparent weighing, punctuality, compliance) and the list of accepted materials come before the form, answering "are they serious?" and "do they take what I have?" first.</span>
+            <span lang="pt">Os valores (pesagem transparente, pontualidade, conformidade) e a lista de materiais aceitos vêm antes do formulário, respondendo primeiro "eles são sérios?" e "eles levam o que eu tenho?".</span>
+          </p>
+        </div>
+        <div class="note-card">
+          <div class="note-num">03</div>
+          <div class="note-title"><span lang="en">A form that asks little</span><span lang="pt">Um formulário que pede pouco</span></div>
+          <p class="note-body">
+            <span lang="en">Only name, company, and email are required. Everything else is optional, and the page promises a reply within one business day.</span>
+            <span lang="pt">Só nome, empresa e e-mail são obrigatórios. O resto é opcional, e a página promete resposta em até 1 dia útil.</span>
+          </p>
+        </div>
+      </div>
+
+      <p class="section-body fade-up" style="margin-top:48px;">
+        <span lang="en">Material streams the site is built around:</span>
+        <span lang="pt">Famílias de material em torno das quais o site foi pensado:</span>
       </p>
       <div class="web-materials fade-up">
         <span class="mat-chip"><span lang="en">Paper &amp; cardboard</span><span lang="pt">Papel &amp; papelão</span></span>
         <span class="mat-chip"><span lang="en">Plastics</span><span lang="pt">Plásticos</span></span>
-        <span class="mat-chip"><span lang="en">Ferrous metals</span><span lang="pt">Metais ferrosos</span></span>
+        <span class="mat-chip"><span lang="en">Metals</span><span lang="pt">Metais</span></span>
         <span class="mat-chip"><span lang="en">Electronics</span><span lang="pt">Eletrônicos</span></span>
       </div>
 
       <div class="fade-up" style="margin-top:40px;">
-        <a href="https://igordtdesign.github.io/ecobel/" target="_blank" rel="noopener" class="cta-btn">
+        <a href="https://ecobelreciclagem.com.br/" target="_blank" rel="noopener" class="cta-btn">
+          <span class="live-dot" aria-hidden="true"></span>
           <span lang="en">Visit the live site</span>
-          <span lang="pt">Visitar o site</span>
-          <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span lang="pt">Visitar o site no ar</span>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
     </div>
@@ -1036,10 +1199,10 @@
             <span class="case-nav-title"><span lang="en">All work</span><span lang="pt">Trabalhos</span></span>
           </span>
         </a>
-        <a href="portfolio-case.html" class="case-nav-next">
+        <a href="whichgametobuy-case.html" class="case-nav-next">
           <span>
             <span class="case-nav-label"><span lang="en">Next case</span><span lang="pt">Próximo case</span></span>
-            <span class="case-nav-title"><span lang="en">The Portfolio Is the Product</span><span lang="pt">O portfólio é o produto</span></span>
+            <span class="case-nav-title"><span lang="en">WhichGameToBuy: From Thesis to Product</span><span lang="pt">WhichGameToBuy: Da Tese ao Produto</span></span>
           </span>
           <svg class="case-nav-ico" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -1112,6 +1275,46 @@
   lbClose.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Live site captures: hover/tap/keyboard pans the desktop page; the phone auto-scrolls while in view
+  (function () {
+    function measure(frame, img) {
+      // offsetHeight ignores transforms, so it is the true rendered height
+      var pan = Math.min(0, frame.clientHeight - img.offsetHeight);
+      frame.style.setProperty('--pan', pan + 'px');
+      return pan;
+    }
+    document.querySelectorAll('[data-scroller]').forEach(function (frame) {
+      var img = frame.querySelector('img');
+      function setup() {
+        var pan = measure(frame, img);
+        frame.style.setProperty('--pan-dur', Math.max(5, Math.abs(pan) / 520).toFixed(1) + 's');
+      }
+      if (img.complete) setup(); else img.addEventListener('load', setup);
+      window.addEventListener('resize', setup);
+      var hoverable = window.matchMedia('(hover: hover)').matches;
+      if (hoverable) {
+        frame.addEventListener('mouseenter', function () { setup(); frame.classList.add('is-panning'); });
+        frame.addEventListener('mouseleave', function () { frame.classList.remove('is-panning'); });
+      }
+      function toggle() { setup(); frame.classList.toggle('is-panning'); }
+      frame.addEventListener('click', function () { if (!hoverable) toggle(); });
+      frame.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+    document.querySelectorAll('[data-autoscroll]').forEach(function (screen) {
+      var img = screen.querySelector('img');
+      function setup() { measure(screen, img); }
+      if (img.complete) setup(); else img.addEventListener('load', setup);
+      window.addEventListener('resize', setup);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { screen.classList.toggle('in-view', en.isIntersecting); });
+        }, { threshold: 0.35 }).observe(screen);
+      } else { screen.classList.add('in-view'); }
+    });
+  })();
 </script>
 
 <script>
