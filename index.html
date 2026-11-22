@@ -825,6 +825,40 @@
     .award-title { font-family: var(--sans); font-size: 13.5px; font-weight: 500; letter-spacing: -0.01em; color: var(--text-2); line-height: 1.35; }
     .award-org { font-family: var(--mono); font-size: 11px; letter-spacing: -0.01em; color: var(--text-4); }
 
+    /* ─── GALLERY TEASER (endless strip under the about teaser) ─ */
+    .g-teaser-wrap { --tile: 168px; --gap: 14px; margin-top: -20px; padding: 0 0 60px; }
+    .g-teaser-wrap[hidden] { display: none; }
+    @media (max-width: 720px) { .g-teaser-wrap { --tile: 128px; --gap: 10px; margin-top: -12px; padding-bottom: 44px; } }
+    .g-teaser {
+      overflow: hidden; padding: 8px 0; /* room for the hover lift */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+    }
+    .g-track {
+      display: flex; gap: var(--gap); width: max-content;
+      animation: gMarquee var(--marquee-dur, 60s) linear infinite;
+    }
+    /* two identical sets: sliding one set + one gap lands exactly where it started */
+    @keyframes gMarquee { to { transform: translateX(calc(-50% - var(--gap) / 2)); } }
+    .g-teaser:hover .g-track, .g-track:focus-within, .g-teaser-wrap.is-offscreen .g-track { animation-play-state: paused; }
+    .g-tile {
+      flex: 0 0 auto; width: var(--tile); aspect-ratio: 3 / 4;
+      padding: 0; margin: 0; cursor: zoom-in;
+      border-radius: var(--r-md); overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg-2);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+    .g-tile:hover { transform: translateY(-4px); border-color: var(--border-hover); }
+    .g-tile:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+    .g-tile picture, .g-tile img { display: block; width: 100%; height: 100%; }
+    .g-tile img { object-fit: cover; }
+    @media (max-width: 720px) { .g-tile { border-radius: var(--r-sm); } }
+    @media (prefers-reduced-motion: reduce) {
+      .g-track { animation: none; }
+      .g-teaser { overflow-x: auto; }
+      .g-tile[data-dup] { display: none; }
+    }
+
     /* ─── ABOUT TEASER (below hero) ──────────────────────────── */
     .about-teaser-wrap { padding: 8px 0 56px; }
     .about-teaser {
@@ -1109,6 +1143,14 @@
     </div>
   </section>
 
+  <!-- GALLERY TEASER: endless strip of gallery pieces, filled by the gallery script
+       (stays hidden without JS; the full gallery below still works) -->
+  <section class="g-teaser-wrap" id="gTeaser" aria-label="Gallery preview" hidden>
+    <div class="g-teaser">
+      <div class="g-track" id="gTrack"></div>
+    </div>
+  </section>
+
   <div class="checker-strip" aria-hidden="true"></div>
 
   <!-- SELECTED WORK -->
@@ -1116,7 +1158,7 @@
     <div class="container">
       <div class="section-head">
         <p class="eyebrow"><span lang="en">Selected work</span><span lang="pt">Trabalhos selecionados</span></p>
-        <h2><span lang="en">Four projects, <span class="scrib-u">up close.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span><span lang="pt">Quatro projetos, <span class="scrib-u">de perto.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></h2>
+        <h2><span lang="en">Four projects, <span class="scrib-u">four kinds of results.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span><span lang="pt">Quatro projetos, <span class="scrib-u">diversos resultados.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></h2>
       </div>
 
       <div class="cases doodle-host">
@@ -2023,6 +2065,43 @@
     }
     items.forEach(function (it) { wall.appendChild(it); });
 
+    // Teaser strip under "Quem sou eu": the last 12 of the shuffled order (so it
+    // doesn't repeat the gallery's first rows), drawn twice for a seamless loop
+    var teaser = document.getElementById('gTeaser');
+    var track = document.getElementById('gTrack');
+    if (teaser && track) {
+      var pick = items.slice(-12);
+      [false, true].forEach(function (dup) {
+        pick.forEach(function (it) {
+          var tile = document.createElement('button');
+          tile.type = 'button';
+          tile.className = 'g-tile';
+          var pic = it.querySelector('picture').cloneNode(true);
+          pic.querySelector('img').loading = 'eager';
+          tile.appendChild(pic);
+          if (dup) {
+            tile.setAttribute('data-dup', '');
+            tile.setAttribute('aria-hidden', 'true');
+            tile.tabIndex = -1;
+          } else {
+            tile.setAttribute('aria-label', it.querySelector('.g-open').getAttribute('aria-label'));
+          }
+          tile.addEventListener('click', function () { open(items.indexOf(it), tile); });
+          track.appendChild(tile);
+        });
+      });
+      teaser.hidden = false;
+      // ~40px per second, whatever the tile size on this screen
+      var pace = function () { track.style.setProperty('--marquee-dur', (track.scrollWidth / 2 / 40).toFixed(1) + 's'); };
+      pace();
+      window.addEventListener('resize', pace);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (en) {
+          teaser.classList.toggle('is-offscreen', !en[0].isIntersecting);
+        }).observe(teaser);
+      }
+    }
+
     document.getElementById('gMoreBtn').addEventListener('click', function () {
       wrap.classList.remove('is-collapsed');
       more.hidden = true;
@@ -2062,9 +2141,9 @@
       text.innerHTML = it.querySelector('figcaption').innerHTML;
       num.textContent = (idx + 1) + ' / ' + items.length;
     }
-    function open(i) {
+    function open(i, trigger) {
       idx = i;
-      lastFocus = document.activeElement;
+      lastFocus = trigger || document.activeElement;
       lb.hidden = false;
       document.body.style.overflow = 'hidden';
       render();
@@ -2080,7 +2159,8 @@
     function step(d) { idx = (idx + d + items.length) % items.length; render(); }
 
     items.forEach(function (it, i) {
-      it.querySelector('.g-open').addEventListener('click', function () { open(i); });
+      var btn = it.querySelector('.g-open');
+      btn.addEventListener('click', function () { open(i, btn); });
     });
     closeBtn.addEventListener('click', close);
     document.getElementById('glbPrev').addEventListener('click', function () { step(-1); });
