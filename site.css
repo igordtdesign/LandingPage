@@ -141,14 +141,22 @@ nav.nav-hidden { transform: translateY(calc(-100% - 24px)); } /* hides on scroll
   font-size: clamp(24px, 2.4vw, 30px); line-height: 1.1; letter-spacing: 0.01em;
   color: var(--text-1); margin-bottom: 20px;
 }
-/* sequence markers (Santa Maria's phases): a tag pill, not a slash label */
-.phase-tag {
-  display: inline-flex; align-items: center;
-  font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.01em;
-  color: var(--blue-bright); background: var(--blue-dim);
-  border: 1px solid color-mix(in srgb, var(--blue-bright) 30%, transparent);
-  border-radius: 99px; padding: 6px 14px; margin-bottom: 20px;
+/* ── Tags and chips: small uppercase Inter labels with a tight 6px corner.
+   Pills are for things you can press (buttons, switches); tags only describe. */
+.tag, .phase-tag, .mat-chip, .meta-value .badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--sans) !important; font-size: 11px !important; font-weight: 600 !important; line-height: 1 !important;
+  letter-spacing: 0.07em !important; text-transform: uppercase;
+  color: var(--text-2); background: transparent;
+  border: 1px solid var(--border-hover); border-radius: 6px !important;
+  padding: 7px 10px 6px !important;
 }
+.tag.highlight, .tag.blue, .phase-tag {
+  color: var(--blue-bright); background: var(--blue-dim);
+  border-color: color-mix(in srgb, var(--blue-bright) 35%, transparent);
+}
+.phase-tag { margin-bottom: 20px; } /* sequence markers (Santa Maria's phases) */
+.mat-chip { font-size: 11.5px !important; } /* Ecobel material streams keep their green dot */
 .case-nav-title {
   font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
   font-size: 24px; line-height: 1.1; letter-spacing: 0.01em;
@@ -165,9 +173,59 @@ html[data-lang="pt"] .case-nav-title { line-height: 1.14; }
 .section-title .scrib-u .scrib-svg,
 .contact-title .scrib-u .scrib-svg { bottom: 0.1em; height: 0.2em; }
 
-/* ── Hero facts: an even grid instead of a wrapping row (no orphans) ── */
-.hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 32px; }
-@media (max-width: 640px) { .hero-meta { grid-template-columns: 1fr 1fr; gap: 20px 24px; } }
+/* ── Case facts: a spec sheet in the same panel language as the 30-second
+   summary. Cells split by 1px lines (the grid gap shows the border colour);
+   the last fact stretches across what's left of its row, so no empty cells. */
+.hero-meta {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px;
+  background: var(--border); border: 1px solid var(--border) !important; border-radius: 20px; overflow: hidden;
+  padding: 0 !important; margin-top: 4px;
+}
+.meta-item { background: var(--surface-1); padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.meta-item:last-child:nth-child(3n+1) { grid-column: span 3; }
+.meta-item:last-child:nth-child(3n+2) { grid-column: span 2; }
+.meta-label {
+  font-family: var(--sans) !important; font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-4); margin: 0 !important;
+}
+.meta-value { font-family: var(--sans) !important; font-size: 15.5px; font-weight: 500; line-height: 1.45; letter-spacing: -0.01em; color: var(--text-1); }
+.meta-value .badge { font-family: var(--sans) !important; font-weight: 700; letter-spacing: 0; }
+@media (max-width: 640px) {
+  .hero-meta { grid-template-columns: 1fr 1fr; }
+  .meta-item:last-child:nth-child(3n+1), .meta-item:last-child:nth-child(3n+2) { grid-column: auto; }
+  .meta-item:last-child:nth-child(odd) { grid-column: span 2; }
+  .meta-item { padding: 16px 18px 18px; }
+}
+
+/* ── Type roles: numbers in Anton, small text and card titles in Inter.
+   JetBrains Mono stays for controls (buttons, nav, tags, pills, switches)
+   and for code (git log, hex values) and the mockups. ─────────────── */
+.step-num, .pstep-n, .web-step-num, .note-num, .timeline-phase {
+  font-family: var(--s-display) !important; font-weight: 400 !important; letter-spacing: 0.02em !important;
+  color: var(--s-brand) !important;
+}
+.step-num, .web-step-num, .note-num { font-size: 15px !important; }
+.pstep-n { font-size: 22px !important; line-height: 1 !important; }
+.timeline-phase { font-size: 24px !important; line-height: 1 !important; text-transform: uppercase; }
+.stat-number { font-family: var(--s-display) !important; font-weight: 400 !important; letter-spacing: 0.01em !important; color: var(--s-brand) !important; }
+.card-title, .step-title, .pstep-t, .web-step-title, .web-card-title, .timeline-content-title, .type-name {
+  font-family: var(--sans) !important; font-weight: 600 !important; letter-spacing: -0.015em !important;
+}
+.web-story-title { /* "Four steps. Zero bureaucracy." is a heading: same as the other sub-headings */
+  font-family: var(--s-display) !important; font-weight: 400 !important; text-transform: uppercase;
+  font-size: clamp(26px, 2.6vw, 32px) !important; line-height: 1.08 !important; letter-spacing: 0.01em !important;
+}
+.award-org, .gitem-caption, .brand-figcaption, .type-role, .swatch-name, .img-caption, .img-placeholder p,
+.stat-label, .sm-stat-label, .tldr-lab, .termlog-note, .footer-copy, .phone-cap {
+  font-family: var(--sans) !important; letter-spacing: -0.005em !important;
+}
+.brand-figcaption, .img-caption, .gitem-caption, .termlog-note, .phone-cap { font-size: 13px !important; line-height: 1.55; }
+.tldr-lab { font-size: 13px !important; }
+.card-source, .case-nav-label {
+  font-family: var(--sans) !important; font-size: 11.5px !important; font-weight: 600 !important;
+  letter-spacing: 0.08em !important; text-transform: uppercase;
+}
+.case-nav-back .case-nav-title { font-family: var(--s-display) !important; font-weight: 400 !important; text-transform: uppercase; font-size: 24px !important; letter-spacing: 0.01em !important; }
 
 /* a short scope or method note under a paragraph */
 .scope-note {

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# leftovers from an old practice project and a stray duplicate of the Santa Maria case
+Disallow: /pages/
+Disallow: /SantaMaria-Case-img/santa-maria-case.html
+
+Sitemap: https://igordalmolin.com.br/sitemap.xml

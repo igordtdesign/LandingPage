@@ -1,5 +1,6 @@
 /* i18n.js: language toggle + persistence
-   Detection priority: localStorage > navigator.language > default 'en'
+   Detection: the saved choice (localStorage), otherwise Portuguese, the main
+   version (and the one search engines index)
    The initial detection runs inline in each page's <head> to avoid flash.
    This file wires up the EN/PT toggle buttons and persists the choice.
 */
@@ -18,7 +19,7 @@
   }
 
   function updateUI() {
-    var current = document.documentElement.getAttribute('data-lang') || 'en';
+    var current = document.documentElement.getAttribute('data-lang') || 'pt';
     var btns = document.querySelectorAll('[data-lang-btn]');
     for (var i = 0; i < btns.length; i++) {
       var btn = btns[i];

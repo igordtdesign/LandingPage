@@ -1,17 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" data-lang="pt" data-theme="light" data-title-en="WhichGameToBuy: AI Game Discovery Product | Igor Dalmolin">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WhichGameToBuy: From Thesis to Live Product | Igor Dalmolin</title>
-  <meta name="description" content="It started as a PUCRS postgraduate thesis on game discovery (grade 10/10). I stripped the Steam branding, cut scope, and shipped it as WhichGameToBuy, a live product. By Igor Dalmolin Tronco.">
-  <!-- Microsoft Clarity -->
+  <title>WhichGameToBuy: descoberta de jogos com IA | Igor Dalmolin</title>
+  <meta name="description" content="O WhichGameToBuy nasceu da minha pesquisa de pós na PUCRS (nota 10). Cortei o escopo e lancei um produto de IA que encontra seu próximo jogo e explica cada escolha.">
+  <!-- SEO + link previews -->
+  <link rel="canonical" href="https://igordalmolin.com.br/whichgametobuy-case.html">
+  <meta name="author" content="Igor Dalmolin">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Igor Dalmolin">
+  <meta property="og:title" content="WhichGameToBuy: descoberta de jogos com IA, da tese ao produto">
+  <meta property="og:description" content="O WhichGameToBuy nasceu da minha pesquisa de pós na PUCRS (nota 10). Cortei o escopo e lancei um produto de IA que encontra seu próximo jogo e explica cada escolha.">
+  <meta property="og:url" content="https://igordalmolin.com.br/whichgametobuy-case.html">
+  <meta property="og:image" content="https://igordalmolin.com.br/img/og/og-whichgametobuy.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="WhichGameToBuy: a janela de chat do produto com sugestões de perguntas.">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WhichGameToBuy: descoberta de jogos com IA, da tese ao produto">
+  <meta name="twitter:description" content="O WhichGameToBuy nasceu da minha pesquisa de pós na PUCRS (nota 10). Cortei o escopo e lancei um produto de IA que encontra seu próximo jogo e explica cada escolha.">
+  <meta name="twitter:image" content="https://igordalmolin.com.br/img/og/og-whichgametobuy.jpg">
+  <meta name="twitter:image:alt" content="WhichGameToBuy: a janela de chat do produto com sugestões de perguntas.">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#f4f2ed">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "WhichGameToBuy: descoberta de jogos com IA, da tese ao produto", "headline": "WhichGameToBuy: descoberta de jogos com IA, da tese ao produto", "description": "O WhichGameToBuy nasceu da minha pesquisa de pós na PUCRS (nota 10). Cortei o escopo e lancei um produto de IA que encontra seu próximo jogo e explica cada escolha.", "url": "https://igordalmolin.com.br/whichgametobuy-case.html", "image": "https://igordalmolin.com.br/img/og/og-whichgametobuy.jpg", "inLanguage": ["pt-BR", "en"], "author": {"@type": "Person", "@id": "https://igordalmolin.com.br/#igor", "name": "Igor Dalmolin", "url": "https://igordalmolin.com.br/"}, "isPartOf": {"@type": "WebSite", "@id": "https://igordalmolin.com.br/#website", "url": "https://igordalmolin.com.br/", "name": "Igor Dalmolin"}}</script>
+  <!-- Microsoft Clarity, consent-aware (the notice lives in site.js):
+       no choice yet -> Clarity runs without cookies; accepted -> cookies on;
+       declined -> Clarity doesn't load. A choice is kept for 9 months.
+       Ad storage is always denied: Clarity is used only to see how the site is used. -->
   <script type="text/javascript">
-    (function (c, l, a, r, i, t, y) {
-      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-    })(window, document, "clarity", "script", "xd2p68963g");
+    (function () {
+      var choice = null;
+      try {
+        var raw = (localStorage.getItem('site-consent') || '').split('|');
+        if (Date.now() - (+raw[1] || 0) < 270 * 864e5) choice = raw[0];
+      } catch (e) {}
+      if (choice === 'denied') return;
+      (function (c, l, a, r, i, t, y) {
+        c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+        t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "xd2p68963g");
+      window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: choice === 'granted' ? 'granted' : 'denied' });
+    })();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,27 +55,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
   <meta name="color-scheme" content="dark light">
-  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
-  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
-  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
 
-  <!-- i18n: detect language synchronously to avoid flash (priority: saved > browser > 'en') -->
+  <!-- i18n: detect language synchronously to avoid flash (the visitor's saved choice, otherwise Portuguese) -->
   <script>
     (function () {
       try {
         var saved = localStorage.getItem('site-lang');
         var lang = (saved === 'en' || saved === 'pt') ? saved
-                  : ((navigator.language || navigator.userLanguage || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en');
+                  : 'pt'; // Portuguese is the main version (and the one search engines index)
         document.documentElement.setAttribute('data-lang', lang);
         document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
+        // the tab title follows the language (<title> holds the Portuguese one)
+        document.documentElement.setAttribute('data-title-pt', document.title);
+        if (lang === 'en') document.title = document.documentElement.getAttribute('data-title-en') || document.title;
       } catch (e) {
-        document.documentElement.setAttribute('data-lang', 'en');
+        document.documentElement.setAttribute('data-lang', 'pt');
+        document.documentElement.setAttribute('lang', 'pt-BR');
       }
-      // theme: the visitor's explicit choice if any, otherwise the system setting
+      // theme: the visitor's saved choice, otherwise light (the default)
       var theme = null;
       try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
-      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      if (!theme) theme = 'light';
       document.documentElement.setAttribute('data-theme', theme);
+      if (theme === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0a0d14');
       document.documentElement.classList.add('js'); // scroll reveals only run with JS
     })();
   </script>
@@ -1170,7 +1208,7 @@
                 <span lang="en">Something relaxing, no combat</span>
                 <span lang="pt">Algo relaxante, sem combate</span>
               </button>
-              <div class="wfp-input" data-target="wfpRes-1" role="button" tabindex="0" aria-label="Ask WhichGameToBuy">
+              <div class="wfp-input" data-target="wfpRes-1" role="button" tabindex="0" aria-label="Pergunte ao WhichGameToBuy" data-aria-en="Ask WhichGameToBuy">
                 <span class="wfp-input-text"><span lang="en">Ask WhichGameToBuy...</span><span lang="pt">Pergunte ao WhichGameToBuy...</span></span>
                 <div class="wfp-send"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="#0d110c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
               </div>
@@ -1368,7 +1406,7 @@
         <div class="pstep">
           <div class="pstep-n">03</div>
           <div class="pstep-t"><span lang="en">Ideate</span><span lang="pt">Ideação</span></div>
-          <div class="pstep-d"><span lang="en">Three UX pillars and the conversational concept.</span><span lang="pt">Três pilares de UX e o conceito conversacional.</span></div>
+          <div class="pstep-d"><span lang="en">The conversational concept and the principles behind it.</span><span lang="pt">O conceito conversacional e os princípios por trás dele.</span></div>
         </div>
         <div class="pstep">
           <div class="pstep-n">04</div>
@@ -1951,10 +1989,10 @@
       <div class="grid-3" style="margin-top: 24px;">
         <div class="card fade-up">
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;">C</div>
+            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--s-display);font-size:17px;font-weight:400;color:var(--blue);flex-shrink:0;">C</div>
             <div>
               <div class="card-title" style="margin:0;">Carlos Henrique, 42</div>
-              <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:-0.02em;">
+              <div style="font-family:var(--sans);font-size:13px;color:var(--text-4);letter-spacing:-0.005em;">
                 <span lang="en">Agricultural engineer · casual gamer</span>
                 <span lang="pt">Engenheiro agrônomo · gamer casual</span>
               </div>
@@ -1967,10 +2005,10 @@
         </div>
         <div class="card fade-up">
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;">M</div>
+            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--s-display);font-size:17px;font-weight:400;color:var(--blue);flex-shrink:0;">M</div>
             <div>
               <div class="card-title" style="margin:0;">Mariana, 31</div>
-              <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:-0.02em;">
+              <div style="font-family:var(--sans);font-size:13px;color:var(--text-4);letter-spacing:-0.005em;">
                 <span lang="en">Philosophy teacher · experienced gamer</span>
                 <span lang="pt">Professora de filosofia · gamer experiente</span>
               </div>
@@ -1983,10 +2021,10 @@
         </div>
         <div class="card fade-up">
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;">L</div>
+            <div style="width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(64,129,226,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--s-display);font-size:17px;font-weight:400;color:var(--blue);flex-shrink:0;">L</div>
             <div>
               <div class="card-title" style="margin:0;">Lucas, 23</div>
-              <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:-0.02em;">
+              <div style="font-family:var(--sans);font-size:13px;color:var(--text-4);letter-spacing:-0.005em;">
                 <span lang="en">Graphic design student · RPG enthusiast</span>
                 <span lang="pt">Estudante de design gráfico · entusiasta de RPG</span>
               </div>
@@ -2116,12 +2154,12 @@
 </div><!-- /page -->
 
 <!-- Back to top -->
-<a href="index.html#work" class="float-back" aria-label="Back to all work">
+<a href="index.html#work" class="float-back" aria-label="Voltar para todos os trabalhos" data-aria-en="Back to all work">
   <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <span><span lang="en">Work</span><span lang="pt">Trabalhos</span></span>
 </a>
 
-<a href="#" class="back-top" id="backTop" aria-label="Back to top">
+<a href="#" class="back-top" id="backTop" aria-label="Voltar ao topo" data-aria-en="Back to top">
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 
@@ -2158,13 +2196,14 @@
   (function () {
     var sw = document.getElementById('langSwitch');
     if (!sw) return;
-    function sync() { sw.setAttribute('data-active', document.documentElement.getAttribute('data-lang') || 'en'); }
+    function sync() { sw.setAttribute('data-active', document.documentElement.getAttribute('data-lang') || 'pt'); }
     sync();
     sw.addEventListener('click', function () {
-      var cur = document.documentElement.getAttribute('data-lang') || 'en';
+      var cur = document.documentElement.getAttribute('data-lang') || 'pt';
       var next = cur === 'en' ? 'pt' : 'en';
       document.documentElement.setAttribute('data-lang', next);
       document.documentElement.setAttribute('lang', next === 'pt' ? 'pt-BR' : 'en');
+      document.title = document.documentElement.getAttribute('data-title-' + next) || document.title;
       try { localStorage.setItem('site-lang', next); } catch (e) {}
       sync();
     });

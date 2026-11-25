@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" data-lang="pt" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,24 +9,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#f4f2ed">
 
   <!-- GitHub Pages serves this file for any missing path, so every URL is root-relative.
-       Language and theme follow the visitor's saved choice, otherwise the system. -->
+       Language: the visitor's saved choice, otherwise Portuguese. Theme: saved choice, otherwise light. -->
   <script>
     (function () {
       var root = document.documentElement;
       try {
         var saved = localStorage.getItem('site-lang');
         var lang = (saved === 'en' || saved === 'pt') ? saved
-                  : ((navigator.language || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en');
+                  : 'pt';
         root.setAttribute('data-lang', lang);
         root.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
-      } catch (e) { root.setAttribute('data-lang', 'en'); }
+      } catch (e) { root.setAttribute('data-lang', 'pt'); }
       var theme = null;
       try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
-      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      if (!theme) theme = 'light';
       root.setAttribute('data-theme', theme);
+      if (theme === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0a0d14');
     })();
   </script>
 
@@ -113,8 +117,12 @@
 </head>
 <body>
   <main>
-    <img class="shot" src="/img/404.jpg" width="638" height="479"
-         alt="A dog dressed as a construction worker, in cap, overalls and work boots, pushing a wheelbarrow">
+    <img class="shot" id="shot" src="/img/404.jpg" width="638" height="479"
+         alt="Um cachorro vestido de peão de obra, de boné, óculos escuros, macacão e botina, colocando uma pedra na caçamba de uma caminhonete">
+    <script>
+      if (document.documentElement.getAttribute('data-lang') === 'en')
+        document.getElementById('shot').alt = 'A dog dressed as a construction worker, in cap, sunglasses, overalls and work boots, loading a rock onto a pickup truck';
+    </script>
     <div class="tape" aria-hidden="true"></div>
     <p class="big" aria-hidden="true">404.</p>
     <h1><span lang="en">This page doesn't exist (yet).</span><span lang="pt">Esta página não existe (ainda).</span></h1>

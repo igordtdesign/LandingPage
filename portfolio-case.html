@@ -1,17 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" data-lang="pt" data-theme="light" data-title-en="The Portfolio Is the Product: UX Case Study | Igor Dalmolin">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Portfolio Is the Product · Igor Dalmolin</title>
-  <meta name="description" content="I treat this portfolio as a live product: instrumented with Microsoft Clarity, usability-tested with 18 people (SUS 86.9), and iterated in public. This is the case study of the site itself.">
-  <!-- Microsoft Clarity -->
+  <title>O portfólio é o produto: case de UX | Igor Dalmolin</title>
+  <meta name="description" content="Eu trato este portfólio como produto vivo: medido com o Microsoft Clarity, testado com 18 pessoas e melhorado em público. Este é o case do próprio site.">
+  <!-- SEO + link previews -->
+  <link rel="canonical" href="https://igordalmolin.com.br/portfolio-case.html">
+  <meta name="author" content="Igor Dalmolin">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Igor Dalmolin">
+  <meta property="og:title" content="O portfólio é o produto: case de UX">
+  <meta property="og:description" content="Eu trato este portfólio como produto vivo: medido com o Microsoft Clarity, testado com 18 pessoas e melhorado em público. Este é o case do próprio site.">
+  <meta property="og:url" content="https://igordalmolin.com.br/portfolio-case.html">
+  <meta property="og:image" content="https://igordalmolin.com.br/img/og/og-portfolio.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="O portfólio é o produto: a home deste site em um navegador.">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="O portfólio é o produto: case de UX">
+  <meta name="twitter:description" content="Eu trato este portfólio como produto vivo: medido com o Microsoft Clarity, testado com 18 pessoas e melhorado em público. Este é o case do próprio site.">
+  <meta name="twitter:image" content="https://igordalmolin.com.br/img/og/og-portfolio.jpg">
+  <meta name="twitter:image:alt" content="O portfólio é o produto: a home deste site em um navegador.">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#f4f2ed">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "O portfólio é o produto: case de UX", "headline": "O portfólio é o produto: case de UX", "description": "Eu trato este portfólio como produto vivo: medido com o Microsoft Clarity, testado com 18 pessoas e melhorado em público. Este é o case do próprio site.", "url": "https://igordalmolin.com.br/portfolio-case.html", "image": "https://igordalmolin.com.br/img/og/og-portfolio.jpg", "inLanguage": ["pt-BR", "en"], "author": {"@type": "Person", "@id": "https://igordalmolin.com.br/#igor", "name": "Igor Dalmolin", "url": "https://igordalmolin.com.br/"}, "isPartOf": {"@type": "WebSite", "@id": "https://igordalmolin.com.br/#website", "url": "https://igordalmolin.com.br/", "name": "Igor Dalmolin"}}</script>
+  <!-- Microsoft Clarity, consent-aware (the notice lives in site.js):
+       no choice yet -> Clarity runs without cookies; accepted -> cookies on;
+       declined -> Clarity doesn't load. A choice is kept for 9 months.
+       Ad storage is always denied: Clarity is used only to see how the site is used. -->
   <script type="text/javascript">
-    (function (c, l, a, r, i, t, y) {
-      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-    })(window, document, "clarity", "script", "xd2p68963g");
+    (function () {
+      var choice = null;
+      try {
+        var raw = (localStorage.getItem('site-consent') || '').split('|');
+        if (Date.now() - (+raw[1] || 0) < 270 * 864e5) choice = raw[0];
+      } catch (e) {}
+      if (choice === 'denied') return;
+      (function (c, l, a, r, i, t, y) {
+        c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+        t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "xd2p68963g");
+      window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: choice === 'granted' ? 'granted' : 'denied' });
+    })();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,27 +55,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
   <meta name="color-scheme" content="dark light">
-  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
-  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
-  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
 
-  <!-- i18n: detect language synchronously to avoid flash (priority: saved > browser > 'en') -->
+  <!-- i18n: detect language synchronously to avoid flash (the visitor's saved choice, otherwise Portuguese) -->
   <script>
     (function () {
       try {
         var saved = localStorage.getItem('site-lang');
         var lang = (saved === 'en' || saved === 'pt') ? saved
-                  : ((navigator.language || navigator.userLanguage || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en');
+                  : 'pt'; // Portuguese is the main version (and the one search engines index)
         document.documentElement.setAttribute('data-lang', lang);
         document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
+        // the tab title follows the language (<title> holds the Portuguese one)
+        document.documentElement.setAttribute('data-title-pt', document.title);
+        if (lang === 'en') document.title = document.documentElement.getAttribute('data-title-en') || document.title;
       } catch (e) {
-        document.documentElement.setAttribute('data-lang', 'en');
+        document.documentElement.setAttribute('data-lang', 'pt');
+        document.documentElement.setAttribute('lang', 'pt-BR');
       }
-      // theme: the visitor's explicit choice if any, otherwise the system setting
+      // theme: the visitor's saved choice, otherwise light (the default)
       var theme = null;
       try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
-      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      if (!theme) theme = 'light';
       document.documentElement.setAttribute('data-theme', theme);
+      if (theme === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0a0d14');
       document.documentElement.classList.add('js'); // scroll reveals only run with JS
     })();
   </script>
@@ -832,12 +870,12 @@
 
 </div><!-- /page -->
 
-<a href="index.html#work" class="float-back" aria-label="Back to all work">
+<a href="index.html#work" class="float-back" aria-label="Voltar para todos os trabalhos" data-aria-en="Back to all work">
   <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <span><span lang="en">Work</span><span lang="pt">Trabalhos</span></span>
 </a>
 
-<a href="#" class="back-top" id="backTop" aria-label="Back to top">
+<a href="#" class="back-top" id="backTop" aria-label="Voltar ao topo" data-aria-en="Back to top">
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-7 7m7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 
@@ -868,13 +906,14 @@
   (function () {
     var sw = document.getElementById('langSwitch');
     if (!sw) return;
-    function sync() { sw.setAttribute('data-active', document.documentElement.getAttribute('data-lang') || 'en'); }
+    function sync() { sw.setAttribute('data-active', document.documentElement.getAttribute('data-lang') || 'pt'); }
     sync();
     sw.addEventListener('click', function () {
-      var cur = document.documentElement.getAttribute('data-lang') || 'en';
+      var cur = document.documentElement.getAttribute('data-lang') || 'pt';
       var next = cur === 'en' ? 'pt' : 'en';
       document.documentElement.setAttribute('data-lang', next);
       document.documentElement.setAttribute('lang', next === 'pt' ? 'pt-BR' : 'en');
+      document.title = document.documentElement.getAttribute('data-title-' + next) || document.title;
       try { localStorage.setItem('site-lang', next); } catch (e) {}
       sync();
     });
