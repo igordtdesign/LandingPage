@@ -16,8 +16,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
+  <meta name="color-scheme" content="dark light">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
@@ -34,6 +35,12 @@
       } catch (e) {
         document.documentElement.setAttribute('data-lang', 'en');
       }
+      // theme: the visitor's explicit choice if any, otherwise the system setting
+      var theme = null;
+      try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
+      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.classList.add('js'); // scroll reveals only run with JS
     })();
   </script>
 
@@ -52,7 +59,7 @@
       --text-1:       #f3f4f6;
       --text-2:       #c5c8ce;
       --text-3:       #8b9098;
-      --text-4:       #5d626b;
+      --text-4:       #7e838c; /* 4.5:1+ on cards (was #5d626b, 3:1) */
       --mono:         "JetBrains Mono", monospace;
       --sans:         "Inter", sans-serif;
       --radius-sm:    8px;
@@ -84,17 +91,17 @@
     }
     body::before { animation: glowDrift 24s ease-in-out infinite alternate; }
     body::after {
-      content: ""; position: fixed; inset: -80px; z-index: 0; pointer-events: none;
+      content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; /* exactly the screen: a fixed layer wider than the viewport lets phones pan sideways */
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
       background-size: 200px 200px;
       opacity: 0.08;
       animation: grain 0.55s steps(3) infinite;
     }
-    @keyframes grain {
-      0%, 100% { transform: translate(0, 0); }
-      25%      { transform: translate(-5px, 3px); }
-      50%      { transform: translate(4px, -4px); }
-      75%      { transform: translate(-3px, -5px); }
+    @keyframes grain { /* the texture moves, the layer stays put */
+      0%, 100% { background-position: 0 0; }
+      25%      { background-position: -5px 3px; }
+      50%      { background-position: 4px -4px; }
+      75%      { background-position: -3px -5px; }
     }
     @media (prefers-reduced-motion: reduce) {
       body::before, body::after { animation: none; }
@@ -283,7 +290,7 @@
       border-radius: var(--radius-pill); padding: 3px 10px; display: inline-block; margin-bottom: 14px;
     }
     .card-title { font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: -0.04em; color: var(--text-1); line-height: 1.4; margin-bottom: 10px; }
-    .card-body { font-family: var(--mono); font-size: 13px; letter-spacing: -0.03em; line-height: 1.65; color: var(--text-3); }
+    .card-body { font-family: var(--sans); font-size: 14px; letter-spacing: -0.005em; line-height: 1.65; color: var(--text-3); }
     .card-body strong { color: var(--text-2); font-weight: 700; }
 
     /* ─── CALLOUT ────────────────────────────────────────────── */
@@ -298,7 +305,7 @@
     /* ─── STYLED LIST ────────────────────────────────────────── */
     .styled-list { list-style: none; }
     .styled-list li {
-      font-family: var(--mono); font-size: 13.5px; letter-spacing: -0.03em; line-height: 1.6;
+      font-family: var(--sans); font-size: 15px; letter-spacing: -0.005em; line-height: 1.6;
       color: var(--text-3); padding: 14px 0 14px 24px; border-top: 1px solid var(--border); position: relative;
     }
     .styled-list li:first-child { border-top: none; }
@@ -397,6 +404,7 @@
       .termlog-body { padding: 16px; font-size: 11px; }
     }
   </style>
+  <link rel="stylesheet" href="site.css"> <!-- new look: loaded after the page styles -->
 </head>
 
 <body>
@@ -410,16 +418,22 @@
           <span class="nav-name">Igor Dalmolin</span>
         </a>
         <div class="nav-end">
-          <a href="index.html" class="nav-back">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span lang="en">Back to portfolio</span>
-            <span lang="pt">Voltar ao portfólio</span>
-          </a>
+          <div class="nav-links">
+            <a href="index.html#work" class="nav-link"><span lang="en">Work</span><span lang="pt">Trabalhos</span></a>
+            <a href="index.html#gallery" class="nav-link"><span lang="en">Gallery</span><span lang="pt">Galeria</span></a>
+            <a href="index.html#about" class="nav-link"><span lang="en">About</span><span lang="pt">Sobre</span></a>
+          </div>
+          <button type="button" class="theme-btn" id="themeSwitch" role="switch" aria-checked="false">
+            <span class="sr-only"><span lang="en">Light mode</span><span lang="pt">Modo claro</span></span>
+            <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+            <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
           <button type="button" class="lang-switch" id="langSwitch" aria-label="Toggle language / Trocar idioma">
             <span class="lang-opt" data-l="en">EN</span>
             <span class="lang-opt" data-l="pt">PT</span>
             <span class="lang-knob" aria-hidden="true"></span>
           </button>
+          <a href="#contact" class="nav-cta"><span lang="en">Get in touch</span><span lang="pt">Fale comigo</span></a>
         </div>
       </div>
     </div>
@@ -430,10 +444,6 @@
   <!-- ─── HERO ──────────────────────────────────────────────── -->
   <section class="hero">
     <div class="container">
-      <p class="hero-eyebrow fade-up">
-        <span lang="en">Meta case · product thinking · 2025-present</span>
-        <span lang="pt">Case meta · mentalidade de produto · 2025-hoje</span>
-      </p>
       <h1 class="hero-title fade-up">
         <span lang="en">The portfolio is <span class="accent"><span class="scrib-u">the product.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></span>
         <span lang="pt">O portfólio é <span class="accent"><span class="scrib-u">o produto.<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span></span>
@@ -443,18 +453,9 @@
         <span lang="pt">A maioria dos portfólios é publicada uma vez e congela. Eu trato o meu como produto vivo: instrumentado com Microsoft Clarity, testado com pessoas reais e melhorado versão após versão. Este é o case do próprio site em que você está navegando.</span>
       </p>
       <div class="hero-tags fade-up">
-        <span class="tag highlight">
-          <span lang="en">Product Thinking</span>
-          <span lang="pt">Mentalidade de Produto</span>
-        </span>
-        <span class="tag highlight">Microsoft Clarity</span>
-        <span class="tag">
-          <span lang="en">Usability Testing</span>
-          <span lang="pt">Teste de Usabilidade</span>
-        </span>
-        <span class="tag">SUS 86.9</span>
-        <span class="tag">HTML · CSS · JS</span>
-        <span class="tag">i18n EN/PT</span>
+        <span class="tag highlight"><span lang="en">Product Thinking</span><span lang="pt">Mentalidade de Produto</span></span>
+        <span class="tag highlight"><span lang="en">Usability Testing</span><span lang="pt">Teste de Usabilidade</span></span>
+        <span class="tag">Analytics</span>
       </div>
       <div class="hero-meta fade-up">
         <div class="meta-item">
@@ -473,26 +474,12 @@
           <div class="meta-label">Status</div>
           <div class="meta-value"><span lang="en">Live, always shipping</span><span lang="pt">No ar, sempre entregando</span></div>
         </div>
+        <div class="meta-item">
+          <div class="meta-label"><span lang="en">Years</span><span lang="pt">Período</span></div>
+          <div class="meta-value"><span lang="en">2025-Present</span><span lang="pt">2025-Hoje</span></div>
+        </div>
       </div>
 
-      <div class="stat-row fade-up">
-        <div class="stat-item">
-          <div class="stat-number">86.9</div>
-          <div class="stat-label"><span lang="en">SUS "excellent", SteamAI project test (n=18)</span><span lang="pt">SUS "excelente", teste do projeto SteamAI (n=18)</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">+56</div>
-          <div class="stat-label"><span lang="en">Portfolio NPS, same test</span><span lang="pt">NPS do portfólio, no mesmo teste</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">83%</div>
-          <div class="stat-label"><span lang="en">would hire after reading the case</span><span lang="pt">contratariam após ler o case</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">-80%</div>
-          <div class="stat-label"><span lang="en">gallery page weight (41MB → 8MB)</span><span lang="pt">peso da galeria (41MB → 8MB)</span></div>
-        </div>
-      </div>
 
       <!-- Real git log as the hero cover -->
       <div class="termwrap fade-up">
@@ -521,35 +508,30 @@
   <!-- ─── EXECUTIVE SUMMARY ─────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Executive summary</span>
-        <span lang="pt">Resumo executivo</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">The 30-second version</span>
         <span lang="pt">A versão de 30 segundos</span>
       </h2>
-      <div class="grid-3 fade-up">
-        <div class="card">
-          <div class="card-title" style="color: var(--blue-bright);"><span lang="en">Problem</span><span lang="pt">Problema</span></div>
-          <div class="card-body">
-            <span lang="en">Recruiters give a portfolio a few minutes. A static gallery can't prove product thinking, and it never tells you where readers get stuck.</span>
-            <span lang="pt">Recrutadores dão poucos minutos a um portfólio. Uma galeria estática não prova mentalidade de produto, e nunca mostra onde o leitor trava.</span>
+      <div class="tldr">
+        <div class="tldr-cols">
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Problem</span><span lang="pt">Problema</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>A few minutes, and no feedback.</strong> Recruiters skim, and a static gallery can't show product thinking or where readers get stuck.</span><span lang="pt"><strong>Poucos minutos e nenhum retorno.</strong> Recrutadores passam o olho, e uma galeria estática não mostra mentalidade de produto nem onde o leitor trava.</span></p>
+          </div>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Solution</span><span lang="pt">Solução</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>Run the portfolio like a product.</strong> Microsoft Clarity on every page, a moderated test with 18 people, a backlog, and fixes shipped on evidence.</span><span lang="pt"><strong>Tocar o portfólio como produto.</strong> Microsoft Clarity em todas as páginas, teste moderado com 18 pessoas, backlog e correções entregues por evidência.</span></p>
+          </div>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>Measured, and still improving.</strong> A public loop: every fix traces back to a recording or a test session.</span><span lang="pt"><strong>Medido, e ainda melhorando.</strong> Um ciclo público: cada correção nasce de uma gravação ou de uma sessão de teste.</span></p>
           </div>
         </div>
-        <div class="card">
-          <div class="card-title" style="color: var(--blue-bright);"><span lang="en">Solution</span><span lang="pt">Solução</span></div>
-          <div class="card-body">
-            <span lang="en">Run the site as a live product: Microsoft Clarity instrumentation, a moderated usability test with 18 people, a backlog, and fixes shipped by evidence.</span>
-            <span lang="pt">Tocar o site como produto vivo: instrumentação com Microsoft Clarity, teste de usabilidade moderado com 18 pessoas, backlog e correções entregues por evidência.</span>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title" style="color: var(--blue-bright);"><span lang="en">Outcome</span><span lang="pt">Resultado</span></div>
-          <div class="card-body">
-            <span lang="en">SUS 86.9 ("excellent") on the flagship case, portfolio NPS +56, 83% would hire after reading, and a public loop of continuous improvement.</span>
-            <span lang="pt">SUS 86,9 ("excelente") no case principal, NPS +56 do portfólio, 83% contratariam após ler e um ciclo público de melhoria contínua.</span>
-          </div>
+      <div class="tldr-stats">
+          <div class="tldr-stat"><span class="tldr-num"><span lang="en">86.9</span><span lang="pt">86,9</span></span><span class="tldr-lab"><span lang="en">SUS "excellent", SteamAI project test (n=18)</span><span lang="pt">SUS "excelente", teste do projeto SteamAI (n=18)</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num">+56</span><span class="tldr-lab"><span lang="en">Portfolio NPS, same test</span><span lang="pt">NPS do portfólio, no mesmo teste</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num">83%</span><span class="tldr-lab"><span lang="en">would hire after reading the case</span><span lang="pt">contratariam após ler o case</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num">-80%</span><span class="tldr-lab"><span lang="en">gallery page weight (41MB → 8MB)</span><span lang="pt">peso da galeria (41MB → 8MB)</span></span></div>
         </div>
       </div>
     </div>
@@ -560,10 +542,6 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">
-            <span lang="en">The premise</span>
-            <span lang="pt">A premissa</span>
-          </p>
           <h2 class="section-title fade-up">
             <span lang="en">A portfolio has users, and they are in a hurry</span>
             <span lang="pt">Um portfólio tem usuários, e eles têm pressa</span>
@@ -576,12 +554,6 @@
           <p lang="pt">Então eu toco o site como produto. Ele tem instrumentação (Microsoft Clarity), base de pesquisa (um teste de usabilidade moderado com 18 pessoas), backlog e changelog. Quando os dados mostram atrito, eu entrego uma correção. Esta página documenta esse ciclo.</p>
         </div>
       </div>
-      <div class="quote fade-up">
-        <p class="quote-text">
-          <span lang="en">I didn't settle for a portfolio that just sits there. If I ask clients to iterate, I have to iterate on myself first.</span>
-          <span lang="pt">Não me aquietei com um portfólio parado. Se eu peço iteração aos clientes, tenho que iterar em mim primeiro.</span>
-        </p>
-      </div>
     </div>
   </section>
 
@@ -590,10 +562,6 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">
-            <span lang="en">Instrumentation</span>
-            <span lang="pt">Instrumentação</span>
-          </p>
           <h2 class="section-title fade-up">
             <span lang="en">Watching real sessions with Microsoft Clarity</span>
             <span lang="pt">Assistindo sessões reais com Microsoft Clarity</span>
@@ -606,10 +574,10 @@
           </div>
         </div>
         <div class="fade-up">
-          <p class="section-label">
+          <h3 class="sub-title">
             <span lang="en">What I watch</span>
             <span lang="pt">O que eu observo</span>
-          </p>
+          </h3>
           <ul class="styled-list">
             <li>
               <span lang="en"><strong>Dead clicks:</strong> clicks on things that look interactive but aren't</span>
@@ -640,10 +608,6 @@
   <!-- ─── THE LOOP: FINDINGS → FIXES ────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">The loop</span>
-        <span lang="pt">O ciclo</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">Signal in, fix out: four shipped examples</span>
         <span lang="pt">Sinal entra, correção sai: quatro exemplos entregues</span>
@@ -707,10 +671,6 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">
-            <span lang="en">The test</span>
-            <span lang="pt">O teste</span>
-          </p>
           <h2 class="section-title fade-up">
             <span lang="en">18 people, moderated sessions, honest numbers</span>
             <span lang="pt">18 pessoas, sessões moderadas, números honestos</span>
@@ -719,8 +679,10 @@
         <div class="section-body fade-up">
           <p lang="en">Analytics shows where people struggle; it rarely says why. So I ran a moderated remote usability test of the portfolio's flagship project, SteamAI, with 18 participants across 7 profiles, from UX designers and developers to founders and people outside tech, each briefed to evaluate me as a candidate. The thesis had started theoretical; this test gave the project real users and real metrics.</p>
           <p lang="pt">O analytics mostra onde as pessoas travam; raramente diz por quê. Então conduzi um teste de usabilidade moderado e remoto do projeto principal do portfólio, o SteamAI, com 18 participantes de 7 perfis, de designers UX e desenvolvedores a empresários e pessoas fora da tecnologia, cada um orientado a me avaliar como candidato. A tese tinha nascido teórica; esse teste deu ao projeto usuários reais e métricas reais.</p>
-          <p lang="en">The scores came back strong (SUS 86.9, "excellent"). To be honest about scope: the SUS measures the SteamAI project; the NPS and the hiring question speak to the portfolio as a whole. The open feedback was the real payload: the problem statement felt buried, the process lacked signposting, and people wanted results sooner. I redesigned the case around those three complaints. The full method and task table live on the <a href="whichgametobuy-case.html" style="color:var(--blue-bright);">SteamAI case, which has since shipped as WhichGameToBuy</a>.</p>
-          <p lang="pt">As notas vieram fortes (SUS 86.9, "excelente"). Sendo honesto com o escopo: o SUS mede o projeto SteamAI; o NPS e a pergunta de contratação falam do portfólio como um todo. O feedback aberto foi o ouro de verdade: o problema parecia enterrado, o processo não tinha sinalização e as pessoas queriam os resultados mais cedo. Redesenhei o case em torno dessas três reclamações. O método completo e a tabela de tarefas estão no <a href="whichgametobuy-case.html" style="color:var(--blue-bright);">case SteamAI, que desde então virou o produto WhichGameToBuy</a>.</p>
+          <p lang="en">The scores came back strong (SUS 86.9, "excellent"), and the open feedback was the real payload: the problem statement felt buried, the process lacked signposting, and people wanted results sooner. I redesigned the case around those three complaints.</p>
+          <p lang="pt">As notas vieram fortes (SUS 86,9, "excelente"), e o feedback aberto foi o ouro de verdade: o problema parecia enterrado, o processo não tinha sinalização e as pessoas queriam os resultados mais cedo. Redesenhei o case em torno dessas três reclamações.</p>
+          <p class="scope-note" lang="en"><strong>Scope:</strong> the SUS measures the SteamAI project; the NPS and the hiring question speak to the portfolio as a whole. The full method and task table live on the <a href="whichgametobuy-case.html" style="color:var(--blue-bright);">SteamAI case, which has since shipped as WhichGameToBuy</a>.</p>
+          <p class="scope-note" lang="pt"><strong>Escopo:</strong> o SUS mede o projeto SteamAI; o NPS e a pergunta de contratação falam do portfólio como um todo. O método completo e a tabela de tarefas estão no <a href="whichgametobuy-case.html" style="color:var(--blue-bright);">case SteamAI, que desde então virou o produto WhichGameToBuy</a>.</p>
         </div>
       </div>
 
@@ -754,10 +716,6 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">
-            <span lang="en">Under the hood</span>
-            <span lang="pt">Por baixo do capô</span>
-          </p>
           <h2 class="section-title fade-up">
             <span lang="en">Built by me, with AI in the loop</span>
             <span lang="pt">Feito por mim, com IA no processo</span>
@@ -807,7 +765,7 @@
   </section>
 
   <!-- ─── CONTACT ───────────────────────────────────────────── -->
-  <section class="contact-section">
+  <section class="contact-section" id="contact">
     <div class="container">
       <div class="contact-panel">
         <div class="doodle doodle--burst2 doodle--keep" style="--doodle-rot:90deg; --fdel:.35s; top:20px; right:26px; width:96px; height:96px;" aria-hidden="true"></div>
@@ -817,8 +775,8 @@
           <span lang="pt">Você acabou de me ver trabalhando.<br>Quer isso no seu produto?</span>
         </h2>
         <p class="contact-desc fade-up">
-          <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
-          <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
+          <span lang="en">Full-time, part-time, or freelance, remote included. Write me and I'll answer fast.</span>
+          <span lang="pt">Full-time, part-time ou freelance, remoto também. Me escreve que eu respondo rápido.</span>
         </p>
         <div class="fade-up" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
           <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
@@ -925,6 +883,7 @@
 
 <!-- i18n: language toggle wiring (head script already set initial language) -->
 <script src="i18n.js"></script>
+<script src="site.js" defer></script>
 <script src="doodles.js" defer></script>
 </body>
 </html>

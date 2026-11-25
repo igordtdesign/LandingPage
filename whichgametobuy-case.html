@@ -16,8 +16,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
+  <meta name="color-scheme" content="dark light">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
@@ -34,6 +35,12 @@
       } catch (e) {
         document.documentElement.setAttribute('data-lang', 'en');
       }
+      // theme: the visitor's explicit choice if any, otherwise the system setting
+      var theme = null;
+      try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
+      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.classList.add('js'); // scroll reveals only run with JS
     })();
   </script>
 
@@ -53,7 +60,7 @@
       --text-1:       #f3f4f6;
       --text-2:       #c5c8ce;
       --text-3:       #8b9098;
-      --text-4:       #5d626b;
+      --text-4:       #7e838c; /* 4.5:1+ on cards (was #5d626b, 3:1) */
       --mono:         "JetBrains Mono", monospace;
       --sans:         "Inter", sans-serif;
       --radius-sm:    8px;
@@ -96,17 +103,17 @@
     }
     body::before { animation: glowDrift 24s ease-in-out infinite alternate; }
     body::after {
-      content: ""; position: fixed; inset: -80px; z-index: 0; pointer-events: none;
+      content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; /* exactly the screen: a fixed layer wider than the viewport lets phones pan sideways */
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
       background-size: 200px 200px;
       opacity: 0.08;
       animation: grain 0.55s steps(3) infinite;
     }
-    @keyframes grain {
-      0%, 100% { transform: translate(0, 0); }
-      25%      { transform: translate(-5px, 3px); }
-      50%      { transform: translate(4px, -4px); }
-      75%      { transform: translate(-3px, -5px); }
+    @keyframes grain { /* the texture moves, the layer stays put */
+      0%, 100% { background-position: 0 0; }
+      25%      { background-position: -5px 3px; }
+      50%      { background-position: 4px -4px; }
+      75%      { background-position: -3px -5px; }
     }
     @media (prefers-reduced-motion: reduce) {
       body::before, body::after { animation: none; }
@@ -378,6 +385,8 @@
     section {
       padding: 80px 0;
     }
+    /* phones: same section rhythm as the other cases (~104px between blocks) */
+    @media (max-width: 720px) { section { padding: 56px 0; } .divider { margin-bottom: 48px; } }
 
     .section-label {
       font-family: var(--mono);
@@ -439,10 +448,10 @@
     }
 
     .card-body {
-      font-family: var(--mono);
-      font-size: 13px;
+      font-family: var(--sans);
+      font-size: 14px;
       font-weight: 400;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.005em;
       line-height: 1.6;
       color: var(--text-3);
     }
@@ -486,10 +495,10 @@
     }
 
     .highlight p {
-      font-family: var(--mono);
-      font-size: 15px;
+      font-family: var(--sans);
+      font-size: 16px;
       font-weight: 400;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.005em;
       line-height: 1.65;
       color: var(--text-2);
     }
@@ -611,10 +620,10 @@
     }
 
     .step-desc {
-      font-family: var(--mono);
-      font-size: 13px;
+      font-family: var(--sans);
+      font-size: 14px;
       font-weight: 400;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.005em;
       line-height: 1.65;
       color: var(--text-3);
     }
@@ -704,10 +713,10 @@
     }
 
     .styled-list li {
-      font-family: var(--mono);
-      font-size: 14px;
+      font-family: var(--sans);
+      font-size: 15px;
       font-weight: 400;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.005em;
       line-height: 1.55;
       color: var(--text-3);
       display: flex;
@@ -871,6 +880,7 @@
     .back-top svg { width: 16px; height: 16px; }
 
   </style>
+  <link rel="stylesheet" href="site.css"> <!-- new look: loaded after the page styles -->
 </head>
 
 <body>
@@ -884,16 +894,22 @@
           <span class="nav-name">Igor Dalmolin</span>
         </a>
         <div class="nav-end">
-          <a href="index.html" class="nav-back">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7-7m-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span lang="en">Back to portfolio</span>
-            <span lang="pt">Voltar ao portfólio</span>
-          </a>
+          <div class="nav-links">
+            <a href="index.html#work" class="nav-link"><span lang="en">Work</span><span lang="pt">Trabalhos</span></a>
+            <a href="index.html#gallery" class="nav-link"><span lang="en">Gallery</span><span lang="pt">Galeria</span></a>
+            <a href="index.html#about" class="nav-link"><span lang="en">About</span><span lang="pt">Sobre</span></a>
+          </div>
+          <button type="button" class="theme-btn" id="themeSwitch" role="switch" aria-checked="false">
+            <span class="sr-only"><span lang="en">Light mode</span><span lang="pt">Modo claro</span></span>
+            <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+            <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
           <button type="button" class="lang-switch" id="langSwitch" aria-label="Toggle language / Trocar idioma">
             <span class="lang-opt" data-l="en">EN</span>
             <span class="lang-opt" data-l="pt">PT</span>
             <span class="lang-knob" aria-hidden="true"></span>
           </button>
+          <a href="#contact" class="nav-cta"><span lang="en">Get in touch</span><span lang="pt">Fale comigo</span></a>
         </div>
       </div>
     </div>
@@ -904,54 +920,20 @@
   <!-- ─── HERO ──────────────────────────────────────────────── -->
   <header class="hero">
     <div class="container">
-      <div class="hero-eyebrow fade-up">
-        <span lang="en">Product case · From PUCRS thesis to live product · 2024-2026</span>
-        <span lang="pt">Case de produto · Da tese PUCRS ao produto no ar · 2024-2026</span>
-      </div>
 
       <h1 class="hero-title fade-up">
-        <span lang="en">Game Discovery<br>with <span>Conversational AI</span>:<br><span class="scrib-u">WhichGameToBuy<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span>
-        <span lang="pt">Descoberta de Jogos<br>com <span>IA Conversacional</span>:<br><span class="scrib-u">WhichGameToBuy<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span></span>
+        <span class="scrib-u">WhichGameToBuy<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span>
       </h1>
 
       <p class="hero-desc fade-up">
-        <span lang="en">A live product that finds your next game through conversation: you describe what you feel like playing, and the AI recommends games from a real catalog and explains why. It began as my postgraduate research on game discovery (graded 10/10), but a thesis is a hypothesis. I wanted proof it could stand on its own, so I designed, built, and shipped it as a product. It's live today, made by me.</span>
-        <span lang="pt">Um produto no ar que encontra seu próximo jogo por conversa: você descreve o que quer jogar, e a IA recomenda jogos de um catálogo real e explica o porquê. Começou como minha pesquisa de pós sobre descoberta de jogos (nota 10), mas tese é hipótese. Eu queria a prova de que se sustentava sozinho, então desenhei, construí e lancei como produto. Está no ar hoje, feito por mim.</span>
+        <span lang="en">A live product that finds your next game through conversation, and explains every pick. It started as my postgraduate research (graded 10/10); I designed, built, and shipped it on my own.</span>
+        <span lang="pt">Um produto no ar que encontra seu próximo jogo por conversa, e explica cada escolha. Começou como minha pesquisa de pós (nota 10); eu desenhei, construí e lancei por conta própria.</span>
       </p>
 
       <div class="hero-tags fade-up">
-        <span class="tag blue">
-          <span lang="en">Live Product</span>
-          <span lang="pt">Produto de verdade</span>
-        </span>
-        <span class="tag blue">
-          <span lang="en">Grade 10/10 · PUCRS</span>
-          <span lang="pt">Nota 10/10 · PUCRS</span>
-        </span>
-        <span class="tag">
-          <span lang="en">UX Research</span>
-          <span lang="pt">Pesquisa UX</span>
-        </span>
-        <span class="tag">
-          <span lang="en">Heuristic Analysis</span>
-          <span lang="pt">Análise Heurística</span>
-        </span>
-        <span class="tag">Personas</span>
-        <span class="tag">
-          <span lang="en">Conversational AI</span>
-          <span lang="pt">IA Conversacional</span>
-        </span>
-        <span class="tag">
-          <span lang="en">Explainable AI (XAI)</span>
-          <span lang="pt">IA Explicável (XAI)</span>
-        </span>
-        <span class="tag">
-          <span lang="en">Algorithmic Ethics</span>
-          <span lang="pt">Ética Algorítmica</span>
-        </span>
-        <span class="tag">LGPD</span>
-        <span class="tag">Figma</span>
-        <span class="tag">Next.js + Gemini</span>
+        <span class="tag blue"><span lang="en">Conversational AI</span><span lang="pt">IA Conversacional</span></span>
+        <span class="tag blue"><span lang="en">Explainable AI (XAI)</span><span lang="pt">IA Explicável (XAI)</span></span>
+        <span class="tag"><span lang="en">UX Research</span><span lang="pt">Pesquisa UX</span></span>
       </div>
 
       <div class="hero-meta fade-up">
@@ -999,15 +981,19 @@
             <span lang="pt">No ar · v1 em produção</span>
           </span>
         </div>
+        <div class="meta-item">
+          <span class="meta-label"><span lang="en">Years</span><span lang="pt">Período</span></span>
+          <span class="meta-value"><span lang="en">2024-2026</span><span lang="pt">2024-2026</span></span>
+        </div>
       </div>
 
       <div class="fade-up" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:32px;">
-        <a href="https://whichgametobuy.com/?utm_source=portfolio&utm_medium=case" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:16px; font-weight:700; letter-spacing:-0.04em; color:var(--text-1); background:rgba(173,173,173,0.05); border:1px solid rgba(255,255,255,0.05); border-radius:var(--radius-pill); padding:14px 28px; text-decoration:none; transition:background 0.2s, border-color 0.2s;" onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
+        <a href="https://whichgametobuy.com/?utm_source=portfolio&utm_medium=case" target="_blank" rel="noopener" class="cta-btn">
           <span lang="en">Try it live: whichgametobuy.com</span>
           <span lang="pt">Teste o site: whichgametobuy.com</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="https://github.com/igordtdesign/whichgametobuy" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:16px; font-weight:700; letter-spacing:-0.04em; color:var(--text-1); background:rgba(173,173,173,0.05); border:1px solid rgba(255,255,255,0.05); border-radius:var(--radius-pill); padding:14px 28px; text-decoration:none; transition:background 0.2s, border-color 0.2s;" onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
+        <a href="https://github.com/igordtdesign/whichgametobuy" target="_blank" rel="noopener" class="cta-btn">
           <span lang="en">Public repo on GitHub</span>
           <span lang="pt">Repo público no GitHub</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1319,60 +1305,31 @@
     <div class="container">
       <div class="divider"></div>
       <div class="fade-up">
-        <div class="section-label">
-          <span lang="en">Executive summary</span>
-          <span lang="pt">Resumo executivo</span>
-        </div>
         <h2 class="section-title">
           <span lang="en">The 30-second version</span>
           <span lang="pt">A versão de 30 segundos</span>
         </h2>
       </div>
-      <div class="grid-3" style="margin-top: 32px;">
-        <div class="card fade-up">
-          <div class="card-title" style="color: var(--blue);">
-            <span lang="en">Problem</span><span lang="pt">Problema</span>
+      <div class="tldr">
+        <div class="tldr-cols">
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Problem</span><span lang="pt">Problema</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>220,000+ games, and search can't listen.</strong> PC gaming's main catalog runs on tags and popularity, so the more games exist, the harder it gets to pick one.</span><span lang="pt"><strong>Mais de 220 mil jogos, e a busca não escuta.</strong> O principal catálogo de PC funciona por tags e popularidade: quanto mais jogos existem, mais difícil fica escolher um.</span></p>
           </div>
-          <div class="card-body" style="margin-top: 8px;">
-            <span lang="en">PC gaming's main catalog passed 220,000 titles, and search built on tags and popularity can't hear what a player wants. Discovery became a paradox of choice: the more games exist, the harder it gets to pick one.</span>
-            <span lang="pt">O principal catálogo de jogos de PC passou de 220 mil títulos, e a busca feita de tags e popularidade não consegue escutar o que o jogador quer. A descoberta virou um paradoxo da escolha: quanto mais jogos existem, mais difícil fica escolher um.</span>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Solution</span><span lang="pt">Solução</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>Ask in plain words, get reasons back.</strong> A conversational AI with explainable, ethical recommendations (XAI and LGPD by design). Born as SteamAI in my thesis.</span><span lang="pt"><strong>Pergunte do seu jeito, receba o porquê.</strong> Uma IA conversacional com recomendações explicáveis e éticas (XAI e LGPD por princípio). Nasceu como SteamAI na minha tese.</span></p>
           </div>
-        </div>
-        <div class="card fade-up">
-          <div class="card-title" style="color: var(--blue);">
-            <span lang="en">Solution</span><span lang="pt">Solução</span>
-          </div>
-          <div class="card-body" style="margin-top: 8px;">
-            <span lang="en">A conversational AI that swaps confusing tag searches for natural dialogue and explainable, ethical recommendations (XAI and LGPD by design). Born as SteamAI in the thesis, shipped as WhichGameToBuy.</span>
-            <span lang="pt">Uma IA conversacional que troca buscas confusas por tags por diálogo natural e recomendações explicáveis e éticas (XAI e LGPD por princípio). Nasceu como SteamAI na tese, foi lançada como WhichGameToBuy.</span>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>Live at whichgametobuy.com.</strong> Semantic search over a hand-curated catalog of 10,390 games. The research behind it earned a 10/10.</span><span lang="pt"><strong>No ar em whichgametobuy.com.</strong> Busca semântica num catálogo curado à mão de 10.390 jogos. A pesquisa por trás levou nota 10.</span></p>
           </div>
         </div>
-        <div class="card fade-up">
-          <div class="card-title" style="color: var(--blue);">
-            <span lang="en">Outcome</span><span lang="pt">Resultado</span>
-          </div>
-          <div class="card-body" style="margin-top: 8px;">
-            <span lang="en">A live, independent product at whichgametobuy.com, running on a hand-curated catalog of 10,390 games with semantic search. The research earned a 10/10, but the real outcome is that the idea left the page and now works for anyone who opens it.</span>
-            <span lang="pt">Um produto independente e no ar em whichgametobuy.com, rodando sobre um catálogo curado à mão de 10.390 jogos com busca semântica. A pesquisa levou 10/10, mas o resultado de verdade é que a ideia saiu do papel e agora funciona pra qualquer um que abrir.</span>
-          </div>
-        </div>
-      </div>
-      <div class="stat-row fade-up" style="margin-top: 16px;">
-        <div class="stat-item">
-          <div class="stat-number"><span lang="en">Live</span><span lang="pt">No ar</span></div>
-          <div class="stat-label"><span lang="en">v1 in production, public</span><span lang="pt">v1 em produção, público</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">10,390</div>
-          <div class="stat-label"><span lang="en">curated games, no shovelware</span><span lang="pt">jogos curados, sem shovelware</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">3</div>
-          <div class="stat-label"><span lang="en">languages, auto-detected (EN/PT/ES)</span><span lang="pt">idiomas, auto-detectados (EN/PT/ES)</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">1</div>
-          <div class="stat-label"><span lang="en">designer, from research to code</span><span lang="pt">designer, da pesquisa ao código</span></div>
+        <div class="tldr-stats">
+          <div class="tldr-stat"><span class="tldr-num"><span lang="en">Live</span><span lang="pt">No ar</span></span><span class="tldr-lab"><span lang="en">v1 in production, public</span><span lang="pt">v1 em produção, público</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num"><span lang="en">10,390</span><span lang="pt">10.390</span></span><span class="tldr-lab"><span lang="en">curated games, no shovelware</span><span lang="pt">jogos curados, sem shovelware</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num">3</span><span class="tldr-lab"><span lang="en">languages, auto-detected (EN/PT/ES)</span><span lang="pt">idiomas, auto-detectados (EN/PT/ES)</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num">1</span><span class="tldr-lab"><span lang="en">designer, from research to code</span><span lang="pt">designer, da pesquisa ao código</span></span></div>
         </div>
       </div>
     </div>
@@ -1383,10 +1340,6 @@
     <div class="container">
       <div class="divider"></div>
       <div class="fade-up">
-        <div class="section-label">
-          <span lang="en">Process</span>
-          <span lang="pt">Processo</span>
-        </div>
         <h2 class="section-title">
           <span lang="en">From messy search to shipped product</span>
           <span lang="pt">Da busca confusa ao produto no ar</span>
@@ -1399,7 +1352,7 @@
         .pstep { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 22px 24px; }
         .pstep-n { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.05em; }
         .pstep-t { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--text-1); letter-spacing: -0.04em; margin: 10px 0 7px; }
-        .pstep-d { font-family: var(--mono); font-size: 12.5px; color: var(--text-3); letter-spacing: -0.02em; line-height: 1.55; }
+        .pstep-d { font-family: var(--sans); font-size: 13.5px; color: var(--text-3); letter-spacing: -0.005em; line-height: 1.55; }
       </style>
       <div class="pflow fade-up">
         <div class="pstep">
@@ -1442,14 +1395,10 @@
       <div class="divider"></div>
       <div class="two-col">
         <div class="fade-up">
-          <div class="section-label">
-            <span lang="en">From thesis to product</span>
-            <span lang="pt">Da tese ao produto</span>
-          </div>
           <h2 class="section-title">
-            <span lang="en">A thesis proves an idea on paper. I wanted it to prove itself in the wild</span>
-            <span lang="pt">Uma tese prova a ideia no papel. Eu queria que ela se provasse no mundo real</span>
-          </h2>
+          <span lang="en">Out of the thesis, into the wild</span>
+          <span lang="pt">Da tese pro mundo real</span>
+        </h2>
           <div class="section-body">
             <p lang="en">The research earned top marks, but a graded thesis is still a bet no one has taken. It was framed inside Steam, a platform I don't own, so it could only ever stay a proposal. The interesting question was never whether Valve would build this. It was whether I could.</p>
             <p lang="pt">A pesquisa levou nota máxima, mas uma tese avaliada ainda é uma aposta que ninguém topou. Estava enquadrada dentro da Steam, uma plataforma que não é minha, então só poderia continuar sendo proposta. A pergunta interessante nunca foi se a Valve construiria isso. Era se eu conseguiria.</p>
@@ -1458,10 +1407,10 @@
           </div>
         </div>
         <div class="fade-up">
-          <div class="section-label">
+          <h3 class="sub-title">
             <span lang="en">Scope of v1 (non-negotiable)</span>
             <span lang="pt">Escopo da v1 (inegociável)</span>
-          </div>
+          </h3>
           <ul class="styled-list" style="margin-top: 16px;">
             <li>
               <span lang="en">Conversational discovery chat with suggested prompts</span>
@@ -1484,10 +1433,10 @@
               <span lang="pt">Filtro de conteúdo adulto com age gate</span>
             </li>
           </ul>
-          <div class="section-label" style="margin-top: 28px;">
+          <h3 class="sub-title" style="margin-top: 28px;">
             <span lang="en">Cut from v1, on purpose</span>
             <span lang="pt">Fora da v1, de propósito</span>
-          </div>
+          </h3>
           <ul class="styled-list" style="margin-top: 16px;">
             <li>
               <span lang="en">Login, wishlist, library sync, and conversation history. Every one of them is a good idea, and none of them proves the core hypothesis.</span>
@@ -1531,17 +1480,17 @@
       </div>
 
       <div class="highlight fade-up">
-        <p lang="en"><strong>Honest status:</strong> v1 is live, public, and already instrumented, the funnel and the north-star metric are wired up (more on that below). What I don't have yet is usage data at scale: the soft launch is the next step, so there are no vanity numbers here, and I won't invent any. The scoreboard is built; the crowd hasn't shown up yet.</p>
-        <p lang="pt"><strong>Status honesto:</strong> a v1 está no ar, pública e já instrumentada, o funil e a métrica norte estão ligados (mais sobre isso abaixo). O que ainda não tenho é dado de uso em escala: o soft launch é o próximo passo, então não tem número de vaidade aqui, e não vou inventar nenhum. O placar está montado; a torcida ainda não chegou.</p>
+        <p lang="en"><strong>Honest status:</strong> v1 is live, public, and already instrumented, the funnel and the north-star metric are wired up (more on that below). What I don't have yet is usage data at scale: the soft launch is the next step, so there are no vanity numbers here, and I won't invent any.</p>
+        <p lang="pt"><strong>Status honesto:</strong> a v1 está no ar, pública e já instrumentada, o funil e a métrica norte estão ligados (mais sobre isso abaixo). O que ainda não tenho é dado de uso em escala: o soft launch é o próximo passo, então não tem número de vaidade aqui, e não vou inventar nenhum.</p>
       </div>
 
       <div class="fade-up" style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 32px;">
-        <a href="https://whichgametobuy.com/?utm_source=portfolio&utm_medium=case" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:16px; font-weight:700; letter-spacing:-0.04em; color:var(--text-1); background:rgba(173,173,173,0.05); border:1px solid rgba(255,255,255,0.05); border-radius:var(--radius-pill); padding:14px 28px; text-decoration:none; transition:background 0.2s, border-color 0.2s;" onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
+        <a href="https://whichgametobuy.com/?utm_source=portfolio&utm_medium=case" target="_blank" rel="noopener" class="cta-btn">
           <span lang="en">Find your next game</span>
           <span lang="pt">Encontre seu próximo jogo</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="https://github.com/igordtdesign/whichgametobuy" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:16px; font-weight:700; letter-spacing:-0.04em; color:var(--text-1); background:rgba(173,173,173,0.05); border:1px solid rgba(255,255,255,0.05); border-radius:var(--radius-pill); padding:14px 28px; text-decoration:none; transition:background 0.2s, border-color 0.2s;" onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
+        <a href="https://github.com/igordtdesign/whichgametobuy" target="_blank" rel="noopener" class="cta-btn">
           <span lang="en">Read the code on GitHub</span>
           <span lang="pt">Leia o código no GitHub</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7m0 0H8m9 0v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1555,13 +1504,9 @@
     <div class="container">
       <div class="divider"></div>
       <div class="fade-up" style="margin-bottom: 48px;">
-        <div class="section-label">
-          <span lang="en">How it works</span>
-          <span lang="pt">Como funciona</span>
-        </div>
         <h2 class="section-title">
-          <span lang="en">A conversation between what you feel like playing and a real catalog</span>
-          <span lang="pt">Uma conversa entre o que você quer jogar e um catálogo real</span>
+          <span lang="en">From a mood to a real catalog</span>
+          <span lang="pt">De uma vontade a um catálogo real</span>
         </h2>
         <p class="section-body" style="max-width: 720px;">
           <span lang="en">You describe intent in plain words, and the product translates it into search the catalog understands, then hands back recommendations that explain themselves. Four moves, one loop: ask, get reasoned results, refine, repeat.</span>
@@ -1569,13 +1514,8 @@
         </p>
       </div>
 
-      <div class="two-col" style="margin-bottom: 48px;">
-        <div class="fade-up">
-          <div class="section-label">
-            <span lang="en">Interaction flow</span>
-            <span lang="pt">Fluxo de interação</span>
-          </div>
-          <div class="steps" style="margin-top: 16px;">
+      <div class="fade-up" style="max-width: 760px;">
+          <div class="steps">
             <div class="step">
               <div class="step-number">
                 <div class="step-num">01</div>
@@ -1642,45 +1582,6 @@
             </div>
           </div>
         </div>
-        <div class="fade-up">
-          <div class="section-label">
-            <span lang="en">3 UX pillars</span>
-            <span lang="pt">3 pilares de UX</span>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px;">
-            <div class="card">
-              <div class="card-title">
-                <span lang="en">Clarity and empathy</span>
-                <span lang="pt">Clareza e empatia</span>
-              </div>
-              <div class="card-body">
-                <span lang="en">The system explains how recommendations are generated. The user understands the "why" behind each suggestion, which cuts the sense of arbitrariness that dominates the current model.</span>
-                <span lang="pt">O sistema explica como as recomendações são geradas. O usuário compreende o "porquê" de cada sugestão, reduzindo a sensação de arbitrariedade que domina o modelo atual.</span>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-title">
-                <span lang="en">Flexibility and control</span>
-                <span lang="pt">Flexibilidade e controle</span>
-              </div>
-              <div class="card-body">
-                <span lang="en">Unlike automatic lists, the conversation offers active interactivity. The dialogue creates a refinement cycle that makes the experience participatory.</span>
-                <span lang="pt">Diferente de listas automáticas, a conversa oferece interatividade ativa. O diálogo cria um ciclo de refinamento que torna a experiência participativa.</span>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-title">
-                <span lang="en">Responsible personalization</span>
-                <span lang="pt">Personalização responsável</span>
-              </div>
-              <div class="card-body">
-                <span lang="en">The system operates within ethical and transparent limits, in compliance with the LGPD (Brazilian Data Protection Law). The point is to widen the user's power to choose, never to steer it.</span>
-                <span lang="pt">O sistema opera dentro de limites éticos e transparentes, em conformidade com a LGPD (Lei Geral de Proteção de Dados). A meta é ampliar o poder de escolha do usuário, nunca direcioná-lo.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1689,13 +1590,9 @@
     <div class="container">
       <div class="divider"></div>
       <div class="fade-up" style="margin-bottom: 40px;">
-        <div class="section-label">
-          <span lang="en">Building it for real</span>
-          <span lang="pt">Construção</span>
-        </div>
         <h2 class="section-title">
-          <span lang="en">A prototype gets to skip the hard decisions. A live product doesn't</span>
-          <span lang="pt">Um protótipo pode pular as decisões difíceis. Um produto no ar, não</span>
+          <span lang="en">The decisions a demo never has to make</span>
+          <span lang="pt">As decisões que um protótipo nunca precisa tomar</span>
         </h2>
         <p class="section-body" style="max-width: 720px;">
           <span lang="en">The moment real people can open the URL, a dozen questions a demo never asks arrive at once: what happens when the AI is down, what counts as "the catalog," how do you keep it fast, how do you stay responsible with data. Every answer below started as a design call, with a real trade-off behind it.</span>
@@ -1705,10 +1602,10 @@
 
       <div class="two-col" style="margin-bottom: 48px;">
         <div class="fade-up">
-          <div class="section-label">
+          <h3 class="sub-title">
             <span lang="en">The turning point: semantic search</span>
             <span lang="pt">A virada: busca semântica</span>
-          </div>
+          </h3>
           <div class="section-body" style="margin-top: 16px;">
             <p lang="en">The first version matched keywords literally. Ask for "something to relax with after work" and it only found games tagged "relaxing," missing the cozy sim that never used the word. So I moved the catalog to vector search (Supabase with pgvector): every game and every question becomes a vector, and the product retrieves by meaning rather than exact tags.</p>
             <p lang="pt">A primeira versão casava palavras-chave ao pé da letra. Peça "algo pra relaxar depois do trabalho" e ela só achava jogos com a tag "relaxante", perdendo o sim cozy que nunca usou a palavra. Então movi o catálogo pra busca vetorial (Supabase com pgvector): cada jogo e cada pergunta viram um vetor, e o produto busca por significado em vez de casar tags exatas.</p>
@@ -1783,10 +1680,6 @@
       <div class="divider"></div>
       <div class="two-col">
         <div class="fade-up">
-          <div class="section-label">
-            <span lang="en">Measurement</span>
-            <span lang="pt">Medição</span>
-          </div>
           <h2 class="section-title">
             <span lang="en">I defined what success means before the first user arrived</span>
             <span lang="pt">Defini o que é sucesso antes do primeiro usuário chegar</span>
@@ -1799,10 +1692,10 @@
           </div>
         </div>
         <div class="fade-up">
-          <div class="section-label">
+          <h3 class="sub-title">
             <span lang="en">The funnel, instrumented</span>
             <span lang="pt">O funil, instrumentado</span>
-          </div>
+          </h3>
           <ul class="styled-list" style="margin-top: 16px;">
             <li>
               <span lang="en"><strong style="color:var(--text-2);">Activation:</strong> the first message sent.</span>
@@ -1836,10 +1729,6 @@
       <div class="divider"></div>
       <div class="two-col">
         <div class="fade-up">
-          <div class="section-label">
-            <span lang="en">Designing the states</span>
-            <span lang="pt">Desenhando os estados</span>
-          </div>
           <h2 class="section-title">
             <span lang="en">The AI will miss. That's a design problem</span>
             <span lang="pt">A IA vai errar. Isso é um problema de design</span>
@@ -1942,10 +1831,6 @@
     <div class="container">
       <div class="divider"></div>
       <div class="fade-up">
-        <div class="section-label">
-          <span lang="en">Design decisions</span>
-          <span lang="pt">Decisões de design</span>
-        </div>
         <h2 class="section-title">
           <span lang="en">Why each decision was made</span>
           <span lang="pt">Por que cada decisão foi tomada</span>
@@ -1998,15 +1883,11 @@
   </section>
 
   <!-- ─── OVERVIEW ──────────────────────────────────────────── -->
-  <section>
+  <section style="padding-top: 0;">
     <div class="container">
       <div class="divider"></div>
       <div class="two-col">
         <div class="fade-up">
-          <div class="section-label">
-            <span lang="en">The foundation</span>
-            <span lang="pt">A fundação</span>
-          </div>
           <h2 class="section-title">
             <span lang="en">Why I trusted the idea: the research it stands on</span>
             <span lang="pt">Por que confiei na ideia: a pesquisa que a sustenta</span>
@@ -2057,10 +1938,6 @@
     <div class="container">
       <div class="divider"></div>
       <div class="fade-up">
-        <div class="section-label">
-          <span lang="en">The evidence</span>
-          <span lang="pt">A evidência</span>
-        </div>
         <h2 class="section-title">
           <span lang="en">Three players, three ways discovery let them down</span>
           <span lang="pt">Três jogadores, três formas da descoberta falhar</span>
@@ -2130,10 +2007,6 @@
       <div class="divider"></div>
       <div class="two-col">
         <div class="fade-up">
-          <div class="section-label">
-            <span lang="en">Why it matters</span>
-            <span lang="pt">Por que importa</span>
-          </div>
           <h2 class="section-title">
             <span lang="en">Discovery is the whole business</span>
             <span lang="pt">Descoberta é o negócio inteiro</span>
@@ -2146,10 +2019,10 @@
           </div>
         </div>
         <div class="fade-up">
-          <div class="section-label">
+          <h3 class="sub-title">
             <span lang="en">What I'd do differently</span>
             <span lang="pt">O que eu faria diferente</span>
-          </div>
+          </h3>
           <ul class="styled-list" style="margin-top: 16px;">
             <li>
               <span lang="en"><strong style="color:var(--text-2);">Let real usage overrule me.</strong> The funnel is wired, but the data isn't in yet. The honest next move is to soft-launch, watch it, and redesign whatever the numbers contradict. If nobody refines a search, that points straight at my suggested prompts, and I go fix them.</span>
@@ -2169,121 +2042,27 @@
     </div>
   </section>
 
-  <!-- ─── LEARNINGS ─────────────────────────────────────────── -->
-  <section style="padding-top: 0;">
+  <!-- ─── CTA: blue contact band (styled in site.css) ───────── -->
+  <section class="contact-section" id="contact">
     <div class="container">
-      <div class="divider"></div>
-      <div class="fade-up">
-        <div class="section-label">
-          <span lang="en">Principles</span>
-          <span lang="pt">Princípios</span>
-        </div>
-        <h2 class="section-title">
-          <span lang="en">Three convictions I carried from research into the product</span>
-          <span lang="pt">Três convicções que levei da pesquisa para o produto</span>
-        </h2>
-      </div>
-
-      <div class="grid-3" style="margin-top: 32px;">
-        <div class="card fade-up">
-          <div class="card-title">
-            <span lang="en">Discovery is an ethical challenge too</span>
-            <span lang="pt">Descoberta também é um desafio ético</span>
-          </div>
-          <div class="card-body">
-            <span lang="en">Improving discovery takes more than sophisticated algorithms: it asks for ethical and emotional design, where understanding the user matters as much as processing their data.</span>
-            <span lang="pt">Melhorar a descoberta exige mais do que algoritmos sofisticados: pede design ético e emocional, onde entender o usuário importa tanto quanto processar seus dados.</span>
-          </div>
-        </div>
-        <div class="card fade-up">
-          <div class="card-title">
-            <span lang="en">Transparency does real work</span>
-            <span lang="pt">Transparência faz trabalho de verdade</span>
-          </div>
-          <div class="card-body">
-            <span lang="en">XAI (Explainable AI) is what turns an automated recommendation into a meaningful interaction. A system that won't explain its why stays a black box, and black boxes breed distrust.</span>
-            <span lang="pt">XAI (IA Explicável) é o que transforma recomendação automatizada em interação significativa. Um sistema que não explica o porquê continua sendo uma caixa-preta, e caixa-preta gera desconfiança.</span>
-          </div>
-        </div>
-        <div class="card fade-up">
-          <div class="card-title">
-            <span lang="en">Conversational design is UX design</span>
-            <span lang="pt">Design conversacional é design de UX</span>
-          </div>
-          <div class="card-body">
-            <span lang="en">The tone of voice, message length, and chatbot timing deserve the same care as any visual component. Digital empathy gets decided there, interaction by interaction.</span>
-            <span lang="pt">O tom de voz, o tamanho da mensagem e o timing do chatbot exigem o mesmo cuidado de qualquer componente visual. É aí que a empatia digital se decide, interação por interação.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="quote fade-up" style="margin-top: 48px;">
-        <p lang="en">A recommendation you can't question is just an order. The whole product exists to turn "here, play this" into "here's why I think you'll like this," and let you argue back.</p>
-        <p lang="pt">Uma recomendação que você não pode questionar é só uma ordem. O produto inteiro existe pra transformar "toma, joga isso" em "olha por que eu acho que você vai curtir", e te deixar rebater.</p>
-        <cite>
-          <span lang="en">Igor Dalmolin, on why WhichGameToBuy explains itself</span>
-          <span lang="pt">Igor Dalmolin, sobre por que o WhichGameToBuy se explica</span>
-        </cite>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── CTA ───────────────────────────────────────────────── -->
-  <section style="padding-top: 0; padding-bottom: 96px;">
-    <div class="container">
-      <div class="divider"></div>
-      <div class="fade-up contact-panel">
+      <div class="contact-panel">
         <div class="doodle doodle--burst2 doodle--keep" style="--doodle-rot:90deg; --fdel:.35s; top:20px; right:26px; width:96px; height:96px;" aria-hidden="true"></div>
         <div class="doodle doodle--star" style="--doodle-rot:-10deg; --fdur:6.8s; bottom:22px; left:34px; width:88px; height:88px;" aria-hidden="true"></div>
-        <div class="section-label" style="justify-content: center; margin-bottom: 20px;">
-          <span lang="en">What's next</span>
-          <span lang="pt">Próximos passos</span>
-        </div>
-        <h2 class="section-title" style="max-width: 480px; margin: 0 auto 16px;">
-          <span lang="en">Available for part-time, full-time, or freelance work.</span>
-          <span lang="pt">Disponível para trabalho part-time, full-time ou freelance.</span>
+        <h2 class="contact-title fade-up">
+          <span lang="en">Building a product with AI in it? Let's talk.</span>
+          <span lang="pt">Construindo um produto com IA? Bora conversar.</span>
         </h2>
-        <p class="section-body" style="max-width: 400px; margin: 0 auto 40px;">
-          <span lang="en">If you'd like to talk about a collaboration or discuss this project, get in touch.</span>
-          <span lang="pt">Se você quiser falar sobre uma colaboração ou discutir este projeto, entre em contato.</span>
+        <p class="contact-desc fade-up">
+          <span lang="en">Full-time, part-time, or freelance, remote included. Write me and I'll answer fast.</span>
+          <span lang="pt">Full-time, part-time ou freelance, remoto também. Me escreve que eu respondo rápido.</span>
         </p>
-        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-          <a href="#" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com" style="
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: var(--mono);
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            color: var(--text-1);
-            background: rgba(173,173,173,0.05);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius-pill);
-            padding: 14px 28px;
-            text-decoration: none;
-            transition: background 0.2s, border-color 0.2s;
-          " onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
+        <div class="fade-up" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
             <span lang="en">Send me an email</span>
             <span lang="pt">Envie um e-mail</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" style="
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: var(--mono);
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            color: var(--text-1);
-            background: rgba(173,173,173,0.05);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius-pill);
-            padding: 14px 28px;
-            text-decoration: none;
-            transition: background 0.2s, border-color 0.2s;
-          " onmouseover="this.style.background='rgba(64,129,226,0.15)';this.style.borderColor='rgba(64,129,226,0.3)'" onmouseout="this.style.background='rgba(173,173,173,0.05)';this.style.borderColor='rgba(255,255,255,0.05)'">
+          <a href="https://www.linkedin.com/in/igordalmolin/" target="_blank" rel="noopener" class="cta-btn">
             LinkedIn
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -2349,7 +2128,6 @@
 <script>
   // Show all content immediately
   document.querySelectorAll('.fade-up').forEach((el, i) => {
-    el.style.transitionDelay = `${(i % 4) * 60}ms`;
     el.classList.add('visible');
   });
 
@@ -2395,6 +2173,7 @@
 
 <!-- i18n: language toggle wiring -->
 <script src="i18n.js"></script>
+<script src="site.js" defer></script>
 <script src="doodles.js" defer></script>
 
 </body>

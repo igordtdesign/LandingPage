@@ -1,0 +1,306 @@
+/* ═══════════════════════════════════════════════════════════════
+   SITE: the new-look layer for the case pages (2026-11).
+   Loaded after each page's own <style>, so it restyles the shared
+   template without rewriting it: palette (dark + light), Anton
+   display type, nav switches, buttons, the blue contact band and
+   scroll reveals. The home page carries the same look inline.
+   Brand blue #4081e2 (Grêmio's) is --s-brand; small blue text uses
+   --blue-bright, a deeper shade in light mode for contrast.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: dark;
+  --bg:           #0a0d14;
+  --bg-2:         #070a10;
+  --surface-1:    #10141d;
+  --surface-2:    #161b26;
+  --border:       rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.2);
+  --blue:         #4081e2;
+  --blue-bright:  #5b9bff;
+  --blue-dim:     rgba(64,129,226,0.14);
+  --accent:       #4081e2;
+  --accent-dim:   rgba(64,129,226,0.14);
+  --text-1:       #f2f3f5;
+  --text-2:       #c4c9d3;
+  --text-3:       #939aa8;
+  --text-4:       #808897; /* 5:1 on cards */
+  --doodle:       #4081e2;
+
+  --s-brand:      #4081e2;
+  --s-ink:        #0a0d14;
+  --s-paper:      #f2f3f5;
+  --s-on-accent:  #0a0d14;
+  --s-btn-fill:   #f2f3f5;
+  --s-btn-ink:    #0a0d14;
+  --s-nav-bg:     rgba(14,18,27,0.62);
+  --s-grain:      0.08;
+  --s-display:    "Anton", "Arial Narrow", Impact, sans-serif;
+  --s-ease:       cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg:           #f4f2ed;
+  --bg-2:         #ebe8e1;
+  --surface-1:    #ffffff;
+  --surface-2:    #faf9f6;
+  --border:       rgba(18,20,24,0.10);
+  --border-hover: rgba(18,20,24,0.24);
+  --blue:         #2560c2; /* used for small text on these pages: 5.3:1 on paper */
+  --blue-bright:  #2560c2;
+  --blue-dim:     rgba(37,96,194,0.10);
+  --accent:       #2560c2;
+  --accent-dim:   rgba(37,96,194,0.10);
+  --text-1:       #121418;
+  --text-2:       #3a3f48;
+  --text-3:       #5b616c;
+  --text-4:       #5f6570;
+  --s-on-accent:  #ffffff;
+  --s-btn-fill:   #0a0d14;
+  --s-btn-ink:    #f2f3f5;
+  --s-nav-bg:     rgba(250,249,246,0.78);
+  --s-grain:      0.05;
+}
+/* smooth palette swap only while the switch is used, never on load */
+html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after {
+  transition: background-color .35s ease, color .35s ease, border-color .35s ease, fill .35s ease !important;
+}
+html.theme-anim .lang-knob { transition: transform .28s cubic-bezier(0.4,0,0.2,1), background-color .35s ease !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* ── Canvas: flat, no ambient glow; film grain stays ─────────── */
+body { background: var(--bg); }
+body::before { display: none !important; }
+body::after { opacity: var(--s-grain); }
+
+/* ── Nav + switches ──────────────────────────────────────────── */
+.nav-inner {
+  background: var(--s-nav-bg);
+  border: 1px solid var(--border-hover);
+  box-shadow: 0 10px 30px -14px rgba(0,0,0,0.45);
+}
+.nav-end { gap: 8px; }
+.lang-knob { background: var(--blue-bright); box-shadow: none; }
+.lang-switch[data-active="en"] .lang-opt[data-l="en"],
+.lang-switch[data-active="pt"] .lang-opt[data-l="pt"] { color: var(--s-on-accent); }
+.float-back { background: var(--s-nav-bg); border-color: var(--border-hover); }
+.nav-name { white-space: nowrap; }
+/* same footer on every case page (WhichGameToBuy had an extra 64px margin) */
+footer { padding: 40px 0 !important; margin-top: 0 !important; }
+
+/* same header on every page: section links, theme button, EN/PT, Get in touch */
+nav { transition: transform 0.4s var(--s-ease); }
+nav.nav-hidden { transform: translateY(calc(-100% - 24px)); } /* hides on scroll down (site.js) */
+.nav-links { display: flex; gap: 2px; }
+.nav-link {
+  font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: -0.02em;
+  color: var(--text-3); text-decoration: none; padding: 8px 12px; border-radius: 99px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-link:hover { color: var(--text-1); background: var(--surface-2); }
+.theme-btn {
+  position: relative; width: 36px; height: 36px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--text-2); cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.theme-btn:hover { border-color: var(--border-hover); color: var(--text-1); }
+.theme-btn::after { content: ""; position: absolute; inset: -4px; }
+.theme-btn svg { position: absolute; width: 16px; height: 16px; transition: transform 0.45s var(--s-ease), opacity 0.3s ease; }
+.theme-btn .i-moon { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+:root[data-theme="light"] .theme-btn .i-moon { opacity: 1; transform: none; }
+:root[data-theme="light"] .theme-btn .i-sun { opacity: 0; transform: rotate(90deg) scale(0.5); }
+.nav-cta {
+  position: relative; display: inline-flex; align-items: center; height: 36px; padding: 0 16px;
+  font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap;
+  text-decoration: none; border-radius: 99px;
+  background: var(--s-btn-fill); color: var(--s-btn-ink); border: 1px solid var(--s-btn-fill);
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+}
+.nav-cta::after { content: ""; position: absolute; inset: -4px 0; }
+.nav-cta:hover { background: var(--blue-bright); border-color: var(--blue-bright); color: var(--s-on-accent); }
+@media (max-width: 820px) { .nav-links { display: none; } }
+@media (max-width: 560px) { .nav-name { display: none; } }
+@media (prefers-reduced-motion: reduce) { nav { transition: none; } }
+
+/* ── Display type: Anton, uppercase ──────────────────────────── */
+.hero-eyebrow { display: none; } /* labels above titles are gone */
+.hero-title {
+  font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(46px, 7.2vw, 100px); line-height: 1.04; letter-spacing: 0.005em;
+}
+.section-title {
+  font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(32px, 4.2vw, 54px); line-height: 1.06; letter-spacing: 0.005em;
+  margin-bottom: 28px;
+}
+/* sub-blocks that only had a label ("By the numbers", "Scope of v1"...) */
+.sub-title {
+  font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(24px, 2.4vw, 30px); line-height: 1.1; letter-spacing: 0.01em;
+  color: var(--text-1); margin-bottom: 20px;
+}
+/* sequence markers (Santa Maria's phases): a tag pill, not a slash label */
+.phase-tag {
+  display: inline-flex; align-items: center;
+  font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--blue-bright); background: var(--blue-dim);
+  border: 1px solid color-mix(in srgb, var(--blue-bright) 30%, transparent);
+  border-radius: 99px; padding: 6px 14px; margin-bottom: 20px;
+}
+.case-nav-title {
+  font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
+  font-size: 24px; line-height: 1.1; letter-spacing: 0.01em;
+}
+/* Blue inside display headings is the brand blue in both themes (big type
+   passes contrast with it on paper; small text keeps the deeper shade) */
+.hero-title, .section-title { --blue: var(--s-brand); --blue-bright: var(--s-brand); --accent: var(--s-brand); }
+/* PT capitals carry accents (Ç Ã Ê Í Ó): a little more air between lines */
+html[data-lang="pt"] .hero-title { line-height: 1.12; }
+html[data-lang="pt"] .section-title,
+html[data-lang="pt"] .case-nav-title { line-height: 1.14; }
+/* Anton's font box has a deep empty band under the capitals: lift the scribble */
+.hero-title .scrib-u .scrib-svg,
+.section-title .scrib-u .scrib-svg,
+.contact-title .scrib-u .scrib-svg { bottom: 0.1em; height: 0.2em; }
+
+/* ── Hero facts: an even grid instead of a wrapping row (no orphans) ── */
+.hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 32px; }
+@media (max-width: 640px) { .hero-meta { grid-template-columns: 1fr 1fr; gap: 20px 24px; } }
+
+/* a short scope or method note under a paragraph */
+.scope-note {
+  font-size: 14px !important; line-height: 1.6; color: var(--text-3);
+  border-left: 2px solid var(--border-hover); padding-left: 14px; margin-top: 18px;
+}
+.scope-note strong { color: var(--text-1); }
+
+/* ── The 30-second version: one panel instead of a row of boxes.
+   Three columns (Problem / Solution / Outcome), each with a bold lead
+   you can read in a second plus one supporting line; the numbers sit
+   along the bottom of the same panel. Stacks on phones. ─────────── */
+.tldr {
+  margin-top: 36px; background: var(--surface-1);
+  border: 1px solid var(--border); border-radius: 24px; overflow: hidden;
+}
+.tldr-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.tldr-col { padding: 30px 30px 32px; }
+.tldr-col + .tldr-col { border-left: 1px solid var(--border); }
+.tldr-k {
+  font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
+  font-size: 24px; line-height: 1.1; letter-spacing: 0.01em;
+  color: var(--s-brand); margin: 0 0 14px;
+}
+.tldr-p { font-family: var(--sans); font-size: 16px; line-height: 1.6; letter-spacing: -0.005em; color: var(--text-3); margin: 0; }
+.tldr-p strong {
+  display: block; margin-bottom: 8px;
+  font-size: 19px; font-weight: 600; line-height: 1.35; letter-spacing: -0.015em; color: var(--text-1);
+}
+.tldr-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--border); }
+.tldr-stat { padding: 24px 30px 26px; }
+.tldr-stat + .tldr-stat { border-left: 1px solid var(--border); }
+.tldr-num {
+  display: block; font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(38px, 3.6vw, 52px); line-height: 1.04; letter-spacing: 0.01em; color: var(--s-brand);
+}
+.tldr-lab { display: block; margin-top: 10px; font-family: var(--mono); font-size: 12px; line-height: 1.5; letter-spacing: -0.01em; color: var(--text-3); }
+.tldr-lab b { color: var(--text-1); font-weight: 700; }
+@media (max-width: 860px) {
+  .tldr-cols { grid-template-columns: 1fr; }
+  .tldr-col + .tldr-col { border-left: 0; border-top: 1px solid var(--border); }
+  .tldr-col { padding: 26px 24px 28px; }
+  .tldr-stats { grid-template-columns: 1fr 1fr; }
+  .tldr-stat { padding: 22px 24px 24px; }
+  .tldr-stat:nth-child(odd) { border-left: 0; }
+  .tldr-stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+}
+
+/* ── Buttons: same as the home page ──────────────────────────────
+   Hover: a fill spreads from where the pointer enters and drains toward
+   where it leaves (--mx/--my from site.js), the arrow loops out and back,
+   the button leans toward the cursor (--tx/--ty). Touch: press only. */
+.cta-btn {
+  --sweep: var(--blue-bright); --sweep-ink: var(--s-on-accent);
+  position: relative; overflow: hidden; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px;
+  font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: -0.03em;
+  color: var(--text-1); background: transparent;
+  border: 1px solid var(--border-hover); border-radius: 99px;
+  padding: 12px 22px; text-decoration: none;
+  transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--press, 1));
+  transition: border-color 0.3s, color 0.3s ease 0.05s, transform 0.3s var(--s-ease);
+}
+.cta-btn::before {
+  content: ""; position: absolute; inset: -1px; width: auto; opacity: 1; z-index: -1;
+  border-radius: inherit; background: var(--sweep);
+  clip-path: circle(0% at var(--mx, 50%) var(--my, 50%));
+  transition: clip-path 0.55s var(--s-ease);
+}
+.cta-btn:active { --press: 0.97; }
+.cta-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+@media (hover: hover) {
+  .cta-btn:hover { color: var(--sweep-ink); border-color: var(--sweep); }
+  .cta-btn:hover::before { inset: -1px; width: auto; clip-path: circle(160% at var(--mx, 50%) var(--my, 50%)); }
+  .cta-btn:hover svg { animation: sArrowLoop 0.55s var(--s-ease); }
+}
+@keyframes sArrowLoop {
+  0%   { transform: none; opacity: 1; }
+  45%  { transform: translateX(16px); opacity: 0; }
+  46%  { transform: translateX(-16px); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* ── Contact: full-bleed band in the brand blue, ink type, black
+   checker tape along the top and bottom edges (same as the home) ── */
+.contact-section { padding: 56px 0 64px !important; border-top: 0 !important; text-align: center; }
+.contact-panel {
+  --doodle: var(--s-ink);
+  position: relative; overflow: visible;
+  margin: 0 calc(50% - 50vw); border: 0; border-radius: 0;
+  background: var(--s-brand); color: var(--s-ink);
+  padding: 104px 40px 112px;
+}
+@media (max-width: 720px) { .contact-panel { padding: 112px 24px 88px; } } /* headline starts below the corner doodle */
+.contact-panel::before, .contact-panel::after {
+  content: ""; position: absolute; inset: auto; left: -1%; width: 102%; height: 24px;
+  background: var(--s-ink);
+  -webkit-mask: url("img/doodles/svgChecker.svg") left center / auto 100% repeat-x;
+          mask: url("img/doodles/svgChecker.svg") left center / auto 100% repeat-x;
+  opacity: 0.92; pointer-events: none;
+}
+.contact-panel::before { top: 0; transform: translateY(-50%) rotate(-0.5deg); }
+.contact-panel::after  { bottom: 0; transform: translateY(50%) rotate(0.4deg); }
+@media (max-width: 720px) { .contact-panel::before, .contact-panel::after { height: 16px; } }
+.contact-title {
+  font-family: var(--s-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(44px, 7vw, 104px); line-height: 1.04; letter-spacing: 0.005em;
+  color: var(--s-ink); max-width: 13ch; margin: 0 auto 22px;
+}
+html[data-lang="pt"] .contact-title { line-height: 1.1; }
+.contact-desc {
+  font-family: var(--sans); font-size: 18px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5;
+  color: var(--s-ink); max-width: 46ch; margin: 0 auto 36px;
+}
+.contact-panel .cta-btn { --sweep: var(--s-ink); --sweep-ink: #fff; color: var(--s-ink); border-color: rgba(10,13,20,0.5); }
+.contact-panel .cta-btn[data-obf-email] { --sweep: #fff; --sweep-ink: var(--s-ink); background: var(--s-ink); color: #fff; border-color: var(--s-ink); }
+@media (hover: hover) {
+  .contact-panel .cta-btn:hover,
+  .contact-panel .cta-btn[data-obf-email]:hover { color: var(--sweep-ink); border-color: var(--sweep); }
+}
+.contact-panel :focus-visible { outline-color: var(--s-ink); }
+
+/* ── Scroll reveal: every block of a section rises and settles in reading
+   order (site.js adds .rv / .is-in and a small cascade delay). It's an
+   animation, so it never touches the components' own hover transitions. */
+.js .rv:not(.is-in) { opacity: 0; }
+.js .rv.is-in { animation: sRise 0.8s var(--s-ease) both; animation-delay: var(--rv-delay, 0ms); }
+.js .rv.rv-static { animation: none; }
+@keyframes sRise { from { opacity: 0; translate: 0 36px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .rv:not(.is-in) { opacity: 1; }
+  .js .rv.is-in { animation: none; }
+  .cta-btn, .cta-btn::before { transition: none; }
+  .cta-btn:hover svg { animation: none; }
+}

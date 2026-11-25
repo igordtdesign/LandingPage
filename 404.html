@@ -1,16 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 | Igor Dalmolin</title>
-    </head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 | Igor Dalmolin</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark light">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon">
+
+  <!-- GitHub Pages serves this file for any missing path, so every URL is root-relative.
+       Language and theme follow the visitor's saved choice, otherwise the system. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var saved = localStorage.getItem('site-lang');
+        var lang = (saved === 'en' || saved === 'pt') ? saved
+                  : ((navigator.language || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en');
+        root.setAttribute('data-lang', lang);
+        root.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
+      } catch (e) { root.setAttribute('data-lang', 'en'); }
+      var theme = null;
+      try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
+      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      root.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0d14;
+      --border: rgba(255,255,255,0.08);
+      --brand: #4081e2;
+      --blue-bright: #5b9bff;
+      --text-1: #f2f3f5;
+      --text-3: #939aa8;
+      --btn-fill: #f2f3f5;
+      --btn-ink: #0a0d14;
+      --on-accent: #0a0d14;
+      --tape-alpha: 0.35;
+      --display: "Anton", "Arial Narrow", Impact, sans-serif;
+      --mono: "JetBrains Mono", monospace;
+      --sans: "Inter", system-ui, sans-serif;
+    }
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f4f2ed;
+      --border: rgba(18,20,24,0.10);
+      --blue-bright: #2560c2;
+      --text-1: #121418;
+      --text-3: #5b616c;
+      --btn-fill: #121418;
+      --btn-ink: #f2f3f5;
+      --on-accent: #ffffff;
+      --tape-alpha: 0.55;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html[data-lang="en"] [lang="pt"] { display: none !important; }
+    html[data-lang="pt"] [lang="en"] { display: none !important; }
+    body {
+      min-height: 100vh; min-height: 100dvh;
+      display: grid; place-items: center;
+      padding: 48px 24px;
+      background: var(--bg); color: var(--text-1);
+      font-family: var(--sans); font-size: 16px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased; overflow-x: clip;
+    }
+    main { width: 100%; max-width: 560px; }
+    .shot {
+      display: block; width: 100%; height: auto;
+      border-radius: 18px; border: 1px solid var(--border);
+    }
+    /* a strip of the site's checker tape (the Vans-ish signature) */
+    .tape {
+      height: 18px; width: 104%; margin: 22px 0 26px -2%;
+      background: var(--brand); opacity: var(--tape-alpha);
+      -webkit-mask: url("/img/doodles/svgChecker.svg") left center / auto 100% repeat-x;
+              mask: url("/img/doodles/svgChecker.svg") left center / auto 100% repeat-x;
+      transform: rotate(-0.6deg);
+    }
+    .big {
+      font-family: var(--display); font-weight: 400; color: var(--brand);
+      font-size: clamp(96px, 22vw, 150px); line-height: 0.9; letter-spacing: 0.005em;
+      margin: 0;
+    }
+    h1 {
+      font-family: var(--display); font-weight: 400; text-transform: uppercase;
+      font-size: clamp(32px, 7vw, 46px); line-height: 1.06; letter-spacing: 0.005em;
+      margin: 10px 0 14px;
+    }
+    html[data-lang="pt"] h1 { line-height: 1.14; }
+    p { color: var(--text-3); font-size: 17px; margin-bottom: 32px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 46px;
+      font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--btn-ink); text-decoration: none;
+      background: var(--btn-fill); border: 1px solid var(--btn-fill);
+      border-radius: 99px; padding: 12px 22px;
+      transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.25s;
+    }
+    .btn:hover { background: var(--blue-bright); border-color: var(--blue-bright); color: var(--on-accent); }
+    .btn:active { transform: scale(0.97); }
+    .btn:focus-visible { outline: 2px solid var(--blue-bright); outline-offset: 3px; }
+    .btn svg { width: 14px; height: 14px; transition: transform 0.3s; }
+    .btn:hover svg { transform: translateX(3px); }
+    @media (prefers-reduced-motion: reduce) { .btn, .btn svg { transition: none; } }
+  </style>
+</head>
 <body>
-    <div class="404">
-        <img src="./img/404.jpg" alt="Worker dog" width="500px">
-        <h1>404. This page doesn't exist (yet).</h1>
-        <p>The worker dog is on it. Meanwhile, the portfolio is very much alive.</p>
-        <button><a href="index.html">Back to the portfolio</a></button>
-    </div>
+  <main>
+    <img class="shot" src="/img/404.jpg" width="638" height="479"
+         alt="A dog dressed as a construction worker, in cap, overalls and work boots, pushing a wheelbarrow">
+    <div class="tape" aria-hidden="true"></div>
+    <p class="big" aria-hidden="true">404.</p>
+    <h1><span lang="en">This page doesn't exist (yet).</span><span lang="pt">Esta página não existe (ainda).</span></h1>
+    <p>
+      <span lang="en">The worker dog is on it. Meanwhile, the portfolio is very much alive.</span>
+      <span lang="pt">O cachorro peão de obra já tá resolvendo. Enquanto isso, o portfólio segue bem vivo.</span>
+    </p>
+    <a class="btn" href="/">
+      <span lang="en">Back to the portfolio</span><span lang="pt">Voltar pro portfólio</span>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m0 0-7-7m7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </main>
 </body>
 </html>

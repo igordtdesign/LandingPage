@@ -113,15 +113,6 @@
 }
 @keyframes scribDraw { to { stroke-dashoffset: 0; } }
 
-/* Inside gradient-clipped hero text, a positioned wrapper escapes the
-   parent's background-clip, so re-apply the gradient on the wrapper */
-.hero-title .accent .scrib-u {
-  background: linear-gradient(120deg, var(--blue-bright, #5b9bff) 0%, #8db4ff 60%, var(--blue, #4081e2) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* ── Checkered strip (Vans tape) ─────────────────────────────── */
 /* The SVG viewBox is cropped to exactly one 3-square period of the
    two-row band, so repeat-x tiles seamlessly (seam gap = inner gaps).
@@ -163,6 +154,23 @@
     --dscale: 0.6;
   }
 }
+
+/* ── Shared layout + a11y fixes (every page loads this file) ─── */
+/* The full-bleed checker strips are wider than the page on purpose.
+   Clip them at the page edge so phones don't widen the layout viewport
+   (that pushed the fixed nav 4px off-center). clip, not hidden: no
+   scroll container, vertical overflow (doodles) stays visible. */
+.page { overflow-x: hidden; overflow-x: clip; } /* hidden = fallback for Safari before 16 */
+/* no sideways rubber-banding when a finger drifts while scrolling */
+html, body { overscroll-behavior-x: none; }
+
+/* One keyboard focus ring for every control, in the site blue
+   (components with their own :focus-visible rule still win) */
+:focus-visible { outline: 2px solid var(--blue-bright, #5b9bff); outline-offset: 3px; }
+
+/* On phones the language switch is the only nav control: invisible
+   padding brings its tap area from 29px to 44px+ tall */
+.lang-switch::after { content: ""; position: absolute; inset: -9px -4px; }
 
 /* ── Reduced motion: everything settles, nothing drifts ─────── */
 @media (prefers-reduced-motion: reduce) {

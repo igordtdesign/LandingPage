@@ -16,8 +16,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
+  <meta name="color-scheme" content="dark light">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
@@ -34,6 +35,12 @@
       } catch (e) {
         document.documentElement.setAttribute('data-lang', 'en');
       }
+      // theme: the visitor's explicit choice if any, otherwise the system setting
+      var theme = null;
+      try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
+      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.classList.add('js'); // scroll reveals only run with JS
     })();
   </script>
 
@@ -53,7 +60,7 @@
       --text-1:       #f3f4f6;
       --text-2:       #c5c8ce;
       --text-3:       #8b9098;
-      --text-4:       #5d626b;
+      --text-4:       #7e838c; /* 4.5:1+ on cards (was #5d626b, 3:1) */
       --mono:         "JetBrains Mono", monospace;
       --sans:         "Inter", sans-serif;
       --radius-sm:    8px;
@@ -95,17 +102,17 @@
     }
     body::before { animation: glowDrift 24s ease-in-out infinite alternate; }
     body::after {
-      content: ""; position: fixed; inset: -80px; z-index: 0; pointer-events: none;
+      content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; /* exactly the screen: a fixed layer wider than the viewport lets phones pan sideways */
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
       background-size: 200px 200px;
       opacity: 0.08;
       animation: grain 0.55s steps(3) infinite;
     }
-    @keyframes grain {
-      0%, 100% { transform: translate(0, 0); }
-      25%      { transform: translate(-5px, 3px); }
-      50%      { transform: translate(4px, -4px); }
-      75%      { transform: translate(-3px, -5px); }
+    @keyframes grain { /* the texture moves, the layer stays put */
+      0%, 100% { background-position: 0 0; }
+      25%      { background-position: -5px 3px; }
+      50%      { background-position: 4px -4px; }
+      75%      { background-position: -3px -5px; }
     }
     @media (prefers-reduced-motion: reduce) {
       body::before, body::after { animation: none; }
@@ -471,25 +478,32 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 16px;
-      font-size: 18px;
-      line-height: 1;
+      color: var(--blue-bright);
     }
+    .award-icon svg { width: 18px; height: 18px; display: block; }
 
     .award-title {
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: -0.04em;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       color: var(--text-1);
-      margin-bottom: 8px;
-      line-height: 1.3;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    .award-org {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: -0.02em;
+      color: var(--text-4);
+      margin-bottom: 12px;
     }
 
     .award-desc {
-      font-family: var(--mono);
-      font-size: 12px;
+      font-family: var(--sans);
+      font-size: 13.5px;
       font-weight: 400;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.005em;
       color: var(--text-3);
       line-height: 1.5;
     }
@@ -533,10 +547,10 @@
     }
 
     .timeline-content-body {
-      font-family: var(--mono);
-      font-size: 14px;
+      font-family: var(--sans);
+      font-size: 15px;
       font-weight: 400;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.005em;
       color: var(--text-3);
       line-height: 1.6;
     }
@@ -907,6 +921,7 @@
       .photo-grid.grid-3x3 { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
+  <link rel="stylesheet" href="site.css"> <!-- new look: loaded after the page styles -->
 </head>
 
 <body>
@@ -920,16 +935,22 @@
           <span class="nav-name">Igor Dalmolin</span>
         </a>
         <div class="nav-end">
-          <a href="index.html" class="nav-back">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span lang="en">Back to portfolio</span>
-            <span lang="pt">Voltar ao portfólio</span>
-          </a>
+          <div class="nav-links">
+            <a href="index.html#work" class="nav-link"><span lang="en">Work</span><span lang="pt">Trabalhos</span></a>
+            <a href="index.html#gallery" class="nav-link"><span lang="en">Gallery</span><span lang="pt">Galeria</span></a>
+            <a href="index.html#about" class="nav-link"><span lang="en">About</span><span lang="pt">Sobre</span></a>
+          </div>
+          <button type="button" class="theme-btn" id="themeSwitch" role="switch" aria-checked="false">
+            <span class="sr-only"><span lang="en">Light mode</span><span lang="pt">Modo claro</span></span>
+            <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+            <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
           <button type="button" class="lang-switch" id="langSwitch" aria-label="Toggle language / Trocar idioma">
             <span class="lang-opt" data-l="en">EN</span>
             <span class="lang-opt" data-l="pt">PT</span>
             <span class="lang-knob" aria-hidden="true"></span>
           </button>
+          <a href="#contact" class="nav-cta"><span lang="en">Get in touch</span><span lang="pt">Fale comigo</span></a>
         </div>
       </div>
     </div>
@@ -940,11 +961,6 @@
   <!-- ─── HERO ──────────────────────────────────────────────── -->
   <section class="hero">
     <div class="container">
-
-      <p class="hero-eyebrow fade-up">
-        <span lang="en">Social media · art direction</span>
-        <span lang="pt">Social media · direção de arte</span>
-      </p>
 
       <h1 class="hero-title fade-up">
         <span lang="en">Public Service,<br><span class="scrib-u">Internet<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span> Language</span>
@@ -957,21 +973,9 @@
       </p>
 
       <div class="hero-tags fade-up">
-        <span class="tag highlight">
-          <span lang="en">Art Direction</span>
-          <span lang="pt">Direção de Arte</span>
-        </span>
+        <span class="tag highlight"><span lang="en">Art Direction</span><span lang="pt">Direção de Arte</span></span>
         <span class="tag highlight">Social Media</span>
-        <span class="tag">Agência CENTRO</span>
-        <span class="tag">Prefeitura de Santa Maria</span>
-        <span class="tag">
-          <span lang="en">3 Awards</span>
-          <span lang="pt">3 Prêmios</span>
-        </span>
-        <span class="tag">
-          <span lang="en">2021-Present</span>
-          <span lang="pt">2021-Hoje</span>
-        </span>
+        <span class="tag"><span lang="en">Public communication</span><span lang="pt">Comunicação pública</span></span>
       </div>
 
       <div class="hero-meta fade-up">
@@ -1016,6 +1020,10 @@
             <span lang="pt">3 reconhecimentos do setor</span>
           </div>
         </div>
+        <div class="meta-item">
+          <div class="meta-label"><span lang="en">Years</span><span lang="pt">Período</span></div>
+          <div class="meta-value"><span lang="en">2021-Present</span><span lang="pt">2021-Hoje</span></div>
+        </div>
       </div>
 
     </div>
@@ -1036,60 +1044,30 @@
   <!-- ─── EXECUTIVE SUMMARY ─────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Executive summary</span>
-        <span lang="pt">Resumo executivo</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">The 30-second version</span>
         <span lang="pt">A versão de 30 segundos</span>
       </h2>
-      <style>
-        .xsum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
-        @media (max-width: 800px) { .xsum-grid { grid-template-columns: 1fr; } }
-        .xsum-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
-        .xsum-k { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.02em; color: var(--blue-bright); margin-bottom: 10px; }
-        .xsum-card p { font-family: var(--mono); font-size: 13px; letter-spacing: -0.02em; line-height: 1.65; color: var(--text-3); }
-      </style>
-      <div class="xsum-grid fade-up">
-        <div class="xsum-card">
-          <div class="xsum-k"><span lang="en">Problem</span><span lang="pt">Problema</span></div>
-          <p>
-            <span lang="en">Santa Maria's official channels were formal, stiff, and ignored, with engagement near zero. When COVID-19 hit, reaching people stopped being optional.</span>
-            <span lang="pt">Os canais oficiais de Santa Maria eram formais, engessados e ignorados, com engajamento perto de zero. Quando a COVID-19 chegou, alcançar as pessoas deixou de ser opcional.</span>
-          </p>
+      <div class="tldr">
+        <div class="tldr-cols">
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Problem</span><span lang="pt">Problema</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>A government feed nobody read.</strong> Formal, stiff, and ignored, until COVID-19 made reaching people urgent.</span><span lang="pt"><strong>Um perfil de governo que ninguém lia.</strong> Formal, engessado e ignorado, até a COVID-19 tornar urgente chegar nas pessoas.</span></p>
+          </div>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Solution</span><span lang="pt">Solução</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>Speak the internet's language.</strong> Memes and trends lead the communication. My part: art direction and design, from concept to post.</span><span lang="pt"><strong>Falar a língua da internet.</strong> Memes e tendências guiam a comunicação. Minha parte: direção de arte e design, do conceito ao post.</span></p>
+          </div>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>Followed by choice, copied nationwide.</strong> City halls across Brazil went on to adopt the same playbook.</span><span lang="pt"><strong>Seguido por escolha, copiado pelo país.</strong> Prefeituras do Brasil inteiro passaram a adotar o mesmo repertório.</span></p>
+          </div>
         </div>
-        <div class="xsum-card">
-          <div class="xsum-k"><span lang="en">Solution</span><span lang="pt">Solução</span></div>
-          <p>
-            <span lang="en">The team swapped the institutional tone for the internet's own language: memes and trends leading public communication. My part: art direction and design, from concept to post.</span>
-            <span lang="pt">O time trocou o tom institucional pela linguagem da própria internet: memes e tendências guiando a comunicação pública. Minha parte: direção de arte e design, do conceito ao post.</span>
-          </p>
-        </div>
-        <div class="xsum-card">
-          <div class="xsum-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></div>
-          <p>
-            <span lang="en">A feed people follow by choice, 3 industry awards, and a playbook that city halls across Brazil went on to copy.</span>
-            <span lang="pt">Um feed que as pessoas seguem porque querem, 3 prêmios do setor e um repertório que prefeituras do Brasil inteiro passaram a copiar.</span>
-          </p>
-        </div>
-      </div>
-      <div class="sm-stats fade-up" style="margin-top: 16px;">
-        <div class="sm-stat">
-          <div class="sm-stat-num">86.9K</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Followers</strong> · ≈31% of the city</span><span lang="pt"><strong>Seguidores</strong> · ≈31% da cidade</span></div>
-        </div>
-        <div class="sm-stat">
-          <div class="sm-stat-num">6.9M</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Views</strong> · last 90 days</span><span lang="pt"><strong>Visualizações</strong> · últimos 90 dias</span></div>
-        </div>
-        <div class="sm-stat">
-          <div class="sm-stat-num">176K</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Interactions</strong> · last 90 days</span><span lang="pt"><strong>Interações</strong> · últimos 90 dias</span></div>
-        </div>
-        <div class="sm-stat">
-          <div class="sm-stat-num">3</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Industry awards</strong> for the work</span><span lang="pt"><strong>Prêmios do setor</strong> pelo trabalho</span></div>
+        <div class="tldr-stats">
+          <div class="tldr-stat"><span class="tldr-num"><span lang="en">86.9K</span><span lang="pt">86,9 mil</span></span><span class="tldr-lab"><span lang="en"><b>Followers</b> · ≈31% of the city's 282K residents</span><span lang="pt"><b>Seguidores</b> · ≈31% dos 282 mil habitantes</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num"><span lang="en">6.9M</span><span lang="pt">6,9 mi</span></span><span class="tldr-lab"><span lang="en"><b>Views</b> · 90 days · 21% from non-followers</span><span lang="pt"><b>Visualizações</b> · 90 dias · 21% de não seguidores</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num"><span lang="en">176K</span><span lang="pt">176 mil</span></span><span class="tldr-lab"><span lang="en"><b>Interactions</b> · 90 days · 84% from followers</span><span lang="pt"><b>Interações</b> · 90 dias · 84% de seguidores</span></span></div>
+          <div class="tldr-stat"><span class="tldr-num">3</span><span class="tldr-lab"><span lang="en"><b>Industry awards</b> for the work</span><span lang="pt"><b>Prêmios do setor</b> pelo trabalho</span></span></div>
         </div>
       </div>
     </div>
@@ -1100,10 +1078,6 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">
-            <span lang="en">My role</span>
-            <span lang="pt">Minha função</span>
-          </p>
           <h2 class="section-title fade-up">
             <span lang="en">My part in a team effort</span>
             <span lang="pt">Minha parte num trabalho de equipe</span>
@@ -1122,10 +1096,6 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">
-            <span lang="en">The challenge</span>
-            <span lang="pt">O desafio</span>
-          </p>
           <h2 class="section-title fade-up">
             <span lang="en">A government that nobody listened to</span>
             <span lang="pt">Um governo que ninguém escutava</span>
@@ -1146,21 +1116,11 @@
   <!-- ─── APPROACH ──────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">The approach</span>
-        <span lang="pt">A abordagem</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">Using the internet's language to reach people</span>
         <span lang="pt">Usando a linguagem da internet para alcançar as pessoas</span>
       </h2>
 
-      <div class="quote fade-up">
-        <p class="quote-text">
-          <span lang="en">The meme used to follow the brief. Now it leads.</span>
-          <span lang="pt">O meme costumava seguir o briefing. Agora ele guia.</span>
-        </p>
-      </div>
 
       <div class="section-cols fade-up">
         <div class="section-body">
@@ -1182,7 +1142,7 @@
   <!-- ─── GALLERY 1: Pandemic era ──────────────────────────── -->
   <section class="gallery-section">
     <div class="container">
-      <p class="section-label fade-up">
+      <p class="phase-tag fade-up">
         <span lang="en">Phase 01: pandemic communication</span>
         <span lang="pt">Fase 01: comunicação na pandemia</span>
       </p>
@@ -1206,10 +1166,6 @@
   <!-- ─── EVOLUTION TIMELINE ───────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Evolution</span>
-        <span lang="pt">Evolução</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">From exception to creative philosophy</span>
         <span lang="pt">Da exceção à filosofia criativa</span>
@@ -1278,7 +1234,7 @@
   <!-- ─── GALLERY 2: Range of work ─────────────────────────── -->
   <section class="gallery-section">
     <div class="container">
-      <p class="section-label fade-up">
+      <p class="phase-tag fade-up">
         <span lang="en">Phase 02: full campaign range</span>
         <span lang="pt">Fase 02: amplitude de campanhas</span>
       </p>
@@ -1286,6 +1242,10 @@
         <span lang="en">Services, dates, awareness: nothing off-limits</span>
         <span lang="pt">Serviços, datas, conscientização: nada fora do alcance</span>
       </h2>
+      <p class="section-body fade-up" style="margin-bottom: 32px;">
+        <span lang="en">An internship call, a flu shot, a job fair, a marathon: the same voice, whatever the topic.</span>
+        <span lang="pt">Vaga de estágio, vacina da gripe, feirão de emprego, maratona: a mesma voz, seja qual for o assunto.</span>
+      </p>
       <div class="photo-grid grid-2 fade-up">
         <div class="gitem"><img loading="lazy" decoding="async" src="SantaMaria-Case-img/phase02-01.jpg" alt="Phase 02 post 1"></div>
         <div class="gitem"><img loading="lazy" decoding="async" src="SantaMaria-Case-img/phase02-02.jpg" alt="Phase 02 post 2"></div>
@@ -1298,10 +1258,6 @@
   <!-- ─── AWARDS ────────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Recognition</span>
-        <span lang="pt">Reconhecimento</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">Three awards, one philosophy</span>
         <span lang="pt">Três prêmios, uma filosofia</span>
@@ -1313,33 +1269,27 @@
 
       <div class="awards-grid fade-up">
         <div class="award-card">
-          <div class="award-icon">🏆</div>
-          <div class="award-title">
-            <span lang="en">Calourada Campaign: Award 01</span>
-            <span lang="pt">Campanha Calourada: Prêmio 01</span>
-          </div>
+          <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg></div>
+          <div class="award-title">Prêmio Boas Práticas da Gestão Pública Municipal</div>
+          <div class="award-org"><span lang="en">FAMURS · Calourada campaign</span><span lang="pt">FAMURS · Campanha Calourada</span></div>
           <div class="award-desc">
             <span lang="en">Industry recognition for the creative direction of the back-to-school Calourada campaign targeting university students in Santa Maria.</span>
             <span lang="pt">Reconhecimento do setor pela direção criativa da campanha de volta às aulas Calourada, voltada aos estudantes universitários de Santa Maria.</span>
           </div>
         </div>
         <div class="award-card">
-          <div class="award-icon">🏆</div>
-          <div class="award-title">
-            <span lang="en">Calourada Campaign: Award 02</span>
-            <span lang="pt">Campanha Calourada: Prêmio 02</span>
-          </div>
+          <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg></div>
+          <div class="award-title">Prêmio ARI de Assessoria de Imprensa</div>
+          <div class="award-org"><span lang="en">ARI · Calourada campaign</span><span lang="pt">ARI · Campanha Calourada</span></div>
           <div class="award-desc">
             <span lang="en">Second recognition for the same campaign, acknowledging both its creative execution and its measurable impact on public engagement.</span>
             <span lang="pt">Segundo reconhecimento da mesma campanha, considerando tanto a execução criativa quanto o impacto mensurável no engajamento público.</span>
           </div>
         </div>
         <div class="award-card">
-          <div class="award-icon">🥇</div>
-          <div class="award-title">
-            <span lang="en">Federal Ouvidoria Campaign</span>
-            <span lang="pt">Campanha Federal de Ouvidoria</span>
-          </div>
+          <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg></div>
+          <div class="award-title">3ª Maratona de Defesa dos Direitos dos Usuários de Serviços Públicos</div>
+          <div class="award-org"><span lang="en">CGU · Ouvidoria campaign</span><span lang="pt">CGU · Campanha da Ouvidoria</span></div>
           <div class="award-desc">
             <span lang="en">National recognition for a federal government ombudsman campaign, bringing the same irreverent, human tone to a typically dry institutional subject.</span>
             <span lang="pt">Reconhecimento nacional por uma campanha federal de ouvidoria, levando o mesmo tom irreverente e humano para um assunto institucional tipicamente seco.</span>
@@ -1352,7 +1302,7 @@
   <!-- ─── GALLERY 3: Recent / trend-first work ─────────────── -->
   <section class="gallery-section">
     <div class="container">
-      <p class="section-label fade-up">
+      <p class="phase-tag fade-up">
         <span lang="en">Phase 03: trend-first strategy</span>
         <span lang="pt">Fase 03: estratégia guiada por tendências</span>
       </p>
@@ -1360,6 +1310,10 @@
         <span lang="en">The meme comes before the brief</span>
         <span lang="pt">O meme vem antes do briefing</span>
       </h2>
+      <p class="section-body fade-up" style="margin-bottom: 32px;">
+        <span lang="en">Today the format comes first: a trend, a game cover, a sitcom still, with the service message built on top.</span>
+        <span lang="pt">Hoje o formato vem primeiro: uma trend, uma capa de jogo, uma cena de série, e a mensagem de serviço vem por cima.</span>
+      </p>
       <div class="photo-grid grid-3x3 fade-up">
         <div class="gitem"><img loading="lazy" decoding="async" src="SantaMaria-Case-img/phase03-01.jpg" alt="Phase 03 post 1"></div>
         <div class="gitem"><img loading="lazy" decoding="async" src="SantaMaria-Case-img/phase03-02.jpg" alt="Phase 03 post 2"></div>
@@ -1377,14 +1331,10 @@
   <!-- ─── IMPACT ────────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Impact</span>
-        <span lang="pt">Impacto</span>
-      </p>
       <h2 class="section-title fade-up">
-        <span lang="en">Pioneers in a movement that spread nationwide</span>
-        <span lang="pt">Pioneiros em um movimento que se espalhou pelo país</span>
-      </h2>
+          <span lang="en">A model other city halls copied</span>
+          <span lang="pt">Um modelo que outras prefeituras copiaram</span>
+        </h2>
 
       <div class="section-cols fade-up">
         <div class="section-body">
@@ -1409,49 +1359,28 @@
         .sm-stat-num { font-family: var(--sans); font-size: clamp(30px, 4vw, 40px); font-weight: 800; letter-spacing: -0.03em; color: var(--blue-bright); line-height: 1; }
         .sm-stat-label { font-family: var(--mono); font-size: 11.5px; line-height: 1.55; color: var(--text-4); margin-top: 12px; }
         .sm-stat-label strong { color: var(--text-2); font-weight: 700; }
-        .sm-note { font-family: var(--mono); font-size: 12px; color: var(--text-4); line-height: 1.7; margin-top: 22px; max-width: 760px; }
+        .sm-note { font-family: var(--sans); font-size: 13px; color: var(--text-4); line-height: 1.7; margin-top: 22px; max-width: 760px; letter-spacing: -0.005em; }
       </style>
-      <p class="section-label fade-up" style="margin-top: 64px;">
-        <span lang="en">By the numbers</span><span lang="pt">Em números</span>
-      </p>
-      <div class="sm-stats fade-up">
-        <div class="sm-stat">
-          <div class="sm-stat-num">86.9K</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Followers</strong> · ≈31% of the city's 282K residents</span><span lang="pt"><strong>Seguidores</strong> · ≈31% dos 282 mil habitantes da cidade</span></div>
-        </div>
-        <div class="sm-stat">
-          <div class="sm-stat-num">6.9M</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Views</strong> · 90 days · 21% from non-followers</span><span lang="pt"><strong>Visualizações</strong> · 90 dias · 21% de não seguidores</span></div>
-        </div>
-        <div class="sm-stat">
-          <div class="sm-stat-num">352K</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Accounts reached</strong> · last 90 days</span><span lang="pt"><strong>Contas alcançadas</strong> · últimos 90 dias</span></div>
-        </div>
-        <div class="sm-stat">
-          <div class="sm-stat-num">176K</div>
-          <div class="sm-stat-label"><span lang="en"><strong>Interactions</strong> · 90 days · 84% from followers</span><span lang="pt"><strong>Interações</strong> · 90 dias · 84% de seguidores</span></div>
-        </div>
-      </div>
-      <p class="sm-note fade-up">
-        <span lang="en">A typical week still pulls ~490K views and ~11.5K interactions. Figures from Meta Business Suite. Instagram only exposes a trailing 90-day analytics window, so these reflect recent performance rather than the account's full history.</span>
-        <span lang="pt">Uma semana típica ainda gera ~490 mil visualizações e ~11,5 mil interações. Dados do Meta Business Suite. O Instagram só libera uma janela móvel de 90 dias, então refletem o desempenho recente, e não o histórico completo da conta.</span>
-      </p>
+        <p class="sm-note fade-up" style="margin-top: 40px;">
+          <span lang="en">In the last 90 days the posts also reached 352K accounts, and a typical week still pulls ~490K views and ~11.5K interactions. Figures from Meta Business Suite; Instagram only exposes a trailing 90-day window, so they reflect recent performance rather than the account's full history.</span>
+          <span lang="pt">Nos últimos 90 dias os posts também alcançaram 352 mil contas, e uma semana típica ainda gera ~490 mil visualizações e ~11,5 mil interações. Dados do Meta Business Suite; o Instagram só libera uma janela móvel de 90 dias, então os números refletem o desempenho recente, e não o histórico completo da conta.</span>
+        </p>
     </div>
   </section>
 
   <!-- ─── CONTACT ───────────────────────────────────────────── -->
-  <section class="contact-section">
+  <section class="contact-section" id="contact">
     <div class="container">
       <div class="contact-panel">
         <div class="doodle doodle--burst2 doodle--keep" style="--doodle-rot:90deg; --fdel:.35s; top:20px; right:26px; width:96px; height:96px;" aria-hidden="true"></div>
         <div class="doodle doodle--star" style="--doodle-rot:-10deg; --fdur:6.8s; bottom:22px; left:34px; width:88px; height:88px;" aria-hidden="true"></div>
         <h2 class="contact-title fade-up">
-          <span lang="en">Want to talk about this project?</span>
-          <span lang="pt">Quer falar sobre esse projeto?</span>
+          <span lang="en">Want people to follow your feed by choice?</span>
+          <span lang="pt">Quer que sigam seu perfil por escolha?</span>
         </h2>
         <p class="contact-desc fade-up">
-          <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
-          <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
+          <span lang="en">Full-time, part-time, or freelance, remote included. Write me and I'll answer fast.</span>
+          <span lang="pt">Full-time, part-time ou freelance, remoto também. Me escreve que eu respondo rápido.</span>
         </p>
         <div class="fade-up" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
           <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
@@ -1622,6 +1551,7 @@
 
 <!-- i18n: language toggle wiring -->
 <script src="i18n.js"></script>
+<script src="site.js" defer></script>
 <script src="doodles.js" defer></script>
 
 </body>

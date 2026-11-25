@@ -16,8 +16,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="doodles.css">
+  <meta name="color-scheme" content="dark light">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: light)">
   <link href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg" rel="icon" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" href="https://framerusercontent.com/images/sG2oRf6mk4n6MOaB22S2QTJ6l4.svg">
@@ -34,6 +35,12 @@
       } catch (e) {
         document.documentElement.setAttribute('data-lang', 'en');
       }
+      // theme: the visitor's explicit choice if any, otherwise the system setting
+      var theme = null;
+      try { var t = localStorage.getItem('site-theme'); if (t === 'light' || t === 'dark') theme = t; } catch (e) {}
+      if (!theme) theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.classList.add('js'); // scroll reveals only run with JS
     })();
   </script>
 
@@ -57,7 +64,7 @@
       --text-1:       #f3f4f6;
       --text-2:       #c5c8ce;
       --text-3:       #8b9098;
-      --text-4:       #5d626b;
+      --text-4:       #7e838c; /* 4.5:1+ on cards (was #5d626b, 3:1) */
       --mono:         "JetBrains Mono", monospace;
       --sans:         "Inter", sans-serif;
       --radius-sm:    8px;
@@ -89,17 +96,17 @@
     }
     body::before { animation: glowDrift 24s ease-in-out infinite alternate; }
     body::after {
-      content: ""; position: fixed; inset: -80px; z-index: 0; pointer-events: none;
+      content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; /* exactly the screen: a fixed layer wider than the viewport lets phones pan sideways */
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
       background-size: 200px 200px;
       opacity: 0.08;
       animation: grain 0.55s steps(3) infinite;
     }
-    @keyframes grain {
-      0%, 100% { transform: translate(0, 0); }
-      25%      { transform: translate(-5px, 3px); }
-      50%      { transform: translate(4px, -4px); }
-      75%      { transform: translate(-3px, -5px); }
+    @keyframes grain { /* the texture moves, the layer stays put */
+      0%, 100% { background-position: 0 0; }
+      25%      { background-position: -5px 3px; }
+      50%      { background-position: 4px -4px; }
+      75%      { background-position: -3px -5px; }
     }
     @media (prefers-reduced-motion: reduce) {
       body::before, body::after { animation: none; }
@@ -323,7 +330,7 @@
       display: flex; align-items: center; justify-content: center; padding: 28px;
     }
     .construct-mark img { width: 100%; }
-    .construct-body { font-family: var(--mono); font-size: 15px; letter-spacing: -0.04em; line-height: 1.7; color: var(--text-3); }
+    .construct-body { font-family: var(--sans); font-size: 16px; letter-spacing: -0.005em; line-height: 1.7; color: var(--text-3); }
     .construct-body strong { color: var(--text-1); }
 
     /* ─── TYPOGRAPHY SPECIMEN ────────────────────────────────── */
@@ -378,7 +385,7 @@
     }
     .web-card-visual img { width: 100%; max-width: 220px; }
     .web-card-title { font-family: var(--mono); font-size: 20px; font-weight: 700; letter-spacing: -0.05em; color: var(--text-1); margin-bottom: 12px; }
-    .web-card-desc { font-family: var(--mono); font-size: 14px; letter-spacing: -0.03em; line-height: 1.6; color: var(--text-3); margin-bottom: 24px; }
+    .web-card-desc { font-family: var(--sans); font-size: 15px; letter-spacing: -0.005em; line-height: 1.6; color: var(--text-3); margin-bottom: 24px; }
 
     /* ─── BEFORE / AFTER ─────────────────────────────────────── */
     .beforeafter { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
@@ -517,7 +524,7 @@
     @media (max-width: 640px) { .web-step:nth-child(2) { border-top: 1px solid var(--border); } }
     .web-step-num { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent-bright); letter-spacing: -0.02em; }
     .web-step-title { font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: -0.04em; color: var(--text-1); margin-bottom: 4px; }
-    .web-step-desc { font-family: var(--mono); font-size: 13px; letter-spacing: -0.03em; line-height: 1.5; color: var(--text-3); }
+    .web-step-desc { font-family: var(--sans); font-size: 14px; letter-spacing: -0.005em; line-height: 1.5; color: var(--text-3); }
 
     /* ─── MATERIAL CHIPS ─────────────────────────────────────── */
     .web-materials { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
@@ -628,6 +635,7 @@
       .construct, .web-card-body { padding: 28px; }
     }
   </style>
+  <link rel="stylesheet" href="site.css"> <!-- new look: loaded after the page styles -->
 </head>
 
 <body>
@@ -641,16 +649,22 @@
           <span class="nav-name">Igor Dalmolin</span>
         </a>
         <div class="nav-end">
-          <a href="index.html" class="nav-back">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 7 7m-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span lang="en">Back to portfolio</span>
-            <span lang="pt">Voltar ao portfólio</span>
-          </a>
+          <div class="nav-links">
+            <a href="index.html#work" class="nav-link"><span lang="en">Work</span><span lang="pt">Trabalhos</span></a>
+            <a href="index.html#gallery" class="nav-link"><span lang="en">Gallery</span><span lang="pt">Galeria</span></a>
+            <a href="index.html#about" class="nav-link"><span lang="en">About</span><span lang="pt">Sobre</span></a>
+          </div>
+          <button type="button" class="theme-btn" id="themeSwitch" role="switch" aria-checked="false">
+            <span class="sr-only"><span lang="en">Light mode</span><span lang="pt">Modo claro</span></span>
+            <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+            <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
           <button type="button" class="lang-switch" id="langSwitch" aria-label="Toggle language / Trocar idioma">
             <span class="lang-opt" data-l="en">EN</span>
             <span class="lang-opt" data-l="pt">PT</span>
             <span class="lang-knob" aria-hidden="true"></span>
           </button>
+          <a href="#contact" class="nav-cta"><span lang="en">Get in touch</span><span lang="pt">Fale comigo</span></a>
         </div>
       </div>
     </div>
@@ -661,10 +675,6 @@
   <!-- ─── HERO ──────────────────────────────────────────────── -->
   <section class="hero">
     <div class="container">
-      <p class="hero-eyebrow fade-up">
-        <span lang="en">Brand identity · web design · B2B</span>
-        <span lang="pt">Identidade visual · web design · B2B</span>
-      </p>
       <h1 class="hero-title fade-up">
         <span lang="en"><span class="scrib-u">Ecobel:<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span><br><span class="accent">recycling without the cliché</span></span>
         <span lang="pt"><span class="scrib-u">Ecobel:<svg class="scrib-svg" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 13 C 58 6, 118 16, 172 10 C 214 6, 262 9, 294 12 M18 19 C 92 13, 176 20, 286 15"/></svg></span><br><span class="accent">reciclagem sem clichê</span></span>
@@ -674,18 +684,9 @@
         <span lang="pt">A Ecobel é uma empresa brasileira de reciclagem que vende para outras empresas, em vez de para o consumidor final. Redesenhei a identidade visual e projetei o site, depois fiz o handoff para o desenvolvedor, que refinou a construção e colocou no ar. A função do site: gerar confiança e transformar visitantes em leads de "solicitar coleta".</span>
       </p>
       <div class="hero-tags fade-up">
-        <span class="tag highlight">
-          <span lang="en">Brand Identity</span>
-          <span lang="pt">Identidade Visual</span>
-        </span>
+        <span class="tag highlight"><span lang="en">Brand Identity</span><span lang="pt">Identidade Visual</span></span>
         <span class="tag highlight">Web Design</span>
-        <span class="tag">
-          <span lang="en">Design Handoff</span>
-          <span lang="pt">Handoff para Dev</span>
-        </span>
         <span class="tag">B2B</span>
-        <span class="tag">Ecobel</span>
-        <span class="tag">2026</span>
       </div>
       <div class="hero-cta-row fade-up">
         <a href="https://ecobelreciclagem.com.br/" target="_blank" rel="noopener" class="cta-btn">
@@ -716,6 +717,10 @@
           <div class="meta-label">Status</div>
           <div class="meta-value"><span lang="en">Live</span><span lang="pt">No ar</span></div>
         </div>
+        <div class="meta-item">
+          <div class="meta-label"><span lang="en">Year</span><span lang="pt">Ano</span></div>
+          <div class="meta-value"><span lang="en">2026</span><span lang="pt">2026</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -735,42 +740,24 @@
   <!-- ─── EXECUTIVE SUMMARY ─────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Executive summary</span>
-        <span lang="pt">Resumo executivo</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">The 30-second version</span>
         <span lang="pt">A versão de 30 segundos</span>
       </h2>
-      <style>
-        .xsum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
-        @media (max-width: 800px) { .xsum-grid { grid-template-columns: 1fr; } }
-        .xsum-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
-        .xsum-k { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.02em; color: var(--blue-bright); margin-bottom: 10px; }
-        .xsum-card p { font-family: var(--mono); font-size: 13px; letter-spacing: -0.02em; line-height: 1.65; color: var(--text-3); }
-      </style>
-      <div class="xsum-grid fade-up">
-        <div class="xsum-card">
-          <div class="xsum-k"><span lang="en">Problem</span><span lang="pt">Problema</span></div>
-          <p>
-            <span lang="en">A B2B recycling company whose growth depended on a credible public face, stuck with a cliché logo and no website built to generate leads.</span>
-            <span lang="pt">Uma empresa de reciclagem B2B cujo crescimento dependia de uma cara pública confiável, presa a um logo clichê e sem um site feito para gerar leads.</span>
-          </p>
-        </div>
-        <div class="xsum-card">
-          <div class="xsum-k"><span lang="en">Solution</span><span lang="pt">Solução</span></div>
-          <p>
-            <span lang="en">I revitalized the brand without losing its equity (the recycling symbol moved into the "b") and designed a responsive site aimed at "request a collection" leads, then handed it off for development.</span>
-            <span lang="pt">Revitalizei a marca sem perder seu valor (o símbolo de reciclagem foi para o "b") e projetei um site responsivo focado em leads de "solicitar coleta", com handoff para o desenvolvimento.</span>
-          </p>
-        </div>
-        <div class="xsum-card">
-          <div class="xsum-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></div>
-          <p>
-            <span lang="en">A site live at ecobelreciclagem.com.br working as the company's main sales channel, on top of a brand system applied from business cards to the fleet. Design by me; development and launch by the developer.</span>
-            <span lang="pt">Um site no ar em ecobelreciclagem.com.br funcionando como o principal canal de vendas da empresa, sobre um sistema de marca aplicado do cartão de visita à frota. Design meu; desenvolvimento e publicação pelo dev.</span>
-          </p>
+      <div class="tldr">
+        <div class="tldr-cols">
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Problem</span><span lang="pt">Problema</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>A cliché logo and no site that sells.</strong> A B2B recycler whose growth depends on looking credible to other companies.</span><span lang="pt"><strong>Logo clichê e nenhum site que vendesse.</strong> Uma recicladora B2B que cresce quando passa confiança para outras empresas.</span></p>
+          </div>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Solution</span><span lang="pt">Solução</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>A sharper mark, a site built for leads.</strong> The recycling arrows moved into the "b" without losing the brand's equity. The site leads to "request a collection", then went to a developer to build.</span><span lang="pt"><strong>Marca mais afiada, site feito para gerar leads.</strong> As setas de reciclagem foram para o "b" sem perder o valor da marca. O site leva ao "solicitar coleta" e seguiu para o desenvolvimento.</span></p>
+          </div>
+          <div class="tldr-col">
+            <h3 class="tldr-k"><span lang="en">Outcome</span><span lang="pt">Resultado</span></h3>
+            <p class="tldr-p"><span lang="en"><strong>Live, and the main sales channel.</strong> ecobelreciclagem.com.br, on a brand system that runs from business cards to the fleet. Design by me; build and launch by the developer.</span><span lang="pt"><strong>No ar, como principal canal de vendas.</strong> ecobelreciclagem.com.br, sobre um sistema de marca que vai do cartão de visita à frota. Design meu; desenvolvimento e publicação pelo dev.</span></p>
+          </div>
         </div>
       </div>
     </div>
@@ -781,10 +768,6 @@
     <div class="container">
       <div class="section-cols">
         <div>
-          <p class="section-label fade-up">
-            <span lang="en">The challenge</span>
-            <span lang="pt">O desafio</span>
-          </p>
           <h2 class="section-title fade-up">
             <span lang="en">Built to win business clients</span>
             <span lang="pt">Feito para conquistar clientes empresariais</span>
@@ -817,28 +800,14 @@
   <!-- ─── APPROACH ──────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">The approach</span>
-        <span lang="pt">A abordagem</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">Build the meaning into the letterforms</span>
         <span lang="pt">Construir o significado dentro das letras</span>
       </h2>
-      <div class="quote fade-up">
-        <p class="quote-text">
-          <span lang="en">My idea of placing the design outside the letter "O" was, above all, to escape the cliché, looking for solid ideas without losing the meaning.</span>
-          <span lang="pt">Minha ideia de colocar o desenho fora da letra "O" era, acima de tudo, escapar do clichê, buscando ideias sólidas sem perder o significado.</span>
-        </p>
-        <p class="quote-cite">
-          <span lang="en">From the original rebranding proposal</span>
-          <span lang="pt">Da proposta original de rebranding</span>
-        </p>
-      </div>
       <div class="section-cols fade-up">
         <div class="section-body">
-          <p lang="en">Instead of forcing the recycling symbol into the "O", I moved it into the <strong>"b"</strong>, integrating the arrows into the letterform itself so the recycling idea lives inside the shape.</p>
-          <p lang="pt">Em vez de forçar o símbolo de reciclagem dentro do "O", eu o movi para o <strong>"b"</strong>, integrando as setas à própria letra, de modo que a ideia de reciclagem viva dentro da forma.</p>
+          <p lang="en">In the original rebranding proposal, I wrote that placing the design outside the letter "O" was, above all, a way "to escape the cliché, looking for solid ideas without losing the meaning." So instead of forcing the recycling symbol into the "O", I moved it into the <strong>"b"</strong>, integrating the arrows into the letterform itself so the recycling idea lives inside the shape.</p>
+          <p lang="pt">Na proposta original de rebranding, escrevi que colocar o desenho fora da letra "O" era, acima de tudo, um jeito de "escapar do clichê, buscando ideias sólidas sem perder o significado." Então, em vez de forçar o símbolo de reciclagem dentro do "O", eu o movi para o <strong>"b"</strong>, integrando as setas à própria letra, de modo que a ideia de reciclagem viva dentro da forma.</p>
           <p lang="en">A subtle but critical detail: a thin cut was kept between the arrows and the body of the "b". Without it, the shapes would merge into a confusing blob, especially in grayscale or laser printing.</p>
           <p lang="pt">Um detalhe sutil, mas crítico: manteve-se um corte fino entre as setas e o corpo do "b". Sem ele, as formas se fundiriam em um borrão confuso, especialmente em escala de cinza ou impressão a laser.</p>
         </div>
@@ -849,25 +818,7 @@
           <p lang="pt">O resultado mantém tudo o que tornava o original reconhecível, mas lhe dá uma personalidade distinta e intencional que a marca antiga nunca teve.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ─── CONSTRUCTION ──────────────────────────────────────── -->
-  <section class="section">
-    <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Construction</span>
-        <span lang="pt">Construção</span>
-      </p>
-      <h2 class="section-title fade-up">
-        <span lang="en">From the recycling symbol to the "b"</span>
-        <span lang="pt">Do símbolo de reciclagem ao "b"</span>
-      </h2>
-      <p class="section-body fade-up">
-        <span lang="en">Rather than dropping the recycling symbol into the "O", the arrows were rebuilt around the <strong>"b"</strong>, keeping the meaning unmistakable while giving the mark a form of its own. A thin cut between the arrows and the letter keeps everything readable, even in grayscale.</span>
-        <span lang="pt">Em vez de inserir o símbolo de reciclagem no "O", as setas foram reconstruídas ao redor do <strong>"b"</strong>, mantendo o significado inconfundível e dando à marca uma forma que ela podia chamar de sua. Um corte fino entre as setas e a letra mantém tudo legível, mesmo em escala de cinza.</span>
-      </p>
-      <div class="brand-figure fade-up" style="background: var(--kraft);">
+      <div class="brand-figure fade-up" style="background: var(--kraft); margin-top: 56px;">
         <img loading="lazy" decoding="async" src="Ecobel-Case-img/construction.jpg" alt="Ecobel logo construction: recycling symbol evolving into the b letterform, in color and grayscale">
       </div>
       <p class="brand-figcaption fade-up">
@@ -880,17 +831,13 @@
   <!-- ─── LOGO APPLICATIONS ─────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Applications</span>
-        <span lang="pt">Aplicações</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">One mark, every surface</span>
         <span lang="pt">Uma marca, todas as superfícies</span>
       </h2>
       <p class="section-body fade-up">
-        <span lang="en">The system was built to survive the real world (on white, black, light, and dark backgrounds), each with a dedicated color pairing so every version stays legible and <strong>WCAG-compliant</strong>, while still feeling harmonious to the eye.</span>
-        <span lang="pt">O sistema foi construído para sobreviver ao mundo real (em fundos brancos, pretos, claros e escuros), cada um com uma combinação de cores dedicada para que toda versão permaneça legível e <strong>em conformidade com a WCAG</strong>, sem deixar de ser harmoniosa aos olhos.</span>
+        <span lang="en">The system was built to survive the real world (on white, black, light, and dark backgrounds), each with a dedicated color pairing so every version stays legible.</span>
+        <span lang="pt">O sistema foi construído para sobreviver ao mundo real (em fundos brancos, pretos, claros e escuros), cada um com uma combinação de cores dedicada para que toda versão permaneça legível.</span>
       </p>
       <div class="apps-grid fade-up" style="grid-template-columns: 1fr 1fr;">
         <div class="app-panel app-light">
@@ -911,8 +858,8 @@
         </div>
       </div>
       <p class="brand-figcaption fade-up">
-        <span lang="en">One mark across light, kraft, brand-green, and black surfaces: each foreground / background pairing checked for WCAG contrast.</span>
-        <span lang="pt">Uma marca em superfícies claras, kraft, verde da marca e preta: cada combinação de frente / fundo verificada para contraste WCAG.</span>
+        <span lang="en">One mark across light, kraft, brand-green, and black surfaces.</span>
+        <span lang="pt">Uma marca em superfícies claras, kraft, verde da marca e preta.</span>
       </p>
     </div>
   </section>
@@ -920,10 +867,6 @@
   <!-- ─── TYPOGRAPHY ────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Typography</span>
-        <span lang="pt">Tipografia</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">Two voices: grotesk + rounded</span>
         <span lang="pt">Duas vozes: grotesca + arredondada</span>
@@ -960,10 +903,6 @@
   <!-- ─── COLOR PALETTE ─────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">Color</span>
-        <span lang="pt">Cor</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">Greens that read as renewal</span>
         <span lang="pt">Verdes que comunicam renovação</span>
@@ -996,10 +935,6 @@
   <!-- ─── MOCKUPS ───────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">In the wild</span>
-        <span lang="pt">No mundo real</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">The brand applied</span>
         <span lang="pt">A marca aplicada</span>
@@ -1021,10 +956,6 @@
   <!-- ─── WEBSITE ───────────────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <p class="section-label fade-up">
-        <span lang="en">The website</span>
-        <span lang="pt">O site</span>
-      </p>
       <h2 class="section-title fade-up">
         <span lang="en">From identity to a live site</span>
         <span lang="pt">Da identidade ao site no ar</span>
@@ -1159,18 +1090,18 @@
   </section>
 
   <!-- ─── CONTACT ───────────────────────────────────────────── -->
-  <section class="contact-section">
+  <section class="contact-section" id="contact">
     <div class="container">
       <div class="contact-panel">
         <div class="doodle doodle--burst2 doodle--keep" style="--doodle-rot:90deg; --fdel:.35s; top:20px; right:26px; width:96px; height:96px;" aria-hidden="true"></div>
         <div class="doodle doodle--star" style="--doodle-rot:-10deg; --fdur:6.8s; bottom:22px; left:34px; width:88px; height:88px;" aria-hidden="true"></div>
         <h2 class="contact-title fade-up">
-          <span lang="en">Want to talk about this project?</span>
-          <span lang="pt">Quer falar sobre esse projeto?</span>
+          <span lang="en">Need a brand that brings in clients?</span>
+          <span lang="pt">Precisa de uma marca que traga clientes?</span>
         </h2>
         <p class="contact-desc fade-up">
-          <span lang="en">Open to full-time, part-time, or freelance opportunities.</span>
-          <span lang="pt">Aberto a oportunidades full-time, part-time ou freelance.</span>
+          <span lang="en">Full-time, part-time, or freelance, remote included. Write me and I'll answer fast.</span>
+          <span lang="pt">Full-time, part-time ou freelance, remoto também. Me escreve que eu respondo rápido.</span>
         </p>
         <div class="fade-up" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
           <a href="#" class="cta-btn" data-obf-email data-user="igordt" data-domain="outlook" data-tld="com">
@@ -1337,6 +1268,7 @@
 
 <!-- i18n: language toggle wiring (head script already set initial language) -->
 <script src="i18n.js"></script>
+<script src="site.js" defer></script>
 
 <script src="doodles.js" defer></script>
 </body>
